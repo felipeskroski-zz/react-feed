@@ -24,14 +24,24 @@ class FeedItem extends Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.addComment = this.addComment.bind(this);
-    this.state = {comment: ''};
+    this.state = {
+      comments: this.props.obj.comments,
+      comment: '',
+    };
 
   }
   handleChange(event) {
     this.setState({comment: event.target.value});
   }
   addComment(){
-    return this.props.onComment(this.props.id, this.state.comment)
+    const comments = this.state.comments
+    comments.push({
+      author: this.props.user.name,
+      authorId: this.props.user.id,
+      body: this.state.comment,
+    })
+    this.setState({comments: comments})
+    this.render();
   }
   render() {
     const i = this.props.obj;

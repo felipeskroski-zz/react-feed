@@ -58,33 +58,15 @@ let newsfeed = [
 
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {newsfeed: newsfeed}
-    this.newComment = this.newComment.bind(this);
-  }
-  newComment(post, comment){
-    newsfeed[post].comments.push({
-      author: user.name,
-      authorId: user.id,
-      body: comment,
-    })
-    this.setState({newsfeed: newsfeed})
-    console.log(newsfeed[post].comments)
-    this.render();
-
-  }
   render() {
-    const func = this.newComment
-
     return (
       <div className="App">
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
         </div>
         <div className="newsfeed">
-          {this.state.newsfeed.map(function(feed, i){
-            return <FeedItem obj={feed} key={i} id={i} onComment={func} />;
+          {newsfeed.map(function(feed, i){
+            return <FeedItem obj={feed} key={i} user={user}/>;
           })}
 
         </div>
