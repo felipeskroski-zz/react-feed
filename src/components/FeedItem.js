@@ -1,24 +1,39 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import FeedItemHeader from './FeedItemHeader';
 import Comment from './Comment';
-import './FeedItem.css';
+
+
+const Feed = styled.article`
+  background-color: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 3px;
+`
+const Image = styled.img`
+  max-width: 100%;
+`
+const Comments = styled.section`
+  flex-direction: column;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+`
 
 class FeedItem extends Component {
   render() {
     const i = this.props.obj;
-    console.log(i)
     return (
-      <article className="feed-item">
+      <Feed>
         <FeedItemHeader
           avatar={i.authorImage}
           author={i.author}
           location={i.location}
           time={i.time}
         />
-        <section className="item-media">
-          <img src={i.media} className="media-img" alt="media" />
+        <section>
+          <Image src={i.media} alt="media" />
         </section>
-        <section className="item-content">
+        <Comments>
           <p className="content-likes">35 likes</p>
           {i.comments.map(function(c, i){
             return(
@@ -27,8 +42,8 @@ class FeedItem extends Component {
               </Comment>
             )
           })}
-        </section>
-      </article>
+        </Comments>
+      </Feed>
     );
   }
 }
