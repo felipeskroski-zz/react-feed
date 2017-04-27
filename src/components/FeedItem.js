@@ -20,6 +20,19 @@ const Comments = styled.section`
 `
 
 class FeedItem extends Component {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+    this.addComment = this.addComment.bind(this);
+    this.state = {comment: ''};
+
+  }
+  handleChange(event) {
+    this.setState({comment: event.target.value});
+  }
+  addComment(){
+    return this.props.onComment(this.props.id, this.state.comment)
+  }
   render() {
     const i = this.props.obj;
     return (
@@ -43,6 +56,10 @@ class FeedItem extends Component {
             )
           })}
         </Comments>
+        <div>
+          <input type="text" name="comment" onChange={this.handleChange} />
+          <button onClick={this.addComment}>Comment</button>
+        </div>
       </Feed>
     );
   }
