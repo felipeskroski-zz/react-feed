@@ -14,12 +14,6 @@
   flex-direction: row;
   display: flex;
 }
-.avatar-img{
-  border-radius: 50%;
-  height: 30px;
-  width: 30px;
-  margin-right: 10px;
-}
 .avatar-name{
   font-size: 14px;
   margin: 0;
