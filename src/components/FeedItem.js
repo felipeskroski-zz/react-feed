@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import FeedItemHeader from './FeedItemHeader';
+import FeedItemForm from './FeedItemForm';
 import Comment from './Comment';
 
 
@@ -22,23 +23,18 @@ const Comments = styled.section`
 class FeedItem extends Component {
   constructor(props) {
     super(props);
-    this.handleChange = this.handleChange.bind(this);
     this.addComment = this.addComment.bind(this);
     this.state = {
       comments: this.props.obj.comments,
-      comment: '',
     };
 
   }
-  handleChange(event) {
-    this.setState({comment: event.target.value});
-  }
-  addComment(){
+  addComment(comment){
     const comments = this.state.comments
     comments.push({
       author: this.props.user.name,
       authorId: this.props.user.id,
-      body: this.state.comment,
+      body: comment,
     })
     this.setState({comments: comments})
     this.render();
@@ -66,10 +62,7 @@ class FeedItem extends Component {
             )
           })}
         </Comments>
-        <div>
-          <input type="text" name="comment" onChange={this.handleChange} />
-          <button onClick={this.addComment}>Comment</button>
-        </div>
+        <FeedItemForm onSubmit={this.addComment} />
       </Feed>
     );
   }
