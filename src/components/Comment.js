@@ -1,15 +1,5 @@
 import React, { Component } from 'react';
 
-class Comment extends Component {
-  render() {
-    return (
-      <p style={styles.comment}>
-        <a style={styles.author} href={this.props.authorLink}>{this.props.author}</a>
-          {this.props.children}
-      </p>
-    );
-  }
-}
 const styles = {
   author:{
     fontWeight: 'bold',
@@ -21,5 +11,17 @@ const styles = {
     marginTop: 0,
   }
 }
+
+class Comment extends Component {
+  render() {
+    return (
+      <p style={styles.comment}>
+        <a style={styles.author} href={this.props.authorLink}>{this.props.author}</a>
+          {this.props.children}
+      </p>
+    );
+  }
+}
+
 
 export default Comment;

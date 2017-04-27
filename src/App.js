@@ -1,7 +1,57 @@
 import React, { Component } from 'react';
 import FeedItem from './components/FeedItem';
 import logo from './logo.svg';
+import avatar from './img/avatar.jpg';
+import media from './img/media.jpg';
 import './App.css';
+
+const newsfeed = [
+  {
+    key: '1',
+    author: 'jonh bill',
+    authorImage: avatar,
+    location: 'Wellington',
+    authorId: '1',
+    time: '1h',
+    media: media,
+    likes: 35,
+    comments: [
+      {
+        author: 'dummy',
+        authorId: '1',
+        body: 'a random comment here',
+      },
+      {
+        author: 'dummy2',
+        authorId: '2',
+        body: 'Another random comment',
+      }
+    ]
+  },
+  {
+    key: '2',
+    author: 'suzy',
+    authorImage: avatar,
+    location: 'Bay of plenty',
+    authorId: '1',
+    time: '2h',
+    media: media,
+    likes: 35,
+    comments: [
+      {
+        author: 'dummy',
+        authorId: '1',
+        body: 'a random comment here',
+      },
+      {
+        author: 'dummy2',
+        authorId: '2',
+        body: 'Another random comment',
+      }
+    ]
+  },
+]
+
 
 class App extends Component {
   render() {
@@ -11,7 +61,10 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
         </div>
         <div className="newsfeed">
-          <FeedItem />
+          {newsfeed.map(function(feed, i){
+            return <FeedItem obj={feed} key={i} />;
+          })}
+
         </div>
 
       </div>
