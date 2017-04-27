@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import Like from 'react-icons/lib/md/favorite-outline';
+import Liked from 'react-icons/lib/md/favorite';
 
 
 const Form = styled.form`
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-top: 1px solid #eee;
 `
 const Field = styled.input`
   padding: 15px 15px;
   flex: 1;
   font-size: 16px;
   border: none;
-  border-top: 1px solid #eee;
   font-weight: 300;
 `
 const Button = styled.button`
@@ -24,15 +28,28 @@ const Button = styled.button`
   font-size: 16px;
   color: #222;
 `
+const Heart = styled(Like)`
+  height: 24px;
+  width: auto;
+  margin-left: 20px
+  color: #ccc;
+`
+const HeartFilled = styled(Liked)`
+  color: red;
+  height: 24px;
+  margin-left: 20px
+  width: auto;
+`
 
 class FeedItemForm extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.addComment = this.addComment.bind(this);
+    this.toggleLike = this.toggleLike.bind(this);
     this.state = {
       comment: '',
-      like: false,
+      like: this.props.like,
     };
   }
   handleChange(event) {
@@ -43,9 +60,31 @@ class FeedItemForm extends Component {
     this.props.onSubmit(this.state.comment)
     this.setState({comment: ''});
   }
+  toggleLike(e){
+    e.preventDefault()
+    if(this.state.like){
+      this.setState({like: false});
+      this.props.onLike(false)
+    }else{
+      this.setState({like: true});
+      this.props.onLike()
+    }
+    console.log(this.state.like)
+
+  }
+  renderLike(){
+    if(this.state.like){
+      return(<HeartFilled />);
+    }else{
+      return(<Heart />);
+    }
+  }
   render() {
     return (
       <Form onSubmit={this.addComment}>
+        <a href="#" onClick={this.toggleLike}>
+          {this.renderLike()}
+        </a>
         <Field type="text" value={this.state.comment} ref="comment" name="comment" onChange={this.handleChange} placeholder='Add a comment ...'/>
         <Button>Done</Button>
       </Form>

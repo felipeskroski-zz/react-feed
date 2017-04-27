@@ -6,6 +6,7 @@ const Header = styled.section`
   flex-direction: row;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 20px;
 `;
 const Author = styled.div`

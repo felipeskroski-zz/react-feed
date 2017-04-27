@@ -18,6 +18,7 @@ let newsfeed = [
     time: '1h',
     media: media,
     likes: 35,
+    currentUserLike: true,
     comments: [
       {
         author: 'dummy',
@@ -40,6 +41,7 @@ let newsfeed = [
     time: '2h',
     media: media,
     likes: 35,
+    currentUserLike: false,
     comments: [
       {
         author: 'dummy',

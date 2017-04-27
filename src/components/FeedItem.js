@@ -4,7 +4,7 @@ import FeedItemHeader from './FeedItemHeader';
 import FeedItemForm from './FeedItemForm';
 import Comment from './Comment';
 
-
+// these styles automaticaly create new components based on a dom obj
 const Feed = styled.article`
   background-color: #fff;
   border: 1px solid #e6e6e6;
@@ -20,13 +20,18 @@ const Comments = styled.section`
   justify-content: space-between;
   padding: 20px;
 `
+const Likes = styled.p`
+  margin-top: 0;
+`
 
 class FeedItem extends Component {
   constructor(props) {
     super(props);
     this.addComment = this.addComment.bind(this);
+    this.onLike = this.onLike.bind(this);
     this.state = {
       comments: this.props.obj.comments,
+      likes: this.props.obj.likes,
     };
 
   }
@@ -38,7 +43,14 @@ class FeedItem extends Component {
       body: comment,
     })
     this.setState({comments: comments})
-    this.render();
+  }
+  onLike(add=true){
+    let likes = this.state.likes
+    if(add){
+      this.setState({likes: likes+1})
+    }else{
+      return this.setState({likes: likes-1})
+    }
   }
   render() {
     const i = this.props.obj;
@@ -54,7 +66,7 @@ class FeedItem extends Component {
           <Image src={i.media} alt="media" />
         </section>
         <Comments>
-          <p className="content-likes">35 likes</p>
+          <Likes>{this.state.likes} likes</Likes>
           {i.comments.map(function(c, i){
             return(
               <Comment author={c.author} authorLink={c.authorId} key={i}>
@@ -63,7 +75,7 @@ class FeedItem extends Component {
             )
           })}
         </Comments>
-        <FeedItemForm onSubmit={this.addComment} />
+        <FeedItemForm onSubmit={this.addComment} onLike={this.onLike} like={i.currentUserLike} />
       </Feed>
     );
   }
