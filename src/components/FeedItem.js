@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Avatar from '../common/Avatar';
+import FeedItemHeader from './FeedItemHeader';
 import Comment from './Comment';
 import './FeedItem.css';
 
@@ -9,17 +9,12 @@ class FeedItem extends Component {
     console.log(i)
     return (
       <article className="feed-item">
-        <section className="item-header">
-          <div className="item-avatar">
-            <Avatar src={i.authorImage} alt="Username" />
-            <div>
-              <h4 className="avatar-name">{i.author}</h4>
-              <p className="avatar-location">{i.location}</p>
-            </div>
-
-          </div>
-          <div className="item-time">{i.time}</div>
-        </section>
+        <FeedItemHeader
+          avatar={i.authorImage}
+          author={i.author}
+          location={i.location}
+          time={i.time}
+        />
         <section className="item-media">
           <img src={i.media} className="media-img" alt="media" />
         </section>
