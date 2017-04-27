@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import FeedItem from './components/FeedItem';
-import logo from './logo.svg';
 import avatar from './img/avatar.jpg';
 import media from './img/media.jpg';
 import './App.css';
@@ -62,7 +61,7 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+          React Feed
         </div>
         <div className="newsfeed">
           {newsfeed.map(function(feed, i){

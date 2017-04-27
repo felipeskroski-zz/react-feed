@@ -41,11 +41,12 @@ class FeedItemForm extends Component {
   addComment(e){
     e.preventDefault()
     this.props.onSubmit(this.state.comment)
+    this.setState({comment: ''});
   }
   render() {
     return (
       <Form onSubmit={this.addComment}>
-        <Field type="text" ref="comment" name="comment" onChange={this.handleChange} placeholder='Add a comment ...'/>
+        <Field type="text" value={this.state.comment} ref="comment" name="comment" onChange={this.handleChange} placeholder='Add a comment ...'/>
         <Button>Done</Button>
       </Form>
     );
