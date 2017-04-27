@@ -1,0 +1,45 @@
+.feed-item{
+  background-color: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 3px;
+}
+
+.item-header{
+  flex-direction: row;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+.item-avatar{
+  flex-direction: row;
+  display: flex;
+}
+.avatar-img{
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+  margin-right: 10px;
+}
+.avatar-name{
+  font-size: 14px;
+  margin: 0;
+  text-align: left;
+}
+.avatar-location{
+  font-size: 12px;
+  margin: 0;
+  text-align: left;
+}
+.item-media{
+
+}
+.media-img{
+  max-width: 100%;
+}
+
+.item-content{
+  flex-direction: column;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}

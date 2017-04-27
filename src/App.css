@@ -1,5 +1,6 @@
 .App {
-  text-align: center;
+  background: #fafafa;
+  color: #333;
 }
 
 .App-logo {
@@ -16,6 +17,11 @@
 
 .App-intro {
   font-size: large;
+}
+
+.newsfeed{
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 @keyframes App-logo-spin {
