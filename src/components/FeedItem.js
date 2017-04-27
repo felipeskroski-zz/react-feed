@@ -9,6 +9,7 @@ const Feed = styled.article`
   background-color: #fff;
   border: 1px solid #e6e6e6;
   border-radius: 3px;
+  margin: 30px 0;
 `
 const Image = styled.img`
   max-width: 100%;

@@ -2,20 +2,27 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 
-const Form = styled.div`
+const Form = styled.form`
   display: flex;
 `
 const Field = styled.input`
-  padding: 10px;
-
+  padding: 15px 15px;
+  flex: 1;
+  font-size: 16px;
+  border: none;
+  border-top: 1px solid #eee;
+  font-weight: 300;
 `
 const Button = styled.button`
   flex-direction: column;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
-  background: #ccc;
+  padding: 20px 20px;
+  background: #ebebeb;
+  border: none;
+  font-size: 16px;
+  color: #222;
 `
 
 class FeedItemForm extends Component {
@@ -31,14 +38,15 @@ class FeedItemForm extends Component {
   handleChange(event) {
     this.setState({comment: event.target.value});
   }
-  addComment(){
+  addComment(e){
+    e.preventDefault()
     this.props.onSubmit(this.state.comment)
   }
   render() {
     return (
-      <Form>
-        <Field type="text" name="comment" onChange={this.handleChange} />
-        <Button onClick={this.addComment}>Comment</Button>
+      <Form onSubmit={this.addComment}>
+        <Field type="text" ref="comment" name="comment" onChange={this.handleChange} placeholder='Add a comment ...'/>
+        <Button>Done</Button>
       </Form>
     );
   }
