@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import feedStore from  '../store.js'
 import Like from 'react-icons/lib/md/favorite-outline';
 import Liked from 'react-icons/lib/md/favorite';
 
@@ -62,15 +63,13 @@ class FeedItemForm extends Component {
   }
   toggleLike(e){
     e.preventDefault()
-    if(this.state.like){
-      this.setState({like: false});
-      this.props.onLike(false)
+    console.log(this.props.like, this.props.id)
+    console.log(feedStore.feed)
+    if(this.props.like){
+      feedStore.onLike(this.props.id)
     }else{
-      this.setState({like: true});
-      this.props.onLike()
+      feedStore.onLike(this.props.id, false)
     }
-    console.log(this.state.like)
-
   }
   renderLike(){
     if(this.state.like){

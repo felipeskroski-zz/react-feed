@@ -80,7 +80,7 @@ class FeedItem extends Component {
             )
           })}
         </Comments>
-        <FeedItemForm onSubmit={this.addComment} onLike={this.onLike} like={i.currentUserLike} />
+        <FeedItemForm onSubmit={this.addComment} id={i.id} onLike={this.onLike} like={i.currentUserLike} />
       </Feed>
     );
   }
