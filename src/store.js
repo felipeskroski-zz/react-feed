@@ -6,7 +6,7 @@ const user = {
   name: 'Felipe',
   id: '5',
 }
-let newsfeed = [
+const newsfeed = [
   {
     id: 1,
     author: 'jonh bill',
@@ -15,7 +15,7 @@ let newsfeed = [
     authorId: '1',
     time: '1h',
     media: media,
-    likes: 35,
+    likes: 11,
     currentUserLike: true,
     comments: [
       {
@@ -58,9 +58,11 @@ let newsfeed = [
 class FeedStore {
   constructor() {
     extendObservable(this, {
-      feed: newsfeed,
-      user: user,
+      feed: [],
+      user: {},
     })
+    this.feed = newsfeed;
+    this.user = user;
   }
   getpost(id) {
     const item = this.feed.find(function(item, i){

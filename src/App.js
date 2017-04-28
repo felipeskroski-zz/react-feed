@@ -1,23 +1,18 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route} from 'react-router-dom'
-import {observer} from 'mobx-react';
 import FeedItem from './components/FeedItem';
 import feedStore from  './store.js'
 import './App.css';
 
 // page routes
 
-const Home = observer(class Home extends Component {
-  render(){
-    return(
-      <div className="newsfeed">
-        {feedStore.feed.map((feed, i) => {
-          return <FeedItem obj={feed} key={i} user={feedStore.user}/>;
-        })}
-      </div>
-    )
-  }
-})
+const Home = () => (
+  <div className="newsfeed">
+    {feedStore.feed.map((feed, i) => {
+      return <FeedItem obj={feed} key={i} user={feedStore.user}/>;
+    })}
+  </div>
+)
 
 const Post = ({match}) => {
   const id = match.params.postId
