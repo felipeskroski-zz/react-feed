@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route} from 'react-router-dom'
 import FeedItem from './components/FeedItem';
 import avatar from './img/avatar.jpg';
 import media from './img/media.jpg';
@@ -10,7 +11,7 @@ const user = {
 }
 let newsfeed = [
   {
-    key: '1',
+    id: '1',
     author: 'jonh bill',
     authorImage: avatar,
     location: 'Wellington',
@@ -33,7 +34,7 @@ let newsfeed = [
     ]
   },
   {
-    key: '2',
+    id: '2',
     author: 'suzy',
     authorImage: avatar,
     location: 'Bay of plenty',
@@ -56,8 +57,30 @@ let newsfeed = [
     ]
   },
 ]
+// page routes
+const Home = () => (
+  <div className="newsfeed">
+    {newsfeed.map((feed, i) => {
+      return <FeedItem obj={feed} key={i} user={user}/>;
+    })}
+  </div>
+)
+
+const Post = ({match}) => {
+  const id = match.params.postId
+  const item = newsfeed.find(function(item, i){
+    return item.id === id;
+  })
+  console.log(item)
+  return(
+    <div className="newsfeed">
+      <FeedItem obj={item} user={user}/>
+    </div>
+  )
+}
 
 
+// App main shell
 class App extends Component {
   render() {
     return (
@@ -65,13 +88,12 @@ class App extends Component {
         <div className="App-header">
           React Feed
         </div>
-        <div className="newsfeed">
-          {newsfeed.map(function(feed, i){
-            return <FeedItem obj={feed} key={i} user={user}/>;
-          })}
-
-        </div>
-
+        <Router>
+          <div>
+            <Route exact path="/" component={Home}/>
+            <Route path="/post/:postId" component={Post}/>
+          </div>
+        </Router>
       </div>
     );
   }

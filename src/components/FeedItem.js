@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Link} from 'react-router-dom'
 import styled from 'styled-components';
 import FeedItemHeader from './FeedItemHeader';
 import FeedItemForm from './FeedItemForm';
@@ -56,14 +57,18 @@ class FeedItem extends Component {
     const i = this.props.obj;
     return (
       <Feed>
+
         <FeedItemHeader
           avatar={i.authorImage}
           author={i.author}
           location={i.location}
           time={i.time}
         />
+
         <section>
-          <Image src={i.media} alt="media" />
+          <Link to={`/post/${i.id}`}>
+            <Image src={i.media} alt="media" />
+          </Link>
         </section>
         <Comments>
           <Likes>{this.state.likes} likes</Likes>
