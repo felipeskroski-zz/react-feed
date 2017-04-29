@@ -84,7 +84,7 @@ class FeedStore {
 
   onLike(postId, add=true){
     this.feed.forEach((post)=>{
-      if(post.id == postId){
+      if(post.id === postId){
         if(add){
           post.likes++
           post.currentUserLike = true
