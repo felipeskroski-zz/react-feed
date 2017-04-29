@@ -84,6 +84,11 @@ class FeedStore {
     })
   }
 
+  addPost(postObj){
+    this.feed.push(postObj)
+    console.log(postObj)
+  }
+
   onLike(postId, add=true){
     this.feed.forEach((post)=>{
       if(post.id === postId){
