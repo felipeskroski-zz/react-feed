@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Link, Redirect} from 'react-router-dom'
 import {observer} from 'mobx-react';
 import styled from 'styled-components';
+import Dropzone from 'react-dropzone'
 import feedStore from  '../store.js'
 import FeedItemHeader from './FeedItemHeader';
 import media from '../img/media.jpg';
@@ -13,8 +14,12 @@ const Feed = styled.article`
   border-radius: 3px;
   margin: 30px 0;
 `
-const Image = styled.img`
+const DropArea = styled.section`
   max-width: 100%;
+  border: 2px dashed black;
+  background: #ccc;
+  min-height: 300px;
+  position: relative;
 `
 const Comments = styled.section`
   flex-direction: column;
@@ -50,6 +55,18 @@ const Button = styled.button`
   color: #222;
 `
 
+const dropZoneStyle = {
+  height:'100%',
+  width: '100%',
+  position:'absolute',
+  background: 'rgba(255,255,255,0.5)',
+  zIndex: 10,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  flexDirection: 'column'
+}
+
 
 
 class FeedItemNew extends Component {
@@ -59,13 +76,22 @@ class FeedItemNew extends Component {
     this.addPost = this.addPost.bind(this);
     this.state = {
       comment: '',
-      redirect: false
+      files: [],
+      redirect: false,
     };
   }
 
   handleChange(event) {
     this.setState({comment: event.target.value});
   }
+
+  onDrop(files) {
+    console.log(files)
+    this.setState({
+      files: files,
+    });
+  }
+
   addPost(e){
     e.preventDefault()
     const u = this.props.user
@@ -90,6 +116,18 @@ class FeedItemNew extends Component {
     feedStore.addPost(post)
     this.setState({comment: '', redirect: true});
   }
+  renderImage(){
+    if(this.state.files.length > 0){
+      var reader = new FileReader();
+      // read the image file as a data URL.
+      const src = reader.readAsDataURL(this.state.files[0]);
+      console.log(src)
+      return(
+        <img src={this.state.files[0].preview} alt="media" width="100%"/>
+      )
+    }
+
+  }
   render() {
     const u = this.props.user;
     if(this.state.redirect){
@@ -106,9 +144,21 @@ class FeedItemNew extends Component {
           time={Date.now}
           new
         />
-        <section>
-          <Image src={media} alt="media" />
-        </section>
+        <DropArea>
+
+          <Dropzone onDrop={this.onDrop.bind(this)}  style={dropZoneStyle} multiple={false}>
+            <p>Try dropping some files here, or click to select files to upload.</p>
+            {
+              this.state.files.map((f, i) => (
+                  <p key={i}>
+                    {f.name} - {f.size} bytes
+                    {f.size > 2000000 ? <b>too large, max 2mb</b> : ''}
+                  </p>
+              ))
+            }
+          </Dropzone>
+          {this.renderImage()}
+        </DropArea>
         <Form onSubmit={this.addPost}>
           <Field type="text" value={this.state.comment} ref="comment" name="comment" onChange={this.handleChange} placeholder='Add a comment ...'/>
           <Button>Submit</Button>
