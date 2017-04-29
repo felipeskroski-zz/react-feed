@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom'
+import {observer} from 'mobx-react';
 import styled from 'styled-components';
 import FeedItemHeader from './FeedItemHeader';
 import FeedItemForm from './FeedItemForm';
@@ -25,34 +26,7 @@ const Likes = styled.p`
   margin-top: 0;
 `
 
-class FeedItem extends Component {
-  constructor(props) {
-    super(props);
-    this.addComment = this.addComment.bind(this);
-    this.onLike = this.onLike.bind(this);
-    this.state = {
-      comments: this.props.obj.comments,
-      likes: this.props.obj.likes,
-    };
-
-  }
-  addComment(comment){
-    const comments = this.state.comments
-    comments.push({
-      author: this.props.user.name,
-      authorId: this.props.user.id,
-      body: comment,
-    })
-    this.setState({comments: comments})
-  }
-  onLike(add=true){
-    let likes = this.state.likes
-    if(add){
-      this.setState({likes: likes+1})
-    }else{
-      return this.setState({likes: likes-1})
-    }
-  }
+const FeedItem = observer(class FeedItem extends Component {
   render() {
     const i = this.props.obj;
     return (
@@ -71,7 +45,7 @@ class FeedItem extends Component {
           </Link>
         </section>
         <Comments>
-          <Likes>{this.state.likes} likes</Likes>
+          <Likes>{i.likes} likes</Likes>
           {i.comments.map(function(c, i){
             return(
               <Comment author={c.author} authorLink={c.authorId} key={i}>
@@ -80,10 +54,10 @@ class FeedItem extends Component {
             )
           })}
         </Comments>
-        <FeedItemForm onSubmit={this.addComment} onLike={this.onLike} like={i.currentUserLike} />
+        <FeedItemForm id={i.id} like={i.currentUserLike} />
       </Feed>
     );
   }
-}
+})
 
 export default FeedItem;

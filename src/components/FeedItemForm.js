@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import feedStore from  '../store.js'
 import Like from 'react-icons/lib/md/favorite-outline';
 import Liked from 'react-icons/lib/md/favorite';
 
@@ -49,7 +50,6 @@ class FeedItemForm extends Component {
     this.toggleLike = this.toggleLike.bind(this);
     this.state = {
       comment: '',
-      like: this.props.like,
     };
   }
   handleChange(event) {
@@ -57,23 +57,19 @@ class FeedItemForm extends Component {
   }
   addComment(e){
     e.preventDefault()
-    this.props.onSubmit(this.state.comment)
+    feedStore.addComment(this.props.id, this.state.comment)
     this.setState({comment: ''});
   }
   toggleLike(e){
     e.preventDefault()
-    if(this.state.like){
-      this.setState({like: false});
-      this.props.onLike(false)
+    if(this.props.like){
+      feedStore.onLike(this.props.id, false)
     }else{
-      this.setState({like: true});
-      this.props.onLike()
+      feedStore.onLike(this.props.id)
     }
-    console.log(this.state.like)
-
   }
   renderLike(){
-    if(this.state.like){
+    if(this.props.like){
       return(<HeartFilled />);
     }else{
       return(<Heart />);
