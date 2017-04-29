@@ -5,6 +5,8 @@ import media from './img/media.jpg';
 const user = {
   name: 'Felipe',
   id: '5',
+  avatar: avatar,
+  location: 'Wellington',
 }
 const newsfeed = [
   {
