@@ -74,8 +74,8 @@ class FeedStore {
     this.feed.forEach((post, i)=>{
       if(post.id === postId){
         post.comments.push({
-          author: this.props.user.name,
-          authorId: this.props.user.id,
+          author: this.user.name,
+          authorId: this.user.id,
           body: comment,
         })
       }
@@ -83,9 +83,7 @@ class FeedStore {
   }
 
   onLike(postId, add=true){
-    console.log(this.feed[1].likes)
-    let feed = this.feed
-    feed.forEach((post)=>{
+    this.feed.forEach((post)=>{
       if(post.id == postId){
         if(add){
           post.likes++
@@ -96,9 +94,6 @@ class FeedStore {
         }
       }
     })
-
-    this.feed = feed
-    console.log(this.feed[1].likes)
   }
 }
 

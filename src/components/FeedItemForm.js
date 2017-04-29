@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import {observer} from 'mobx-react';
 import feedStore from  '../store.js'
 import Like from 'react-icons/lib/md/favorite-outline';
 import Liked from 'react-icons/lib/md/favorite';
@@ -58,7 +57,7 @@ class FeedItemForm extends Component {
   }
   addComment(e){
     e.preventDefault()
-    this.props.onSubmit(this.state.comment)
+    feedStore.addComment(this.props.id, this.state.comment)
     this.setState({comment: ''});
   }
   toggleLike(e){
