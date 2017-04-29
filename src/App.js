@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link} from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link, Redirect} from 'react-router-dom'
 import styled from 'styled-components';
 import FeedItem from './components/FeedItem';
 import FeedItemNew from './components/FeedItemNew';
@@ -28,10 +28,17 @@ const Post = ({match}) => {
   const item = feedStore.feed.find(function(item, i){
     return item.id === Number(id);
   })
+  if(item){
+    return(
+      <FeedItem obj={item} user={feedStore.user}/>
+    )
+  }else{
+    // TODO display some error message saying this post doesn't exist
+    return(
+      <Redirect to="/"/>
+    )
+  }
 
-  return(
-    <FeedItem obj={item} user={feedStore.user}/>
-  )
 }
 
 const NewPost = () => (

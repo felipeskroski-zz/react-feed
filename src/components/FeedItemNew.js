@@ -96,13 +96,13 @@ class FeedItemNew extends Component {
     e.preventDefault()
     const u = this.props.user
     const post = {
-      id: 33,
+      id: feedStore.feed.length+10,
       author: u.name,
       authorImage: u.avatar,
       location: u.location,
       authorId: u.id,
       time: Date.now(),
-      media: media,
+      media: this.state.files[0].preview,
       likes: 0,
       currentUserLike: false,
       comments: [
@@ -118,10 +118,6 @@ class FeedItemNew extends Component {
   }
   renderImage(){
     if(this.state.files.length > 0){
-      var reader = new FileReader();
-      // read the image file as a data URL.
-      const src = reader.readAsDataURL(this.state.files[0]);
-      console.log(src)
       return(
         <img src={this.state.files[0].preview} alt="media" width="100%"/>
       )
