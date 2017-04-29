@@ -118,8 +118,22 @@ class FeedItemNew extends Component {
   }
   renderImage(){
     if(this.state.files.length > 0){
+      const f = this.state.files[0]
+      /*
+      let src = ""
+      let reader = new FileReader();
+      reader.onload = (function(theFile) {
+        return function(e) {
+          // Render thumbnail.
+          src = e.target.result
+          console.log("image " +src);
+        };
+      })(f);
+      reader.readAsDataURL(f)
+      */
+
       return(
-        <img src={this.state.files[0].preview} alt="media" width="100%"/>
+        <img src={f.preview} alt="media" width="100%"/>
       )
     }
 
