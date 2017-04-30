@@ -1,0 +1,56 @@
+{
+  "user":{
+    "name": "Felipe",
+    "id": "5",
+    "avatar": "./img/avatar.jpg",
+    "location": "Wellington"
+  },
+  "posts":[
+    {
+      "id": "1",
+      "author": "jonh bill",
+      "authorImage": "./img/avatar.jpg",
+      "location": "Wellington",
+      "authorId": "1",
+      "time": "1h",
+      "media": "./img/media.jpg",
+      "likes": "11",
+      "currentUserLike": "true",
+      "comments": [
+        {
+          "author": "dummy",
+          "authorId": "1",
+          "body": "a random comment here"
+        },
+        {
+          "author": "dummy2",
+          "authorId": "2",
+          "body": "Another random comment"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "author": "suzy",
+      "authorImage": "./img/avatar.jpg",
+      "location": "Bay of plenty",
+      "authorId": "1",
+      "time": "2h",
+      "media": "./img/media.jpg",
+      "likes": "35",
+      "currentUserLike": "false",
+      "comments": [
+        {
+          "author": "dummy",
+          "authorId": "1",
+          "body": "a random comment here"
+        },
+        {
+          "author": "dummy2",
+          "authorId": "2",
+          "body": "Another random comment"
+        }
+      ]
+    }
+  ]
+}

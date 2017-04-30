@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import {Link, Redirect} from 'react-router-dom'
-import {observer} from 'mobx-react';
+import {Redirect} from 'react-router-dom'
 import styled from 'styled-components';
 import Dropzone from 'react-dropzone'
 import feedStore from  '../store.js'
 import FeedItemHeader from './FeedItemHeader';
-import media from '../img/media.jpg';
 
 // these styles automaticaly create new components based on a dom obj
 const Feed = styled.article`
@@ -21,15 +19,7 @@ const DropArea = styled.section`
   min-height: 300px;
   position: relative;
 `
-const Comments = styled.section`
-  flex-direction: column;
-  display: flex;
-  justify-content: space-between;
-  padding: 20px;
-`
-const Likes = styled.p`
-  margin-top: 0;
-`
+
 const Form = styled.form`
   display: flex;
   flex-direction: row;

@@ -1,61 +1,8 @@
-import {observable, computed, action, extendObservable} from 'mobx';
-import avatar from './img/avatar.jpg';
-import media from './img/media.jpg';
+import {extendObservable} from 'mobx';
+import * as firebase from 'firebase';
+import config from './config';
 
-const user = {
-  name: 'Felipe',
-  id: '5',
-  avatar: avatar,
-  location: 'Wellington',
-}
-const newsfeed = [
-  {
-    id: 1,
-    author: 'jonh bill',
-    authorImage: avatar,
-    location: 'Wellington',
-    authorId: '1',
-    time: '1h',
-    media: media,
-    likes: 11,
-    currentUserLike: true,
-    comments: [
-      {
-        author: 'dummy',
-        authorId: '1',
-        body: 'a random comment here',
-      },
-      {
-        author: 'dummy2',
-        authorId: '2',
-        body: 'Another random comment',
-      }
-    ]
-  },
-  {
-    id: 2,
-    author: 'suzy',
-    authorImage: avatar,
-    location: 'Bay of plenty',
-    authorId: '1',
-    time: '2h',
-    media: media,
-    likes: 35,
-    currentUserLike: false,
-    comments: [
-      {
-        author: 'dummy',
-        authorId: '1',
-        body: 'a random comment here',
-      },
-      {
-        author: 'dummy2',
-        authorId: '2',
-        body: 'Another random comment',
-      }
-    ]
-  },
-]
+
 
 class FeedStore {
   constructor() {
@@ -63,13 +10,21 @@ class FeedStore {
       feed: [],
       user: {},
     })
-    this.feed = newsfeed;
-    this.user = user;
   }
+
+  updateFeed(posts){
+    this.feed = posts
+  }
+
+  updateUser(user){
+    this.user = user
+  }
+
   getpost(id) {
-    const item = this.feed.find(function(item, i){
+    this.feed.find(function(item, i){
       return item.id === id;
     })
+
 	}
 
   addComment(postId, comment){
@@ -107,3 +62,16 @@ class FeedStore {
 
 const feedStore = new FeedStore();
 export default feedStore;
+
+
+
+const fb = firebase
+  .initializeApp(config)
+  .database()
+  .ref();
+
+fb.on('value', fbdata => {
+  const data = fbdata.val();
+  feedStore.updateFeed(data.posts)
+  feedStore.updateUser(data.user)
+});
