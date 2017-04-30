@@ -2,10 +2,10 @@ import {extendObservable} from 'mobx';
 import * as firebase from 'firebase';
 import config from './config';
 
-
-
+// the store manages both the state and the model (firebase connection in this case)
 class FeedStore {
   constructor() {
+    // these are the observable properties when they change it will change all the observers
     extendObservable(this, {
       feed: [],
       user: {},
@@ -64,12 +64,13 @@ const feedStore = new FeedStore();
 export default feedStore;
 
 
-
+// initialize firebase db based on the config file
 const fb = firebase
   .initializeApp(config)
   .database()
   .ref();
 
+// whenever firebase changes reloads the data
 fb.on('value', fbdata => {
   const data = fbdata.val();
   feedStore.updateFeed(data.posts)

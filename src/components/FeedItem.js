@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom'
+import {observer} from 'mobx-react';
 import styled from 'styled-components';
 import FeedItemHeader from './FeedItemHeader';
 import FeedItemForm from './FeedItemForm';
@@ -25,7 +26,7 @@ const Likes = styled.p`
   margin-top: 0;
 `
 
-class FeedItem extends Component {
+const FeedItem = observer(class FeedItem extends Component {
   render() {
     const i = this.props.obj;
     return (
@@ -57,6 +58,6 @@ class FeedItem extends Component {
       </Feed>
     );
   }
-}
+})
 
 export default FeedItem;

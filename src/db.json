@@ -15,7 +15,7 @@
       "time": "1h",
       "media": "./img/media.jpg",
       "likes": "11",
-      "currentUserLike": "true",
+      "currentUserLike": true,
       "comments": [
         {
           "author": "dummy",
@@ -38,7 +38,7 @@
       "time": "2h",
       "media": "./img/media.jpg",
       "likes": "35",
-      "currentUserLike": "false",
+      "currentUserLike": false,
       "comments": [
         {
           "author": "dummy",
