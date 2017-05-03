@@ -5,7 +5,12 @@ import FeedItem from './FeedItem';
 
 // observer makes sure every change made on the store renders the feed
 const Feed = observer(class Feed extends Component {
-  render(){
+  renderLoading(){
+    return(
+      <h2>Loading feed ...</h2>
+    )
+  }
+  renderFeed(){
     const u = this.props.store.user
     return(
       <div>
@@ -14,6 +19,17 @@ const Feed = observer(class Feed extends Component {
         })}
       </div>
     )
+  }
+  render(){
+    if(this.props.store.isFeedLoaded()){
+      return(
+        this.renderFeed()
+      )
+    }else{
+      return(
+        this.renderLoading()
+      )
+    }
   }
 })
 

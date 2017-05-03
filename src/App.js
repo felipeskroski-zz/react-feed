@@ -57,10 +57,12 @@ class App extends Component {
             <HomeLink to="/">
               React Feed
             </HomeLink>
+            <nav>
+              <HomeLink to="/newpost">
+                Newpost
+              </HomeLink>
+            </nav>
 
-            <HomeLink to="/newpost">
-              Newpost
-            </HomeLink>
           </div>
 
             <div className="newsfeed">

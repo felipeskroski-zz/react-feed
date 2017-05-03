@@ -12,6 +12,10 @@ class FeedStore {
     })
   }
 
+  isFeedLoaded(){
+    return this.feed.length
+  }
+
   updateFeed(posts){
     this.feed = posts
   }
@@ -45,17 +49,23 @@ class FeedStore {
   }
 
   onLike(postId, add=true){
-    this.feed.forEach((post)=>{
+    let postToSave;
+    this.feed.forEach((post, i)=>{
       if(post.id === postId){
         if(add){
           post.likes++
-          post.currentUserLike = true
+          post.currentUserLike =  true
         }else{
           post.likes--
           post.currentUserLike = false
         }
+        postToSave = post
       }
     })
+    // save data to firebase
+    //firebase.database().ref('posts/1').set(postToSave);
+
+    console.log(postToSave)
   }
 }
 
