@@ -2,16 +2,14 @@ import {extendObservable, toJS} from 'mobx';
 import * as firebase from 'firebase';
 import _ from 'lodash';
 import config from './config';
-import * as db from './db.json'
+//to use local db
+//import * as db from './db.json'
 
 // the store manages both the state and the model (firebase connection in this case)
 class FeedStore {
   constructor() {
     // these are the observable properties when they change it will change all the observers
     extendObservable(this, {
-      //feed: [],
-      //user: {},
-      comments: {},
       feed: {},
       user: {}
     })
@@ -23,9 +21,7 @@ class FeedStore {
   updateFeed(posts){
     this.feed = posts
   }
-  updateComments(comments){
-    this.comments = comments
-  }
+
   updateUser(user){
     this.user = user.IWMmk4ecDvMCq23FEGcqtH6AagX2
   }
@@ -100,6 +96,13 @@ class FeedStore {
     })
   }
 
+  getCommentsFromPost(postId){
+    // save data to firebase
+    return firebase.database()
+    .ref('comments/').orderByChild("post_id").equalTo(postId)
+    .once('value')
+  }
+
 }
 
 
@@ -118,6 +121,5 @@ const fb = firebase
 fb.on('value', fbdata => {
   const data = fbdata.val();
   feedStore.updateFeed(data.posts)
-  feedStore.updateComments(data.comments)
   feedStore.updateUser(data.users)
 });

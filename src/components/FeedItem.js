@@ -29,24 +29,40 @@ const Likes = styled.p`
 `
 
 const FeedItem = observer(class FeedItem extends Component {
-
-
-  renderComments(comments){
-    return(
-      _.map(comments, function(value, key) {
-        const c = feedStore.comments[key]
-        return(
-          <Comment author={c.author} authorLink={c.author_id} key={key}>
-            {c.body}
-          </Comment>
-        )
-      })
-    )
+  constructor(props){
+    super(props)
+    this.state = {comments: {}}
+  }
+  componentWillMount(){
+    const self = this
+    feedStore.getCommentsFromPost(this.props.id).then(function(result){
+      let comments = result.val()
+      self.setState({comments: comments})
+    })
+  }
+  renderComments(){
+    const comments = this.state.comments
+    if(comments){
+      return(
+        _.map(comments, function(value, key) {
+          const c = comments[key]
+          console.log(c)
+          return(
+            <Comment author={c.author} authorLink={c.author_id} key={key}>
+              {c.body}
+            </Comment>
+          )
+        })
+      )
+    }else{
+      return(
+        <p>Loading comments ... </p>
+      )
+    }
   }
 
   render() {
     const i = this.props.obj;
-    console.log(i)
     return (
       <Feed>
         <FeedItemHeader
@@ -56,13 +72,13 @@ const FeedItem = observer(class FeedItem extends Component {
           time={i.time}
         />
         <section>
-          <Link to={`/post/${i.id}`}>
+          <Link to={`/post/${this.props.id}`}>
             <Image src={i.media} alt="media" />
           </Link>
         </section>
         <Comments>
           <Likes>{Object.keys(i.likes).length} likes</Likes>
-          {/*this.renderComments(i.comments)*/}
+          {this.renderComments()}
         </Comments>
 
         <FeedItemForm id={this.props.id}/>
