@@ -15,14 +15,10 @@ class FeedStore {
       feed: {},
       user: {}
     })
-  }
-  loadDb(){
     this.comments = db.comments
     this.feed = db.posts
     this.user = db.users.IWMmk4ecDvMCq23FEGcqtH6AagX2
   }
-
-
   isFeedLoaded(){
     return Object.keys(this.feed).length
   }
@@ -68,11 +64,7 @@ class FeedStore {
   }
 
   isLiked(postId){
-    const post = toJS(this.feed[postId])
-    console.log('-------------')
-    console.log(post.likes[this.user._id])
-    console.log('-------------')
-    if(post.likes[this.user._id]){
+    if(this.feed[postId].likes[this.user._id]){
       return true
     }
     return false
@@ -80,12 +72,13 @@ class FeedStore {
   }
 
   onLike(postId, add=true){
-    const post = this.feed[postId]
+    let l = toJS(this.feed[postId].likes)
     if(add){
-      post.likes[this.user._id] = true
+      l[this.user._id] = true
     }else{
-      delete post.likes[this.user._id]
+      delete l[this.user._id]
     }
+    this.feed[postId].likes = l
   }
 
 

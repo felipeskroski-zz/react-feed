@@ -35,7 +35,6 @@ const FeedItem = observer(class FeedItem extends Component {
     return(
       _.map(comments, function(value, key) {
         const c = feedStore.comments[key]
-        console.log(c)
         return(
           <Comment author={c.author} authorLink={c.author_id} key={key}>
             {c.body}
@@ -62,7 +61,7 @@ const FeedItem = observer(class FeedItem extends Component {
         </section>
         <Comments>
           <Likes>{Object.keys(i.likes).length} likes</Likes>
-          {this.renderComments(i.comments)}
+          {/*this.renderComments(i.comments)*/}
         </Comments>
 
         <FeedItemForm id={this.props.id}/>

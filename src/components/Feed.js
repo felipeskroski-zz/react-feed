@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import {observer} from 'mobx-react';
 import _ from 'lodash';
-import {toJS} from 'mobx';
 import FeedItem from './FeedItem';
 
 
 // observer makes sure every change made on the store renders the feed
 const Feed = observer(class Feed extends Component {
   renderLoading(){
-    this.props.store.loadDb()
     return(
       <h2>Loading feed ...</h2>
     )
