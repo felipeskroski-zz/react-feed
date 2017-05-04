@@ -1,77 +1,107 @@
 {
   "comments" : {
-    "0":{
+    "c0":{
       "author" : "Felipe",
       "author_id" : "IWMmk4ecDvMCq23FEGcqtH6AagX2",
       "body" : "super cool photo",
       "date" : 1493858774,
-      "post_id": "0"
+      "post_id": "p0"
     },
-    "1":{
-      "_id" : "1",
+    "c1":{
       "author" : "Silverio",
       "author_id" : "1",
-      "body " : "super nice",
+      "body" : "super nice",
       "date" : 1493859055,
-      "post_id": "0"
+      "post_id": "p0"
     },
-    "2": {
-      "_id" : "3",
+    "c2": {
       "author" : "Susan",
       "author_id" : "2",
-      "body " : "super cool",
+      "body" : "super cool",
       "date" : 1493858774,
-      "post_id": "1"
+      "post_id": "p1"
     },
-    "3":{
-      "_id" : "4",
+    "c3":{
       "author" : "Joe",
       "author_id" : "3",
-      "body " : "wow",
+      "body" : "wow",
       "date" : 1493859055,
-      "post_id": "1"
+      "post_id": "p1"
     }
   },
   "posts" : {
-    "0": {
+    "p0": {
+      "_id" : "0",
       "author" : "jonh bill",
-      "author_id" : "1",
+      "author_id" : "u1",
       "author_image" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/avatar.jpg?alt=media&token=0d09cbd8-858d-4d32-99fa-27b009fd0463",
       "author_location" : "Wellington",
-      "likes" : ["IWMmk4ecDvMCq23FEGcqtH6AagX2", "1"],
+      "likes" : {
+        "IWMmk4ecDvMCq23FEGcqtH6AagX2": true,
+        "u1": true
+      },
       "media" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/media.jpg?alt=media&token=85b3788b-7847-476a-9606-df155aaf7c53",
-      "time" : "1h"
+      "time" : "1h",
+      "comments":{
+        "c0": true,
+        "c1": true
+      }
     },
-    "1": {
+    "p1": {
+      "_id" : "1",
       "author" : "Ralf Williams",
-      "author_id" : "2",
+      "author_id" : "u2",
       "author_image" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/avatar.jpg?alt=media&token=0d09cbd8-858d-4d32-99fa-27b009fd0463",
       "author_location" : "Bay of Plenty",
-      "likes" : ["IWMmk4ecDvMCq23FEGcqtH6AagX2", "1", "2", "3"],
+      "likes" :{
+        "u1": true,
+        "u2": true,
+        "u3": true
+      },
       "media" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/media.jpg?alt=media&token=85b3788b-7847-476a-9606-df155aaf7c53",
-      "time" : "1h"
+      "time" : "1h",
+      "comments":{
+        "c2": true,
+        "c3": true
+      }
     }
   },
   "users" : {
     "IWMmk4ecDvMCq23FEGcqtH6AagX2":{
+      "_id" : "IWMmk4ecDvMCq23FEGcqtH6AagX2",
       "avatar" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/DSC_7643-1.jpg?alt=media&token=35e60ce3-bda5-4e6c-8832-36e930de6204",
       "location " : "Wellington",
-      "name" : "Felipe"
+      "name" : "Felipe",
+      "comments":{
+        "0": true
+      }
     },
-    "1":{
+    "u1":{
+      "_id" : "1",
       "avatar" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/avatar.jpg?alt=media&token=0d09cbd8-858d-4d32-99fa-27b009fd0463",
       "location " : "Bay of plenty",
-      "name" : "Silverio"
+      "name" : "Silverio",
+      "comments":{
+        "1": true
+      }
     },
-    "2":{
+    "u2":{
+      "_id" : "2",
       "avatar" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/avatar.jpg?alt=media&token=0d09cbd8-858d-4d32-99fa-27b009fd0463",
       "location " : "Dunedin",
-      "name" : "Susan"
+      "name" : "Susan",
+      "comments":{
+        "2": true
+      }
     },
-    "3":{
+    "u3":{
+      "_id" : "3",
       "avatar" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/avatar.jpg?alt=media&token=0d09cbd8-858d-4d32-99fa-27b009fd0463",
       "location " : "Auckland",
-      "name" : "Joe"
+      "name" : "Joe",
+      "comments":{
+        "3": true
+      }
     }
   }
 }

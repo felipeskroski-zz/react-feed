@@ -62,14 +62,14 @@ class FeedItemForm extends Component {
   }
   toggleLike(e){
     e.preventDefault()
-    if(this.props.like){
+    if(feedStore.isLiked(this.props.id)){
       feedStore.onLike(this.props.id, false)
     }else{
       feedStore.onLike(this.props.id)
     }
   }
   renderLike(){
-    if(this.props.like){
+    if(feedStore.isLiked(this.props.id)){
       return(<HeartFilled />);
     }else{
       return(<Heart />);
