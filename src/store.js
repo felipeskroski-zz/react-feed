@@ -38,6 +38,7 @@ class FeedStore {
   }
 
   addComment(postId, comment){
+    // TODO refactor this to make it work with firebase
     const id = this.randomId()
     let c = toJS(this.comments)
     let pc = toJS(this.feed[postId].comments)
@@ -70,22 +71,25 @@ class FeedStore {
   }
 
   onLike(postId, add=true){
+    // gets the post object
     let p = toJS(this.feed[postId])
     if(add){
       p.likes[this.user._id] = true
     }else{
       delete p.likes[this.user._id]
     }
+    // update UI in a way mobx picks up
     this.feed[postId] = p
-    this.savePost(postId, p)
+    // save to firebase
+    this.updatePost(postId, p)
   }
 
 
   //------------------------
   // MODEL
   //------------------------
-  savePost(key, post){
-    // save data to firebase
+  updatePost(key, post){
+    // save post to firebase
     firebase.database().ref(`posts/${key}`).set(post, function(error){
       if(error){
         console.log(error);
@@ -97,12 +101,12 @@ class FeedStore {
   }
 
   getCommentsFromPost(postId){
-    // save data to firebase
+    // Get all commments from a post from firebase this returns a promise
+    // TODO add a limit here
     return firebase.database()
     .ref('comments/').orderByChild("post_id").equalTo(postId)
     .once('value')
   }
-
 }
 
 

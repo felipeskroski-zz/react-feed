@@ -9,6 +9,7 @@ import FeedItemForm from './FeedItemForm';
 import Comment from './Comment';
 
 // these styles automaticaly create new components based on a dom obj
+// for more info check styled-components documentation
 const Feed = styled.article`
   background-color: #fff;
   border: 1px solid #e6e6e6;
@@ -34,6 +35,10 @@ const FeedItem = observer(class FeedItem extends Component {
     this.state = {comments: {}}
   }
   componentWillMount(){
+    /*
+    Loads the comments post from the store (linked to firebase) and update state
+    when loaded. When the state is updated it will re-render the component
+    */
     const self = this
     feedStore.getCommentsFromPost(this.props.id).then(function(result){
       let comments = result.val()
@@ -41,6 +46,10 @@ const FeedItem = observer(class FeedItem extends Component {
     })
   }
   renderComments(){
+    /*
+    Gets comments from the stat and loop through them if no commets available
+    don't render
+    */
     const comments = this.state.comments
     if(comments){
       return(
@@ -53,10 +62,6 @@ const FeedItem = observer(class FeedItem extends Component {
             </Comment>
           )
         })
-      )
-    }else{
-      return(
-        <p>Loading comments ... </p>
       )
     }
   }
@@ -77,6 +82,7 @@ const FeedItem = observer(class FeedItem extends Component {
           </Link>
         </section>
         <Comments>
+          {/* gets the number of likes */}
           <Likes>{Object.keys(i.likes).length} likes</Likes>
           {this.renderComments()}
         </Comments>
