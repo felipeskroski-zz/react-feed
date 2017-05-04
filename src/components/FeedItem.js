@@ -31,14 +31,12 @@ const FeedItem = observer(class FeedItem extends Component {
     const i = this.props.obj;
     return (
       <Feed>
-
         <FeedItemHeader
           avatar={i.authorImage}
           author={i.author}
           location={i.location}
           time={i.time}
         />
-
         <section>
           <Link to={`/post/${i.id}`}>
             <Image src={i.media} alt="media" />
@@ -54,7 +52,7 @@ const FeedItem = observer(class FeedItem extends Component {
             )
           })}
         </Comments>
-        <FeedItemForm id={i.id} like={i.currentUserLike} />
+        <FeedItemForm id={this.props.id} like={i.currentUserLike} />
       </Feed>
     );
   }

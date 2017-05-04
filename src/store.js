@@ -1,4 +1,4 @@
-import {extendObservable} from 'mobx';
+import {extendObservable, toJS} from 'mobx';
 import * as firebase from 'firebase';
 import config from './config';
 
@@ -28,8 +28,12 @@ class FeedStore {
     this.feed.find(function(item, i){
       return item.id === id;
     })
-
 	}
+
+  //gets the key of an object with a certain value
+  getKey(obj,val){
+    return Object.keys(obj).find(key => obj[key] === val);
+  }
 
   addComment(postId, comment){
     this.feed.forEach((post, i)=>{
@@ -49,24 +53,34 @@ class FeedStore {
   }
 
   onLike(postId, add=true){
-    let postToSave;
-    this.feed.forEach((post, i)=>{
-      if(post.id === postId){
-        if(add){
-          post.likes++
-          post.currentUserLike =  true
-        }else{
-          post.likes--
-          post.currentUserLike = false
-        }
-        postToSave = post
+    const post = this.feed[postId]
+    if(add){
+      post.likes++
+      post.currentUserLike =  true
+    }else{
+      post.likes--
+      post.currentUserLike = false
+    }
+    console.log(toJS(post))
+    this.savePost(postId, toJS(post))
+  }
+
+
+  //------------------------
+  // MODEL
+  //------------------------
+  savePost(key, post){
+    // save data to firebase
+    firebase.database().ref(`posts/${key}`).set(post, function(error){
+      if(error){
+        console.log(error);
+      }
+      else{
+        console.log("Post saved successfuly");
       }
     })
-    // save data to firebase
-    //firebase.database().ref('posts/1').set(postToSave);
-
-    console.log(postToSave)
   }
+
 }
 
 
