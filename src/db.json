@@ -1,7 +1,7 @@
 {
   "comments" : {
     "c0":{
-      "author" : "Felipe",
+      "author" : "Amy",
       "author_id" : "IWMmk4ecDvMCq23FEGcqtH6AagX2",
       "body" : "super cool photo",
       "date" : 1493858774,
@@ -32,15 +32,15 @@
   "posts" : {
     "p0": {
       "_id" : "0",
-      "author" : "jonh bill",
+      "author" : "Silverio",
       "author_id" : "u1",
-      "author_image" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/avatar.jpg?alt=media&token=0d09cbd8-858d-4d32-99fa-27b009fd0463",
-      "author_location" : "Wellington",
+      "author_image" : "https://cdn0.iconfinder.com/data/icons/user-pictures/100/male-512.png",
+      "author_location" : "Bay of Plenty",
       "likes" : {
         "IWMmk4ecDvMCq23FEGcqtH6AagX2": true,
         "u1": true
       },
-      "media" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/media.jpg?alt=media&token=85b3788b-7847-476a-9606-df155aaf7c53",
+      "media" : "https://c1.staticflickr.com/3/2880/11500544003_fcf0055e1f_h.jpg",
       "time" : "1h",
       "comments":{
         "c0": true,
@@ -49,16 +49,16 @@
     },
     "p1": {
       "_id" : "1",
-      "author" : "Ralf Williams",
+      "author" : "Susan",
       "author_id" : "u2",
-      "author_image" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/avatar.jpg?alt=media&token=0d09cbd8-858d-4d32-99fa-27b009fd0463",
-      "author_location" : "Bay of Plenty",
+      "author_image" : "https://cdn0.iconfinder.com/data/icons/user-pictures/100/female-512.png",
+      "author_location" : "Dunedin",
       "likes" :{
         "u1": true,
         "u2": true,
         "u3": true
       },
-      "media" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/media.jpg?alt=media&token=85b3788b-7847-476a-9606-df155aaf7c53",
+      "media" : "https://c1.staticflickr.com/9/8506/8516258590_e49beec865_h.jpg",
       "time" : "1h",
       "comments":{
         "c2": true,
@@ -69,16 +69,16 @@
   "users" : {
     "IWMmk4ecDvMCq23FEGcqtH6AagX2":{
       "_id" : "IWMmk4ecDvMCq23FEGcqtH6AagX2",
-      "avatar" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/DSC_7643-1.jpg?alt=media&token=35e60ce3-bda5-4e6c-8832-36e930de6204",
+      "avatar" : "https://cdn0.iconfinder.com/data/icons/user-pictures/100/female-512.png",
       "location " : "Wellington",
-      "name" : "Felipe",
+      "name" : "Amy",
       "comments":{
         "0": true
       }
     },
     "u1":{
       "_id" : "1",
-      "avatar" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/avatar.jpg?alt=media&token=0d09cbd8-858d-4d32-99fa-27b009fd0463",
+      "avatar" : "https://cdn0.iconfinder.com/data/icons/user-pictures/100/male-512.png",
       "location " : "Bay of plenty",
       "name" : "Silverio",
       "comments":{
@@ -87,7 +87,7 @@
     },
     "u2":{
       "_id" : "2",
-      "avatar" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/avatar.jpg?alt=media&token=0d09cbd8-858d-4d32-99fa-27b009fd0463",
+      "avatar" : "https://cdn0.iconfinder.com/data/icons/user-pictures/100/female-512.png",
       "location " : "Dunedin",
       "name" : "Susan",
       "comments":{
@@ -96,7 +96,7 @@
     },
     "u3":{
       "_id" : "3",
-      "avatar" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/avatar.jpg?alt=media&token=0d09cbd8-858d-4d32-99fa-27b009fd0463",
+      "avatar" : "https://cdn0.iconfinder.com/data/icons/user-pictures/100/male-512.png",
       "location " : "Auckland",
       "name" : "Joe",
       "comments":{
