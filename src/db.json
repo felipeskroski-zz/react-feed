@@ -1,82 +1,77 @@
 {
-  "comments" : [ {
-    "_id" : "1",
-    "author" : "Felipe",
-    "author_id" : "IWMmk4ecDvMCq23FEGcqtH6AagX2",
-    "body" : "super cool photo",
-    "date" : 1493858774,
-    "post_id": "1"
-  }, {
-    "_id" : "1",
-    "author" : "Silverio",
-    "author_id" : "1",
-    "body " : "super nice",
-    "date" : 1493859055,
-    "post_id": "1"
+  "comments" : {
+    "0":{
+      "author" : "Felipe",
+      "author_id" : "IWMmk4ecDvMCq23FEGcqtH6AagX2",
+      "body" : "super cool photo",
+      "date" : 1493858774,
+      "post_id": "0"
+    },
+    "1":{
+      "_id" : "1",
+      "author" : "Silverio",
+      "author_id" : "1",
+      "body " : "super nice",
+      "date" : 1493859055,
+      "post_id": "0"
+    },
+    "2": {
+      "_id" : "3",
+      "author" : "Susan",
+      "author_id" : "2",
+      "body " : "super cool",
+      "date" : 1493858774,
+      "post_id": "1"
+    },
+    "3":{
+      "_id" : "4",
+      "author" : "Joe",
+      "author_id" : "3",
+      "body " : "wow",
+      "date" : 1493859055,
+      "post_id": "1"
+    }
   },
-  {
-    "_id" : "3",
-    "author" : "Susan",
-    "author_id" : "2",
-    "body " : "super cool",
-    "date" : 1493858774,
-    "post_id": "2"
+  "posts" : {
+    "0": {
+      "author" : "jonh bill",
+      "author_id" : "1",
+      "author_image" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/avatar.jpg?alt=media&token=0d09cbd8-858d-4d32-99fa-27b009fd0463",
+      "author_location" : "Wellington",
+      "likes" : ["IWMmk4ecDvMCq23FEGcqtH6AagX2", "1"],
+      "media" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/media.jpg?alt=media&token=85b3788b-7847-476a-9606-df155aaf7c53",
+      "time" : "1h"
+    },
+    "1": {
+      "author" : "Ralf Williams",
+      "author_id" : "2",
+      "author_image" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/avatar.jpg?alt=media&token=0d09cbd8-858d-4d32-99fa-27b009fd0463",
+      "author_location" : "Bay of Plenty",
+      "likes" : ["IWMmk4ecDvMCq23FEGcqtH6AagX2", "1", "2", "3"],
+      "media" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/media.jpg?alt=media&token=85b3788b-7847-476a-9606-df155aaf7c53",
+      "time" : "1h"
+    }
   },
-  {
-    "_id" : "4",
-    "author" : "Joe",
-    "author_id" : "3",
-    "body " : "wow",
-    "date" : 1493859055,
-    "post_id": "2"
-  }
-
-
-  ],
-  "posts" : [ {
-    "_id" : 1,
-    "author" : "jonh bill",
-    "author_id" : "1",
-    "author_image" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/avatar.jpg?alt=media&token=0d09cbd8-858d-4d32-99fa-27b009fd0463",
-    "author_location" : "Wellington",
-    "likes" : ["IWMmk4ecDvMCq23FEGcqtH6AagX2", "1"],
-    "media" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/media.jpg?alt=media&token=85b3788b-7847-476a-9606-df155aaf7c53",
-    "time" : "1h"
-  }, {
-    "_id" : 2,
-    "author" : "Ralf Williams",
-    "author_id" : "2",
-    "author_image" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/avatar.jpg?alt=media&token=0d09cbd8-858d-4d32-99fa-27b009fd0463",
-    "author_location" : "Bay of Plenty",
-    "likes" : ["IWMmk4ecDvMCq23FEGcqtH6AagX2", "1", "2", "3"],
-    "media" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/media.jpg?alt=media&token=85b3788b-7847-476a-9606-df155aaf7c53",
-    "time" : "1h"
-  } ],
-  "users" : [
-    {
-      "_id" : "IWMmk4ecDvMCq23FEGcqtH6AagX2",
+  "users" : {
+    "IWMmk4ecDvMCq23FEGcqtH6AagX2":{
       "avatar" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/DSC_7643-1.jpg?alt=media&token=35e60ce3-bda5-4e6c-8832-36e930de6204",
       "location " : "Wellington",
       "name" : "Felipe"
     },
-    {
-      "_id" : "1",
+    "1":{
       "avatar" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/avatar.jpg?alt=media&token=0d09cbd8-858d-4d32-99fa-27b009fd0463",
       "location " : "Bay of plenty",
       "name" : "Silverio"
     },
-    {
-      "_id" : "2",
+    "2":{
       "avatar" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/avatar.jpg?alt=media&token=0d09cbd8-858d-4d32-99fa-27b009fd0463",
       "location " : "Dunedin",
       "name" : "Susan"
     },
-    {
-      "_id" : "3",
+    "3":{
       "avatar" : "https://firebasestorage.googleapis.com/v0/b/react-feed-41126.appspot.com/o/avatar.jpg?alt=media&token=0d09cbd8-858d-4d32-99fa-27b009fd0463",
       "location " : "Auckland",
       "name" : "Joe"
     }
-  ]
   }
 }
