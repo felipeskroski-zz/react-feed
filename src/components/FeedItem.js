@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom'
 import {observer} from 'mobx-react';
+import _ from 'lodash';
 import styled from 'styled-components';
+import feedStore from  '../store.js'
 import FeedItemHeader from './FeedItemHeader';
 import FeedItemForm from './FeedItemForm';
 import Comment from './Comment';
@@ -27,14 +29,29 @@ const Likes = styled.p`
 `
 
 const FeedItem = observer(class FeedItem extends Component {
+
+
+  renderComments(comments){
+    return(
+      _.map(comments, function(value, key) {
+        const c = feedStore.comments[key]
+        return(
+          <Comment author={c.author} authorLink={c.author_id} key={key}>
+            {c.body}
+          </Comment>
+        )
+      })
+    )
+  }
+
   render() {
     const i = this.props.obj;
     return (
       <Feed>
         <FeedItemHeader
-          avatar={i.authorImage}
+          avatar={i.author_image}
           author={i.author}
-          location={i.location}
+          location={i.author_location}
           time={i.time}
         />
         <section>
@@ -43,16 +60,11 @@ const FeedItem = observer(class FeedItem extends Component {
           </Link>
         </section>
         <Comments>
-          <Likes>{i.likes} likes</Likes>
-          {i.comments.map(function(c, i){
-            return(
-              <Comment author={c.author} authorLink={c.authorId} key={i}>
-                {c.body}
-              </Comment>
-            )
-          })}
+          <Likes>{Object.keys(i.likes).length} likes</Likes>
+          {this.renderComments(i.comments)}
         </Comments>
-        <FeedItemForm id={this.props.id} like={i.currentUserLike} />
+
+        <FeedItemForm id={this.props.id}/>
       </Feed>
     );
   }

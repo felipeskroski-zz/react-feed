@@ -28,6 +28,7 @@ const Location = styled.p`
 class FeedItemHeader extends Component {
   render() {
     const i = this.props;
+
     return (
       <Header>
         <Author>

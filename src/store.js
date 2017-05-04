@@ -1,19 +1,26 @@
 import {extendObservable, toJS} from 'mobx';
 import * as firebase from 'firebase';
+import _ from 'lodash';
 import config from './config';
+import * as db from './db.json'
 
 // the store manages both the state and the model (firebase connection in this case)
 class FeedStore {
   constructor() {
     // these are the observable properties when they change it will change all the observers
     extendObservable(this, {
-      feed: [],
-      user: {},
+      //feed: [],
+      //user: {},
+      comments: {},
+      feed: {},
+      user: {}
     })
+    this.comments = db.comments
+    this.feed = db.posts
+    this.user = db.users.IWMmk4ecDvMCq23FEGcqtH6AagX2
   }
-
   isFeedLoaded(){
-    return this.feed.length
+    return Object.keys(this.feed).length
   }
 
   updateFeed(posts){
@@ -30,39 +37,51 @@ class FeedStore {
     })
 	}
 
-  //gets the key of an object with a certain value
-  getKey(obj,val){
-    return Object.keys(obj).find(key => obj[key] === val);
+  //Gen random string
+  randomId(){
+    return Math.random().toString(36).slice(2)
   }
 
   addComment(postId, comment){
-    this.feed.forEach((post, i)=>{
-      if(post.id === postId){
-        post.comments.push({
-          author: this.user.name,
-          authorId: this.user.id,
-          body: comment,
-        })
-      }
-    })
+    const id = this.randomId()
+    let c = toJS(this.comments)
+    let pc = toJS(this.feed[postId].comments)
+    c[id] = {
+      "_id": id,
+      "author" : this.user.name,
+      "author_id" : this.user._id,
+      "body" : comment,
+      "date" : _.now(),
+      "post_id": postId
+    }
+    this.comments = c
+    pc[id] = true
+    this.feed[postId].comments = pc
+    console.log(toJS(this.comments))
+
   }
 
   addPost(postObj){
     this.feed.push(postObj)
-    console.log(postObj)
+    //console.log(postObj)
+  }
+
+  isLiked(postId){
+    if(this.feed[postId].likes[this.user._id]){
+      return true
+    }
+    return false
+
   }
 
   onLike(postId, add=true){
-    const post = this.feed[postId]
+    let l = toJS(this.feed[postId].likes)
     if(add){
-      post.likes++
-      post.currentUserLike =  true
+      l[this.user._id] = true
     }else{
-      post.likes--
-      post.currentUserLike = false
+      delete l[this.user._id]
     }
-    console.log(toJS(post))
-    this.savePost(postId, toJS(post))
+    this.feed[postId].likes = l
   }
 
 
@@ -89,6 +108,7 @@ export default feedStore;
 
 
 // initialize firebase db based on the config file
+/*
 const fb = firebase
   .initializeApp(config)
   .database()
@@ -100,3 +120,4 @@ fb.on('value', fbdata => {
   feedStore.updateFeed(data.posts)
   feedStore.updateUser(data.user)
 });
+*/
