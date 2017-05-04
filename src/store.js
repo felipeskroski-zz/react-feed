@@ -15,9 +15,6 @@ class FeedStore {
       feed: {},
       user: {}
     })
-    this.comments = db.comments
-    this.feed = db.posts
-    this.user = db.users.IWMmk4ecDvMCq23FEGcqtH6AagX2
   }
   isFeedLoaded(){
     return Object.keys(this.feed).length
@@ -26,9 +23,11 @@ class FeedStore {
   updateFeed(posts){
     this.feed = posts
   }
-
+  updateComments(comments){
+    this.comments = comments
+  }
   updateUser(user){
-    this.user = user
+    this.user = user.IWMmk4ecDvMCq23FEGcqtH6AagX2
   }
 
   getpost(id) {
@@ -75,13 +74,14 @@ class FeedStore {
   }
 
   onLike(postId, add=true){
-    let l = toJS(this.feed[postId].likes)
+    let p = toJS(this.feed[postId])
     if(add){
-      l[this.user._id] = true
+      p.likes[this.user._id] = true
     }else{
-      delete l[this.user._id]
+      delete p.likes[this.user._id]
     }
-    this.feed[postId].likes = l
+    this.feed[postId] = p
+    this.savePost(postId, p)
   }
 
 
@@ -108,7 +108,7 @@ export default feedStore;
 
 
 // initialize firebase db based on the config file
-/*
+
 const fb = firebase
   .initializeApp(config)
   .database()
@@ -118,6 +118,6 @@ const fb = firebase
 fb.on('value', fbdata => {
   const data = fbdata.val();
   feedStore.updateFeed(data.posts)
-  feedStore.updateUser(data.user)
+  feedStore.updateComments(data.comments)
+  feedStore.updateUser(data.users)
 });
-*/
