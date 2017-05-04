@@ -61,7 +61,7 @@ const FeedItem = observer(class FeedItem extends Component {
         </section>
         <Comments>
           <Likes>{Object.keys(i.likes).length} likes</Likes>
-          {/*this.renderComments(i.comments)*/}
+          {this.renderComments(i.comments)}
         </Comments>
 
         <FeedItemForm id={this.props.id}/>

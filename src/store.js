@@ -43,10 +43,10 @@ class FeedStore {
   }
 
   addComment(postId, comment){
-    console.log(toJS(this.comments))
     const id = this.randomId()
-
-    this.comments[id] = {
+    let c = toJS(this.comments)
+    let pc = toJS(this.feed[postId].comments)
+    c[id] = {
       "_id": id,
       "author" : this.user.name,
       "author_id" : this.user._id,
@@ -54,6 +54,9 @@ class FeedStore {
       "date" : _.now(),
       "post_id": postId
     }
+    this.comments = c
+    pc[id] = true
+    this.feed[postId].comments = pc
     console.log(toJS(this.comments))
 
   }
