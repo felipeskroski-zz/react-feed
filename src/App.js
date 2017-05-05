@@ -42,7 +42,7 @@ const Post = ({match}) => {
 }
 
 const NewPost = () => (
-  <FeedItemNew user={feedStore.user}/>
+  <FeedItemNew store={feedStore}/>
 )
 
 

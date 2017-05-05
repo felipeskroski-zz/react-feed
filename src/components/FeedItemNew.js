@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import {toJS} from 'mobx';
 import {Redirect} from 'react-router-dom'
+import {observer} from 'mobx-react';
 import styled from 'styled-components';
 import Dropzone from 'react-dropzone'
 import feedStore from  '../store.js'
@@ -59,7 +61,7 @@ const dropZoneStyle = {
 
 
 
-class FeedItemNew extends Component {
+const FeedItemNew = observer(class FeedItemNew extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
@@ -84,7 +86,7 @@ class FeedItemNew extends Component {
 
   addPost(e){
     e.preventDefault()
-    const u = this.props.user
+    const u = this.props.store.user
     const post = {
       id: feedStore.feed.length+10,
       author: u.name,
@@ -126,10 +128,16 @@ class FeedItemNew extends Component {
         <img src={f.preview} alt="media" width="100%"/>
       )
     }
-
   }
-  render() {
-    const u = this.props.user;
+  renderLoading(){
+    return(
+      <h2>Loading ...</h2>
+    )
+  }
+  renderForm() {
+    const u = this.props.store.user;
+    console.log(u)
+    // goes to home after saving a post
     if(this.state.redirect){
       return(
         <Redirect to="/"/>
@@ -166,6 +174,18 @@ class FeedItemNew extends Component {
       </Feed>
     );
   }
-}
+  render(){
+    console.log(toJS(this.props.store.user))
+    if(this.props.store.isFeedLoaded()){
+      return(
+        this.renderForm()
+      )
+    }else{
+      return(
+        this.renderLoading()
+      )
+    }
+  }
+})
 
 export default FeedItemNew;

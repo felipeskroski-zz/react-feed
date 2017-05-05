@@ -130,8 +130,6 @@ class FeedStore {
 const feedStore = new FeedStore();
 export default feedStore;
 
-
-// initialize firebase db based on the config file
 const fb = firebase
   .initializeApp(config)
   .database()
