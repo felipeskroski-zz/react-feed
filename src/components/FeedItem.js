@@ -34,7 +34,7 @@ const FeedItem = observer(class FeedItem extends Component {
     super(props)
     this.state = {comments: {}}
   }
-  componentWillMount(){
+  componentWillReceiveProps(){
     /*
     Loads the comments post from the store (linked to firebase) and update state
     when loaded. When the state is updated it will re-render the component
@@ -42,10 +42,13 @@ const FeedItem = observer(class FeedItem extends Component {
     const self = this
     feedStore.getCommentsFromPost(this.props.id).then(function(result){
       let comments = result.val()
-      self.setState({comments: comments})
+      if(self.state.comments != comments){
+        self.setState({comments: comments})
+      }
     })
   }
-  renderComments(){
+
+  renderComments(commentsKeys){
     /*
     Gets comments from the stat and loop through them if no commets available
     don't render
@@ -55,7 +58,6 @@ const FeedItem = observer(class FeedItem extends Component {
       return(
         _.map(comments, function(value, key) {
           const c = comments[key]
-          console.log(c)
           return(
             <Comment author={c.author} authorLink={c.author_id} key={key}>
               {c.body}
@@ -84,7 +86,7 @@ const FeedItem = observer(class FeedItem extends Component {
         <Comments>
           {/* gets the number of likes */}
           <Likes>{Object.keys(i.likes).length} likes</Likes>
-          {this.renderComments()}
+          {this.renderComments(i.comments)}
         </Comments>
 
         <FeedItemForm id={this.props.id}/>

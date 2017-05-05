@@ -18,12 +18,12 @@ class FeedStore {
     return Object.keys(this.feed).length
   }
 
-  updateFeed(posts){
-    this.feed = posts
+  updateData(data){
+    this.feed = data.posts
+    this.user = data.users.IWMmk4ecDvMCq23FEGcqtH6AagX2
   }
-
-  updateUser(user){
-    this.user = user.IWMmk4ecDvMCq23FEGcqtH6AagX2
+  updateFeed(data){
+    this.feed = data
   }
 
   getpost(id) {
@@ -38,23 +38,14 @@ class FeedStore {
   }
 
   addComment(postId, comment){
-    // TODO refactor this to make it work with firebase
-    const id = this.randomId()
-    let c = toJS(this.comments)
-    let pc = toJS(this.feed[postId].comments)
-    c[id] = {
-      "_id": id,
+    const c = {
       "author" : this.user.name,
       "author_id" : this.user._id,
       "body" : comment,
       "date" : _.now(),
       "post_id": postId
     }
-    this.comments = c
-    pc[id] = true
-    this.feed[postId].comments = pc
-    console.log(toJS(this.comments))
-
+    this.saveComment(c);
   }
 
   addPost(postObj){
@@ -78,7 +69,7 @@ class FeedStore {
     }else{
       delete p.likes[this.user._id]
     }
-    // update UI in a way mobx picks up
+    // update UI so mobx picks up
     this.feed[postId] = p
     // save to firebase
     this.updatePost(postId, p)
@@ -86,7 +77,7 @@ class FeedStore {
 
 
   //------------------------
-  // MODEL
+  // MODEL - All firebase transactions
   //------------------------
   updatePost(key, post){
     // save post to firebase
@@ -98,6 +89,32 @@ class FeedStore {
         console.log("Post saved successfuly");
       }
     })
+  }
+
+  saveComment(comment){
+    let c = comment
+    // Get a key for a new Post.
+    const newCommentKey = firebase.database().ref().child('comments').push().key;
+    c._id = newCommentKey
+
+    // Write the new comments's data simultaneously in the posts, comments list and users comments
+    const updates = {};
+    updates[`/posts/${c.post_id}/comments/${newCommentKey}`] = true;
+    updates[`/users/${c.author_id}/comments/${newCommentKey}`] = true;
+    updates[`/comments/${c._id}`] = c;
+
+    // listen for comment updates, when the comment is added refreshes the ui
+    const commentsRef = firebase.database().ref('posts/');
+    commentsRef.on('child_changed', fbdata => {
+      const data = fbdata.val();
+      this.updateFeed(data)
+    });
+
+    // add the comment to firebase
+    return firebase
+      .database()
+      .ref()
+      .update(updates)
   }
 
   getCommentsFromPost(postId){
@@ -115,15 +132,13 @@ export default feedStore;
 
 
 // initialize firebase db based on the config file
-
 const fb = firebase
   .initializeApp(config)
   .database()
   .ref();
 
-// whenever firebase changes reloads the data
+// when the data loads update store: feed and users
 fb.on('value', fbdata => {
   const data = fbdata.val();
-  feedStore.updateFeed(data.posts)
-  feedStore.updateUser(data.users)
+  feedStore.updateData(data)
 });
