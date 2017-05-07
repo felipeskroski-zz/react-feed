@@ -31,24 +31,6 @@ const Likes = styled.p`
 `
 
 const FeedItem = observer(class FeedItem extends Component {
-  constructor(props){
-    super(props)
-    this.state = {comments: {}}
-  }
-  componentWillReceiveProps(){
-    /*
-    Loads the comments post from the store (linked to firebase) and update state
-    when loaded. When the state is updated it will re-render the component
-    */
-    const self = this
-    feedStore.getCommentsFromPost(this.props.id).then(function(result){
-      let comments = result.val()
-      if(self.state.comments !== comments){
-        self.setState({comments: comments})
-      }
-    })
-  }
-
   renderComments(comments){
     /*
     loop through the comments if no commets available
