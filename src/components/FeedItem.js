@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom'
 import {observer} from 'mobx-react';
+import {toJS} from 'mobx';
 import _ from 'lodash';
 import styled from 'styled-components';
 import feedStore from  '../store.js'
@@ -42,18 +43,17 @@ const FeedItem = observer(class FeedItem extends Component {
     const self = this
     feedStore.getCommentsFromPost(this.props.id).then(function(result){
       let comments = result.val()
-      if(self.state.comments != comments){
+      if(self.state.comments !== comments){
         self.setState({comments: comments})
       }
     })
   }
 
-  renderComments(commentsKeys){
+  renderComments(comments){
     /*
-    Gets comments from the stat and loop through them if no commets available
+    loop through the comments if no commets available
     don't render
     */
-    const comments = this.state.comments
     if(comments){
       return(
         _.map(comments, function(value, key) {
@@ -69,7 +69,8 @@ const FeedItem = observer(class FeedItem extends Component {
   }
 
   render() {
-    const i = this.props.obj;
+    const i = feedStore.feed[this.props.id];
+    const c = feedStore.comments[this.props.id]
     return (
       <Feed>
         <FeedItemHeader
@@ -86,7 +87,7 @@ const FeedItem = observer(class FeedItem extends Component {
         <Comments>
           {/* gets the number of likes */}
           <Likes>{Object.keys(i.likes).length} likes</Likes>
-          {this.renderComments(i.comments)}
+          {this.renderComments(c)}
         </Comments>
 
         <FeedItemForm id={this.props.id}/>

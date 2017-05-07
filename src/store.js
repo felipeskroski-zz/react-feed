@@ -11,7 +11,9 @@ class FeedStore {
     // these are the observable properties when they change it will change all the observers
     extendObservable(this, {
       feed: {},
-      user: {}
+      user: {},
+      // to hold comments of all posts
+      comments: {},
     })
   }
   isFeedLoaded(){
@@ -19,11 +21,24 @@ class FeedStore {
   }
 
   updateData(data){
-    this.feed = data.posts
     this.user = data.users.IWMmk4ecDvMCq23FEGcqtH6AagX2
+    this.updateFeed(data.posts)
   }
   updateFeed(data){
     this.feed = data
+    this.loadComments(data)
+  }
+  loadComments(feed){
+    const c = {}
+    const self = this
+    _.map(feed, function(value, key) {
+      self.getCommentsFromPost(key).then(function(result){
+        const comments = result.val()
+        c[key] = comments
+        return self.comments = c
+
+      })
+    })
   }
 
   getpost(id) {
@@ -79,13 +94,6 @@ class FeedStore {
   //------------------------
   // MODEL - All firebase transactions
   //------------------------
-  uploadImage(file){
-    // Create a root reference
-    var storageRef = firebase.storage().ref();
-
-    // Create a reference to 'mountains.jpg'
-    var mountainsRef = storageRef.child('mountains.jpg');
-  }
 
   updatePost(key, post){
     // save post to firebase
@@ -128,9 +136,12 @@ class FeedStore {
   savePost(post, comment){
     let c = comment
     let p = post
+    let m = p.media
 
-
-    //this.uploadImage(p.media)
+    // Create a root reference
+    const storageRef = firebase.storage().ref();
+    // Create a reference to new image on firebase
+    const imgRef = storageRef.child(`images/${m.name}`);
 
     // Get a key for post comment.
     const postCommentKey = firebase.database().ref().child('comments').push().key;
@@ -138,22 +149,18 @@ class FeedStore {
     console.log('comment:')
     console.log(c)
 
-
     // Get a key for a new Post.
     const postKey = firebase.database().ref().child('posts').push().key;
     p._id = postKey
     c.post_id = postKey
     p.comments = {[postCommentKey]: true}
-    console.log('post:')
-    console.log(p)
+    //cnange media to refer to firebase url
+
 
     // Write the new posts's data simultaneously in the posts, comments list and users comments
-    const updates = {};
-    updates[`/posts/${postKey}`] = p;
-    updates[`/users/${c.author_id}/comments/${postCommentKey}`] = true;
-    updates[`/comments/${postCommentKey}`] = c;
 
-    // listen for comment updates, when the comment is added refreshes the ui
+
+    // listen for post updates, when the post is added refreshes the ui
     const postsRef = firebase.database().ref('posts/');
 
     //TODO check how this call is been used
@@ -162,11 +169,28 @@ class FeedStore {
       this.updateFeed(data)
     });
 
-    // add the post to firebase
-    return firebase
-      .database()
-      .ref()
-      .update(updates)
+    // upload image
+    let reader = new FileReader();
+    reader.readAsDataURL(m);
+    reader.onload = function(e) {
+      // browser completed reading file send data to firebase
+      console.log(e.target.result);
+      imgRef.putString(e.target.result, 'data_url').then(function(snapshot) {
+        console.log('image uploaded!');
+        console.log(snapshot.downloadURL);
+        p.media = snapshot.downloadURL;
+
+        const updates = {};
+        updates[`/posts/${postKey}`] = p;
+        updates[`/users/${c.author_id}/comments/${postCommentKey}`] = true;
+        updates[`/comments/${postCommentKey}`] = c;
+
+        // add the post data to firebase
+        return firebase.database().ref().update(updates)
+
+
+      });
+    };
   }
 
   getCommentsFromPost(postId){
