@@ -88,42 +88,30 @@ const FeedItemNew = observer(class FeedItemNew extends Component {
     e.preventDefault()
     const u = this.props.store.user
     const post = {
-      id: feedStore.feed.length+10,
       author: u.name,
-      authorImage: u.avatar,
-      location: u.location,
-      authorId: u.id,
+      author_image: u.avatar,
+      author_location: u.location,
+      author_id: u._id,
       time: Date.now(),
-      media: this.state.files[0].preview,
+      media: this.state.files[0],
       likes: 0,
-      currentUserLike: false,
-      comments: [
-        {
-          author: u.name,
-          authorId: u.id,
-          body: this.state.comment,
-        }
-      ]
     }
-    feedStore.addPost(post)
+    const comment = {
+      author: u.name,
+      author_id: u._id,
+      body: this.state.comment,
+      time: Date.now(),
+    }
+    // send data to store to handle the post write on firebase
+    feedStore.addPost(post, comment)
+
+    // redirect after that
     this.setState({comment: '', redirect: true});
   }
   renderImage(){
     if(this.state.files.length > 0){
       const f = this.state.files[0]
-      /*
-      let src = ""
-      let reader = new FileReader();
-      reader.onload = (function(theFile) {
-        return function(e) {
-          // Render thumbnail.
-          src = e.target.result
-          console.log("image " +src);
-        };
-      })(f);
-      reader.readAsDataURL(f)
-      */
-
+      // render image preview
       return(
         <img src={f.preview} alt="media" width="100%"/>
       )
@@ -136,7 +124,6 @@ const FeedItemNew = observer(class FeedItemNew extends Component {
   }
   renderForm() {
     const u = this.props.store.user;
-    console.log(u)
     // goes to home after saving a post
     if(this.state.redirect){
       return(
@@ -175,7 +162,6 @@ const FeedItemNew = observer(class FeedItemNew extends Component {
     );
   }
   render(){
-    console.log(toJS(this.props.store.user))
     if(this.props.store.isFeedLoaded()){
       return(
         this.renderForm()

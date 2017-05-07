@@ -48,8 +48,8 @@ class FeedStore {
     this.saveComment(c);
   }
 
-  addPost(postObj){
-    this.feed.push(postObj)
+  addPost(post, comment){
+    this.savePost(post, comment)
     //console.log(postObj)
   }
 
@@ -79,6 +79,14 @@ class FeedStore {
   //------------------------
   // MODEL - All firebase transactions
   //------------------------
+  uploadImage(file){
+    // Create a root reference
+    var storageRef = firebase.storage().ref();
+
+    // Create a reference to 'mountains.jpg'
+    var mountainsRef = storageRef.child('mountains.jpg');
+  }
+
   updatePost(key, post){
     // save post to firebase
     firebase.database().ref(`posts/${key}`).set(post, function(error){
@@ -86,14 +94,14 @@ class FeedStore {
         console.log(error);
       }
       else{
-        console.log("Post saved successfuly");
+        console.log("Post saved successfully");
       }
     })
   }
 
   saveComment(comment){
     let c = comment
-    // Get a key for a new Post.
+    // Get a key for a new comment.
     const newCommentKey = firebase.database().ref().child('comments').push().key;
     c._id = newCommentKey
 
@@ -117,9 +125,53 @@ class FeedStore {
       .update(updates)
   }
 
+  savePost(post, comment){
+    let c = comment
+    let p = post
+
+
+    //this.uploadImage(p.media)
+
+    // Get a key for post comment.
+    const postCommentKey = firebase.database().ref().child('comments').push().key;
+    c._id = postCommentKey
+    console.log('comment:')
+    console.log(c)
+
+
+    // Get a key for a new Post.
+    const postKey = firebase.database().ref().child('posts').push().key;
+    p._id = postKey
+    c.post_id = postKey
+    p.comments = {[postCommentKey]: true}
+    console.log('post:')
+    console.log(p)
+
+    // Write the new posts's data simultaneously in the posts, comments list and users comments
+    const updates = {};
+    updates[`/posts/${postKey}`] = p;
+    updates[`/users/${c.author_id}/comments/${postCommentKey}`] = true;
+    updates[`/comments/${postCommentKey}`] = c;
+
+    // listen for comment updates, when the comment is added refreshes the ui
+    const postsRef = firebase.database().ref('posts/');
+
+    //TODO check how this call is been used
+    postsRef.on('child_added', fbdata => {
+      const data = fbdata.val();
+      this.updateFeed(data)
+    });
+
+    // add the post to firebase
+    return firebase
+      .database()
+      .ref()
+      .update(updates)
+  }
+
   getCommentsFromPost(postId){
     // Get all commments from a post from firebase this returns a promise
-    // TODO add a limit here
+    // TODO add a limit to the items
     return firebase.database()
     .ref('comments/').orderByChild("post_id").equalTo(postId)
     .once('value')
