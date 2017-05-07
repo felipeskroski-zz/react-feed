@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import {observer} from 'mobx-react';
 import {toJS} from 'mobx';
 import _ from 'lodash';
+import moment from 'moment';
 import styled from 'styled-components';
 import feedStore from  '../store.js'
 import FeedItemHeader from './FeedItemHeader';
@@ -30,6 +31,25 @@ const Likes = styled.p`
   margin-top: 0;
 `
 
+moment.locale('en', {
+  relativeTime: {
+    future: 'in %s',
+    past: '%s ago',
+    s:  's',
+    ss: '%ds',
+    m:  '1m',
+    mm: '%dm',
+    h:  '1h',
+    hh: '%dh',
+    d:  '1d',
+    dd: '%dd',
+    M:  '1mo',
+    MM: '%dmo',
+    y:  '1y',
+    yy: '%dY'
+  }
+})
+
 const FeedItem = observer(class FeedItem extends Component {
   renderComments(comments){
     /*
@@ -49,7 +69,10 @@ const FeedItem = observer(class FeedItem extends Component {
       )
     }
   }
+  formatTime(time){
 
+
+  }
   render() {
     const i = feedStore.feed[this.props.id];
     const c = feedStore.comments[this.props.id]
@@ -59,7 +82,7 @@ const FeedItem = observer(class FeedItem extends Component {
           avatar={i.author_image}
           author={i.author}
           location={i.author_location}
-          time={i.time}
+          time={moment(i.time).fromNow(true)}
         />
         <section>
           <Link to={`/post/${this.props.id}`}>

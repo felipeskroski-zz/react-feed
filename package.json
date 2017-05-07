@@ -7,6 +7,7 @@
     "lodash": "^4.17.4",
     "mobx": "^3.1.9",
     "mobx-react": "^4.1.8",
+    "moment": "^2.18.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-dropzone": "^3.13.1",
