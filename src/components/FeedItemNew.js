@@ -70,6 +70,8 @@ const FeedItemNew = observer(class FeedItemNew extends Component {
       comment: '',
       files: [],
       redirect: false,
+      imgdata: {},
+      loading: false,
     };
   }
 
@@ -78,7 +80,6 @@ const FeedItemNew = observer(class FeedItemNew extends Component {
   }
 
   onDrop(files) {
-    console.log(files)
     this.setState({
       files: files,
     });
@@ -86,7 +87,11 @@ const FeedItemNew = observer(class FeedItemNew extends Component {
 
   addPost(e){
     e.preventDefault()
+    this.setState({loading:true})
+    let self = this;
     const u = this.props.store.user
+
+
     const post = {
       author: u.name,
       author_image: u.avatar,
@@ -95,6 +100,7 @@ const FeedItemNew = observer(class FeedItemNew extends Component {
       time: Date.now(),
       media: this.state.files[0],
       likes: 0,
+      imgdata: this.state.imgdata,
     }
     const comment = {
       author: u.name,
@@ -102,15 +108,29 @@ const FeedItemNew = observer(class FeedItemNew extends Component {
       body: this.state.comment,
       time: Date.now(),
     }
-    // send data to store to handle the post write on firebase
-    feedStore.addPost(post, comment)
 
-    // redirect after that
-    this.setState({comment: '', redirect: true});
+    // send data to store to handle the post write on firebase
+    feedStore.savePost(post, comment).then(function(e){
+      // redirect after that
+      console.log('Post updated !')
+      self.setState({comment: '', redirect: true, loading: false});
+    })
+
+
   }
   renderImage(){
+    let self = this;
     if(this.state.files.length > 0){
       const f = this.state.files[0]
+      let reader = new FileReader();
+      reader.readAsDataURL(f);
+      reader.onload = function(e) {
+        // browser completed reading file send data to firebase
+        console.log('img loaded');
+        self.state.imgdata = e.target.result
+
+      };
+
       // render image preview
       return(
         <img src={f.preview} alt="media" width="100%"/>
@@ -162,13 +182,13 @@ const FeedItemNew = observer(class FeedItemNew extends Component {
     );
   }
   render(){
-    if(this.props.store.isFeedLoaded()){
+    if(this.state.loading){
       return(
-        this.renderForm()
+        this.renderLoading()
       )
     }else{
       return(
-        this.renderLoading()
+        this.renderForm()
       )
     }
   }

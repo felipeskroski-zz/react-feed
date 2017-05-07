@@ -137,9 +137,12 @@ class FeedStore {
     let c = comment
     let p = post
     let m = p.media
+    let img = p.imgdata
+    const updates = {};
 
     // Create a root reference
     const storageRef = firebase.storage().ref();
+
     // Create a reference to new image on firebase
     const imgRef = storageRef.child(`images/${m.name}`);
 
@@ -154,10 +157,9 @@ class FeedStore {
     p._id = postKey
     c.post_id = postKey
     p.comments = {[postCommentKey]: true}
-    //cnange media to refer to firebase url
-
-
-    // Write the new posts's data simultaneously in the posts, comments list and users comments
+    console.log('post:')
+    console.log(p)
+    delete p.imgdata
 
 
     // listen for post updates, when the post is added refreshes the ui
@@ -169,28 +171,21 @@ class FeedStore {
       this.updateFeed(data)
     });
 
-    // upload image
-    let reader = new FileReader();
-    reader.readAsDataURL(m);
-    reader.onload = function(e) {
-      // browser completed reading file send data to firebase
-      console.log(e.target.result);
-      imgRef.putString(e.target.result, 'data_url').then(function(snapshot) {
+    var promise = new Promise(function (resolve, reject) {
+      imgRef.putString(img, 'data_url').then(function(snapshot) {
         console.log('image uploaded!');
         console.log(snapshot.downloadURL);
         p.media = snapshot.downloadURL;
+        console.log(p)
 
-        const updates = {};
         updates[`/posts/${postKey}`] = p;
         updates[`/users/${c.author_id}/comments/${postCommentKey}`] = true;
         updates[`/comments/${postCommentKey}`] = c;
+        resolve(firebase.database().ref().update(updates))
+      })
+    })
+    return promise
 
-        // add the post data to firebase
-        return firebase.database().ref().update(updates)
-
-
-      });
-    };
   }
 
   getCommentsFromPost(postId){
