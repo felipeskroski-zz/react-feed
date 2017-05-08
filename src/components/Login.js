@@ -26,6 +26,7 @@ class Login extends Component {
       redirect: false,
     };
   }
+
   handleSubmit(event) {
     this.setState({loading:true})
     const self = this
@@ -44,16 +45,18 @@ class Login extends Component {
     }
     // login returns a promise so we can work out the ui changes
     feedStore.login(email, password).then(function(success){
-      console.log(success)
+      console.log('user logged in')
       self.setState({loading:false, redirect: true})
     }).catch(function(error){
       console.log(error)
       self.setState({loading:false, error: error})
     })
   }
+
   handleLogout(){
     feedStore.logout()
   }
+
   renderForm() {
     return (
       <div>
@@ -91,7 +94,7 @@ class Login extends Component {
         <Redirect to="/"/>
       )
     }
-    if(feedStore.getUser()){
+    if(feedStore.isFeedLoaded()){
       return(
         this.renderLogout()
       )

@@ -11,7 +11,7 @@ class FeedStore {
     // these are the observable properties when they change it will change all the observers
     extendObservable(this, {
       feed: {},
-      user: {},
+      user: null,
       current_user: null,
       // to hold comments of all posts
       comments: {},
@@ -58,7 +58,7 @@ class FeedStore {
 
 
   isFeedLoaded(){
-    return Object.keys(this.feed).length
+    return this.user
   }
 
   updateData(data){
