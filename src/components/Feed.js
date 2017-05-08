@@ -30,7 +30,7 @@ const Feed = observer(class Feed extends Component {
     )
   }
   render(){
-    if(this.props.store.isFeedLoaded()){
+    if(feedStore.isFeedLoaded()){
       return(
         this.renderFeed()
       )

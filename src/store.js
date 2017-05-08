@@ -12,24 +12,69 @@ class FeedStore {
     extendObservable(this, {
       feed: {},
       user: {},
+      current_user: null,
       // to hold comments of all posts
       comments: {},
       ordered: [],
     })
+    this.initFirebase()
+    this.initAuth()
   }
+
+  initFirebase(){
+    const self = this;
+    return firebase
+      .initializeApp(config)
+      .database()
+      .ref()
+      .on('value', fbdata => {
+        const data = fbdata.val();
+        self.updateData(data)
+      });
+  }
+
+  initAuth(){
+    const self = this;
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        // User is signed in.
+        console.log('user profile')
+        console.log(user)
+        var emailVerified = user.emailVerified;
+        if (!emailVerified) {
+          console.log('email not verified')
+        }
+        var userId = firebase.auth().currentUser.uid;
+        return firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
+          console.log('grab users info')
+          console.log(snapshot.val())
+          self.updateUser(snapshot.val())
+        });
+      } else {
+        console.log('no user logged')
+      }
+    });
+  }
+
+
   isFeedLoaded(){
     return Object.keys(this.feed).length
   }
 
   updateData(data){
-    this.user = data.users.IWMmk4ecDvMCq23FEGcqtH6AagX2
     this.updateFeed(data.posts)
   }
+
   updateFeed(data){
     this.ordered = _.orderBy(data, 'time', 'desc')
     this.feed = data
     this.loadComments(data)
   }
+
+  updateUser(user){
+    this.user = user
+  }
+
   loadComments(feed){
     const c = {}
     const self = this
@@ -41,6 +86,11 @@ class FeedStore {
 
       })
     })
+  }
+
+  getUser(){
+    console.log(firebase.auth().currentUser)
+    return(firebase.auth().currentUser)
   }
 
   getpost(id) {
@@ -102,9 +152,46 @@ class FeedStore {
     this.updatePost(postId, p)
   }
 
+  //------------------------
+  // MODEL - Authentication
+  //------------------------
+
+  logout(){
+    console.log('log out')
+    // [START signout]
+    return firebase.auth().signOut();
+    // [END signout]
+  }
+
+  login(email,password) {
+    // Sign in with email and pass.
+    var promise = new Promise(function (resolve, reject) {
+      firebase.auth().signInWithEmailAndPassword(email, password)
+      .then(function(e){
+        console.log('Logged in!')
+        resolve('Logged in!')
+      })
+      .catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // [START_EXCLUDE]
+        if (errorCode === 'auth/wrong-password') {
+          console.log('Wrong password.');
+        } else {
+          console.log(errorMessage);
+        }
+        reject(error);
+        // [END_EXCLUDE]
+      });
+    })
+    return promise
+
+
+  }
 
   //------------------------
-  // MODEL - All firebase transactions
+  // MODEL - Feed transactions
   //------------------------
 
   updatePost(key, post){
@@ -212,14 +299,3 @@ class FeedStore {
 
 const feedStore = new FeedStore();
 export default feedStore;
-
-const fb = firebase
-  .initializeApp(config)
-  .database()
-  .ref();
-
-// when the data loads update store: feed and users
-fb.on('value', fbdata => {
-  const data = fbdata.val();
-  feedStore.updateData(data)
-});

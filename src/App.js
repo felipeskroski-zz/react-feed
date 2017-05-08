@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link, Redirect} from 'react-router-dom'
 import styled from 'styled-components';
+import {toJS} from 'mobx';
 import Feed from './components/Feed';
 import FeedItem from './components/FeedItem';
 import FeedItemNew from './components/FeedItemNew';
@@ -25,13 +26,19 @@ const Home = function(){
 
 
 const Post = ({match}) => {
+  console.log('post item')
+
   const id = match.params.postId
-  const item = feedStore.feed.find(function(item, i){
-    return item.id === Number(id);
-  })
+  const item = feedStore.feed[id]
+  const u = feedStore.user
+
+
   if(item){
     return(
-      <FeedItem obj={item} user={feedStore.user}/>
+      <FeedItem
+        obj={item} id={item._id}
+        key={item._id} user={u}
+        comments={feedStore.comments[item._id]}/>
     )
   }else{
     // TODO display some error message saying this post doesn't exist

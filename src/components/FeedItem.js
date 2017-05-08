@@ -29,7 +29,7 @@ const Comments = styled.section`
 const Likes = styled.p`
   margin-top: 0;
 `
-
+// format time to be displayed on each post
 moment.locale('en', {
   relativeTime: {
     future: 'in %s',
