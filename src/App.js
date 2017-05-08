@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Feed from './components/Feed';
 import FeedItem from './components/FeedItem';
 import FeedItemNew from './components/FeedItemNew';
+import Login from './components/Login';
 import feedStore from  './store.js'
 import './App.css';
 
@@ -43,6 +44,9 @@ const Post = ({match}) => {
 const NewPost = () => (
   <FeedItemNew store={feedStore}/>
 )
+const LoginPage = () => (
+  <Login/>
+)
 
 
 
@@ -57,6 +61,9 @@ class App extends Component {
               React Feed
             </HomeLink>
             <nav>
+              <HomeLink to="/login">
+                Login
+              </HomeLink>
               <HomeLink to="/newpost">
                 Newpost
               </HomeLink>
@@ -68,6 +75,7 @@ class App extends Component {
               <Route exact path="/" component={Home}/>
               <Route path="/post/:postId" component={Post}/>
               <Route path="/newpost" component={NewPost}/>
+              <Route path="/login" component={LoginPage}/>
             </div>
 
         </div>

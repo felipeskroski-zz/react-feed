@@ -17,13 +17,55 @@
   justify-content: space-between;
 }
 
-.App-intro {
-  font-size: large;
+a{
+  color: #3897f0;
 }
 
 .newsfeed{
   max-width: 680px;
   margin: 0 auto;
+}
+.auth-form{
+  max-width: 320px;
+  background-color: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 3px;
+  margin: 30px auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.auth-form form{
+  flex: 1;
+  flex-direction: column;
+  display: flex;
+}
+.auth-form p{
+  text-align: center;
+}
+.auth-form input[type='text'],
+.auth-form input[type='password'],
+.auth-form input[type='email']{
+  background-color: #eee;
+  border: 1px solid #e6e6e6;
+  flex: 1;
+  border-radius: 3px;
+  font-size: 16px;
+  padding: 10px;
+  margin: 10px 0;
+  color: #333;
+}
+
+.auth-form input[type='submit']{
+  background-color: #3897f0;
+  border: none;
+  flex: 1;
+  border-radius: 3px;
+  font-size: 16px;
+  padding: 10px;
+  margin: 10px 0;
+  color: white;
 }
 
 @keyframes App-logo-spin {
