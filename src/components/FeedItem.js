@@ -5,7 +5,6 @@ import {toJS} from 'mobx';
 import _ from 'lodash';
 import moment from 'moment';
 import styled from 'styled-components';
-import feedStore from  '../store.js'
 import FeedItemHeader from './FeedItemHeader';
 import FeedItemForm from './FeedItemForm';
 import Comment from './Comment';
@@ -72,7 +71,7 @@ const FeedItem = observer(class FeedItem extends Component {
 
   render() {
     const i = this.props.obj;
-    const c = feedStore.comments[this.props.id]
+    const c = this.props.comments
     return (
       <Feed>
         <FeedItemHeader

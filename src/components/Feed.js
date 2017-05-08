@@ -15,18 +15,16 @@ const Feed = observer(class Feed extends Component {
   }
   renderFeed(){
     const u = this.props.store.user
-    const f = feedStore.feed
     const o = feedStore.ordered
-    console.log('received feed')
-    console.log(toJS(feedStore.ordered))
-    o.map(function(item){
-      console.log(item._id)
-    })
     return(
       <div>
-        
         {o.map(function(item){
-          return <FeedItem obj={item} id={item._id} key={item._id} user={u}/>
+          return (
+            <FeedItem
+              obj={item} id={item._id}
+              key={item._id} user={u}
+              comments={feedStore.comments[item._id]}/>
+          )
         })}
       </div>
     )
