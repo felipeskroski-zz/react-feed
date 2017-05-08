@@ -68,6 +68,17 @@ const FeedItem = observer(class FeedItem extends Component {
       )
     }
   }
+  renderLikes(likes){
+    if(likes){
+      return(
+        <Likes>{Object.keys(likes).length} likes</Likes>
+      )
+    }else{
+      return(
+        <Likes>0 likes</Likes>
+      )
+    }
+  }
 
   render() {
     const i = this.props.obj;
@@ -86,8 +97,7 @@ const FeedItem = observer(class FeedItem extends Component {
           </Link>
         </section>
         <Comments>
-          {/* gets the number of likes */}
-          <Likes>{Object.keys(i.likes).length} likes</Likes>
+          {this.renderLikes(i.likes)}
           {this.renderComments(c)}
         </Comments>
 

@@ -71,6 +71,9 @@ class FeedStore {
   }
 
   isLiked(postId){
+    if(!this.feed[postId].likes){
+      return false
+    }
     if(this.feed[postId].likes[this.user._id]){
       return true
     }
@@ -82,7 +85,14 @@ class FeedStore {
     // gets the post object
     let p = toJS(this.feed[postId])
     if(add){
-      p.likes[this.user._id] = true
+      if(p.likes){
+        // add new like to the list
+        p.likes[this.user._id] = true
+      }else{
+        // creates new list of likes if empty
+        console.log('inserting first like')
+        p.likes = {[this.user._id]: true}
+      }
     }else{
       delete p.likes[this.user._id]
     }
