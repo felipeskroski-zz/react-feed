@@ -9,9 +9,10 @@ import feedStore from  './store.js'
 import './App.css';
 
 
-const HomeLink = styled(Link)`
+const NavLink = styled(Link)`
   color: white;
   text-decoration: none;
+  margin: 0 10px;
 `
 
 // page routes
@@ -57,16 +58,16 @@ class App extends Component {
       <Router>
         <div className="App">
           <div className="App-header">
-            <HomeLink to="/">
+            <NavLink to="/">
               React Feed
-            </HomeLink>
+            </NavLink>
             <nav>
-              <HomeLink to="/login">
+              <NavLink to="/login">
                 Login
-              </HomeLink>
-              <HomeLink to="/newpost">
+              </NavLink>
+              <NavLink to="/newpost">
                 Newpost
-              </HomeLink>
+              </NavLink>
             </nav>
 
           </div>
