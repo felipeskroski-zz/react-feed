@@ -4,18 +4,6 @@ import {toJS} from 'mobx';
 import feedStore from  '../store.js'
 
 
-const styles = {
-  author:{
-    fontWeight: 'bold',
-    marginRight: 5,
-    textDecoration: 'none',
-    color: 'black',
-  },
-  comment:{
-    marginTop: 0,
-  }
-}
-
 class Login extends Component {
   constructor(props) {
     super(props);

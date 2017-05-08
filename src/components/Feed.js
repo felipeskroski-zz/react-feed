@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {observer} from 'mobx-react';
 import {Redirect} from 'react-router-dom'
 import _ from 'lodash';
-import {toJS} from 'mobx';
+//import {toJS} from 'mobx';
 import FeedItem from './FeedItem';
 import feedStore from  '../store.js'
 

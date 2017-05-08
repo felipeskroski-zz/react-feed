@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link, Redirect} from 'react-router-dom'
 import styled from 'styled-components';
-import {toJS} from 'mobx';
+//import {toJS} from 'mobx';
 import Feed from './components/Feed';
 import FeedItem from './components/FeedItem';
 import FeedItemNew from './components/FeedItemNew';
