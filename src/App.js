@@ -24,7 +24,6 @@ const Home = function(){
 
 const Post = ({match}) => {
   const id = match.params.postId
-  console.log(id)
   const item = feedStore.feed.find(function(item, i){
     return item.id === Number(id);
   })

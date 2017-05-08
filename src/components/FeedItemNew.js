@@ -99,7 +99,7 @@ const FeedItemNew = observer(class FeedItemNew extends Component {
       author_id: u._id,
       time: Date.now(),
       media: this.state.files[0],
-      likes: 0,
+      likes: false,
       imgdata: this.state.imgdata,
     }
     const comment = {

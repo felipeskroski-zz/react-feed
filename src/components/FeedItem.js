@@ -5,7 +5,6 @@ import {toJS} from 'mobx';
 import _ from 'lodash';
 import moment from 'moment';
 import styled from 'styled-components';
-import feedStore from  '../store.js'
 import FeedItemHeader from './FeedItemHeader';
 import FeedItemForm from './FeedItemForm';
 import Comment from './Comment';
@@ -69,13 +68,21 @@ const FeedItem = observer(class FeedItem extends Component {
       )
     }
   }
-  formatTime(time){
-
-
+  renderLikes(likes){
+    if(likes){
+      return(
+        <Likes>{Object.keys(likes).length} likes</Likes>
+      )
+    }else{
+      return(
+        <Likes>0 likes</Likes>
+      )
+    }
   }
+
   render() {
-    const i = feedStore.feed[this.props.id];
-    const c = feedStore.comments[this.props.id]
+    const i = this.props.obj;
+    const c = this.props.comments
     return (
       <Feed>
         <FeedItemHeader
@@ -90,8 +97,7 @@ const FeedItem = observer(class FeedItem extends Component {
           </Link>
         </section>
         <Comments>
-          {/* gets the number of likes */}
-          <Likes>{Object.keys(i.likes).length} likes</Likes>
+          {this.renderLikes(i.likes)}
           {this.renderComments(c)}
         </Comments>
 
