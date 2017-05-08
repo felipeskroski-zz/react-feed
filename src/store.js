@@ -14,6 +14,7 @@ class FeedStore {
       user: {},
       // to hold comments of all posts
       comments: {},
+      ordered: [],
     })
   }
   isFeedLoaded(){
@@ -25,6 +26,7 @@ class FeedStore {
     this.updateFeed(data.posts)
   }
   updateFeed(data){
+    this.ordered = _.orderBy(data, 'time', 'desc')
     this.feed = data
     this.loadComments(data)
   }

@@ -69,6 +69,8 @@ class FeedItemForm extends Component {
     }
   }
   renderLike(){
+    console.log('id')
+    console.log(this.props.id)
     if(feedStore.isLiked(this.props.id)){
       return(<HeartFilled />);
     }else{

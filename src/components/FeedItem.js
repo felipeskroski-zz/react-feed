@@ -69,12 +69,9 @@ const FeedItem = observer(class FeedItem extends Component {
       )
     }
   }
-  formatTime(time){
 
-
-  }
   render() {
-    const i = feedStore.feed[this.props.id];
+    const i = this.props.obj;
     const c = feedStore.comments[this.props.id]
     return (
       <Feed>
