@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link, Redirect} from 'react-router-dom'
 import styled from 'styled-components';
+import {observer} from 'mobx-react';
 //import {toJS} from 'mobx';
 import Feed from './components/Feed';
 import FeedItem from './components/FeedItem';
@@ -63,7 +64,7 @@ const LogoutPage = () => (
 
 
 // App main shell
-class App extends Component {
+const App = observer(class App extends Component {
   renderNav(){
     if(feedStore.user){
       return(
@@ -110,6 +111,6 @@ class App extends Component {
       </Router>
     );
   }
-}
+})
 
 export default App;

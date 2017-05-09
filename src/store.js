@@ -10,51 +10,55 @@ class FeedStore {
   constructor() {
     // these are the observable properties when they change it will change all the observers
     extendObservable(this, {
-      feed: {},
+      feed: null,
       user: null,
       current_user: null,
-      // to hold comments of all posts
-      comments: {},
-      ordered: [],
+      // to hold comments of all posts returned in the feed
+      comments: null,
+      ordered: null,
+      // to flag if content was received from firebase
+      loaded: false,
+      initialized: false,
     })
     this.initFirebase()
-    this.initAuth()
   }
 
   initFirebase(){
     const self = this;
+    this.initialized = true
     return firebase
       .initializeApp(config)
       .database()
       .ref()
-      .on('value', fbdata => {
+      .once('value', fbdata => {
         const data = fbdata.val();
         self.updateData(data)
-      });
-  }
+      })
+      .then(
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            // User is signed in.
+            console.log('user authenticated')
+            var emailVerified = user.emailVerified;
+            if (!emailVerified) {
+              console.log('users email not verified')
+            }
+            var userId = firebase.auth().currentUser.uid;
+            return firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
+              console.log('grab users info')
+              console.log(snapshot.val())
+              if(!self.feed){
+                console.log('load feed data')
 
-  initAuth(){
-    const self = this;
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        // User is signed in.
-        console.log('user authenticated')
-        var emailVerified = user.emailVerified;
-        if (!emailVerified) {
-          console.log('users email not verified')
-        }
-        var userId = firebase.auth().currentUser.uid;
-        return firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
-          console.log('grab users info')
-          console.log(snapshot.val())
-          self.updateUser(snapshot.val())
-        });
-      } else {
-        console.log('no user logged')
-      }
-    });
+              }
+              self.updateUser(snapshot.val())
+            });
+          } else {
+            console.log('no user logged')
+          }
+        })
+      );
   }
-
 
   isFeedLoaded(){
     return this.user
@@ -72,6 +76,7 @@ class FeedStore {
 
   updateUser(user){
     this.user = user
+    this.loaded = true
   }
 
   loadComments(feed){

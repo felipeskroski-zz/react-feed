@@ -9,21 +9,26 @@ const Login = observer(class Login extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.state = {
       loading: false,
       error: false,
       redirect: false,
+      email: '',
+      password: '',
     };
   }
 
   handleSubmit(event) {
+    event.preventDefault();
     this.setState({loading:true})
     const self = this
+    const email = this.state.email
+    const password = this.state.password
 
-    console.log('A name was submitted: ' + this.email.value + this.password.value);
-    event.preventDefault();
-    const email = this.email.value
-    const password = this.password.value
+    console.log('A name was submitted: ' + email + password);
+
+
     if (email.length < 4) {
       alert('Please enter an email address.');
       return;
@@ -42,6 +47,17 @@ const Login = observer(class Login extends Component {
     })
   }
 
+  handleChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
+  }
+
+
   handleLogout(){
     feedStore.logout()
   }
@@ -52,8 +68,8 @@ const Login = observer(class Login extends Component {
         <section className='auth-form'>
           <form onSubmit={this.handleSubmit}>
             <p>Login to see the posts</p>
-            <input name="email" placeholder="email" type="email" ref={(input) => this.email = input}/>
-            <input name="password" placeholder="password" type="password" ref={(input) => this.password = input}/>
+            <input name="email" placeholder="email" type="email" value={this.state.email} onChange={this.handleChange}/>
+            <input name="password" placeholder="password" type="password" value={this.state.password} onChange={this.handleChange}/>
             <input type="submit" value={this.state.loading ? 'Logging in...' : 'Login'}/>
             {this.state.error && <p>{this.state.error.message}</p>}
           </form>
