@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom'
-import {observer} from 'mobx-react';
 import {toJS} from 'mobx';
 import feedStore from  '../store.js'
 
 
-const Login = observer(class Login extends Component {
+class Signup extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -52,14 +51,16 @@ const Login = observer(class Login extends Component {
         <section className='auth-form'>
           <form onSubmit={this.handleSubmit}>
             <p>Login to see the posts</p>
+            <input name="name" placeholder="name" type="text" ref={(input) => this.name = input}/>
             <input name="email" placeholder="email" type="email" ref={(input) => this.email = input}/>
             <input name="password" placeholder="password" type="password" ref={(input) => this.password = input}/>
-            <input type="submit" value={this.state.loading ? 'Logging in...' : 'Login'}/>
+            <input name="password_confirm" placeholder="confirm password" type="password" ref={(input) => this.password_confirm = input}/>
+            <input type="submit" value={this.state.loading ? 'Signing up...' : 'Signup'}/>
             {this.state.error && <p>{this.state.error.message}</p>}
           </form>
         </section>
         <section className='auth-form'>
-            <p>Don't have a login? <a href="/signup">Signup</a></p>
+            <p>Already have an account? <a href="/login">Signup</a></p>
         </section>
       </div>
     );
@@ -70,7 +71,7 @@ const Login = observer(class Login extends Component {
         <section className='auth-form'>
           <form onSubmit={this.handleLogout}>
             <p>Hello {feedStore.user.name}</p>
-            <input type="submit" value="Logout"/>
+            <input type="submit" value={this.state.loading ? 'Logging out...' : 'Logout'}/>
           </form>
         </section>
       </div>
@@ -82,8 +83,6 @@ const Login = observer(class Login extends Component {
         <Redirect to="/"/>
       )
     }
-    console.log('check if user is logged')
-    console.log(feedStore.user)
     if(feedStore.user){
       return(
         this.renderLogout()
@@ -94,7 +93,8 @@ const Login = observer(class Login extends Component {
       )
     }
   }
-})
+
+}
 
 
 export default Login;

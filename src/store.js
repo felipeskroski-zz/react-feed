@@ -38,11 +38,10 @@ class FeedStore {
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         // User is signed in.
-        console.log('user profile')
-        console.log(user)
+        console.log('user authenticated')
         var emailVerified = user.emailVerified;
         if (!emailVerified) {
-          console.log('email not verified')
+          console.log('users email not verified')
         }
         var userId = firebase.auth().currentUser.uid;
         return firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
@@ -89,8 +88,7 @@ class FeedStore {
   }
 
   getUser(){
-    console.log(firebase.auth().currentUser)
-    return(firebase.auth().currentUser)
+    return this.user
   }
 
   getpost(id) {

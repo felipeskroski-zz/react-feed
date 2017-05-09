@@ -6,6 +6,7 @@ import Feed from './components/Feed';
 import FeedItem from './components/FeedItem';
 import FeedItemNew from './components/FeedItemNew';
 import Login from './components/Login';
+import Logout from './components/Logout';
 import feedStore from  './store.js'
 import './App.css';
 
@@ -53,13 +54,38 @@ const NewPost = () => (
   <FeedItemNew store={feedStore}/>
 )
 const LoginPage = () => (
-  <Login/>
+  <Login current_user={feedStore.user}/>
+)
+const LogoutPage = () => (
+  <Logout/>
 )
 
 
 
 // App main shell
 class App extends Component {
+  renderNav(){
+    if(feedStore.user){
+      return(
+        <nav>
+          <NavLink to="/logout">
+            Logout
+          </NavLink>
+          <NavLink to="/newpost">
+            Newpost
+          </NavLink>
+        </nav>
+      )
+    }else{
+      return(
+        <nav>
+          <NavLink to="/login">
+            Login
+          </NavLink>
+        </nav>
+      )
+    }
+  }
   render() {
     return (
       <Router>
@@ -68,15 +94,8 @@ class App extends Component {
             <NavLink to="/">
               React Feed
             </NavLink>
-            <nav>
-              <NavLink to="/login">
-                Login
-              </NavLink>
-              <NavLink to="/newpost">
-                Newpost
-              </NavLink>
-            </nav>
 
+            {this.renderNav()}
           </div>
 
             <div className="newsfeed">
@@ -84,6 +103,7 @@ class App extends Component {
               <Route path="/post/:postId" component={Post}/>
               <Route path="/newpost" component={NewPost}/>
               <Route path="/login" component={LoginPage}/>
+              <Route path="/logout" component={LogoutPage}/>
             </div>
 
         </div>

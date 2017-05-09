@@ -31,8 +31,7 @@ const Feed = observer(class Feed extends Component {
     )
   }
   render(){
-    if(!feedStore.user){
-      console.log(feedStore.user)
+    if(!this.props.store.user){
       return(
         <Redirect to="/login"/>
       )
