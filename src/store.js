@@ -26,38 +26,39 @@ class FeedStore {
   initFirebase(){
     const self = this;
     this.initialized = true
-    return firebase
+    const fb = firebase
       .initializeApp(config)
       .database()
       .ref()
-      .once('value', fbdata => {
-        const data = fbdata.val();
-        self.updateData(data)
-      })
-      .then(
-        firebase.auth().onAuthStateChanged(function(user) {
-          if (user) {
-            // User is signed in.
-            console.log('user authenticated')
-            var emailVerified = user.emailVerified;
-            if (!emailVerified) {
-              console.log('users email not verified')
-            }
-            var userId = firebase.auth().currentUser.uid;
-            return firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
-              console.log('grab users info')
-              console.log(snapshot.val())
-              if(!self.feed){
-                console.log('load feed data')
 
-              }
-              self.updateUser(snapshot.val())
-            });
-          } else {
-            console.log('no user logged')
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        // User is signed in.
+        console.log('user authenticated')
+        var emailVerified = user.emailVerified;
+        if (!emailVerified) {
+          console.log('users email not verified')
+        }
+        var userId = firebase.auth().currentUser.uid;
+        return firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
+          console.log('grab users info')
+          console.log(snapshot.val())
+          if(!self.feed){
+            console.log('load feed data')
           }
-        })
-      );
+          console.log('load data for feed with right permissions')
+          fb.on('value', fbdata => {
+            const data = fbdata.val();
+            self.updateData(data)
+          })
+
+          self.updateUser(snapshot.val())
+        });
+      } else {
+        console.log('no user logged')
+      }
+    })
+
   }
 
   isFeedLoaded(){

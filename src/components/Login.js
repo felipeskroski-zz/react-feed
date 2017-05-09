@@ -85,7 +85,7 @@ const Login = observer(class Login extends Component {
       <div>
         <section className='auth-form'>
           <form onSubmit={this.handleLogout}>
-            <p>Hello {feedStore.user.name}</p>
+            <p>Hello {this.props.current_user.name}</p>
             <input type="submit" value="Logout"/>
           </form>
         </section>
@@ -99,8 +99,8 @@ const Login = observer(class Login extends Component {
       )
     }
     console.log('check if user is logged')
-    console.log(feedStore.user)
-    if(feedStore.user){
+    console.log(this.props.current_user)
+    if(this.props.current_user){
       return(
         this.renderLogout()
       )
