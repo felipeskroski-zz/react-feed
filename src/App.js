@@ -8,6 +8,7 @@ import FeedItem from './components/FeedItem';
 import FeedItemNew from './components/FeedItemNew';
 import Login from './components/Login';
 import Logout from './components/Logout';
+import Signup from './components/Signup';
 import feedStore from  './store.js'
 import './App.css';
 
@@ -54,13 +55,15 @@ const Post = ({match}) => {
 const NewPost = () => (
   <FeedItemNew store={feedStore}/>
 )
-const LoginPage = () => (
+const LoginView = () => (
   <Login current_user={feedStore.user}/>
 )
-const LogoutPage = () => (
-  <Logout/>
+const LogoutView = () => (
+  <Logout />
 )
-
+const SignupView = () => (
+  <Signup />
+)
 
 
 // App main shell
@@ -83,6 +86,9 @@ const App = observer(class App extends Component {
           <NavLink to="/login">
             Login
           </NavLink>
+          <NavLink to="/signup">
+            Signup
+          </NavLink>
         </nav>
       )
     }
@@ -103,8 +109,9 @@ const App = observer(class App extends Component {
               <Route exact path="/" component={Home}/>
               <Route path="/post/:postId" component={Post}/>
               <Route path="/newpost" component={NewPost}/>
-              <Route path="/login" component={LoginPage}/>
-              <Route path="/logout" component={LogoutPage}/>
+              <Route path="/login" component={LoginView}/>
+              <Route path="/logout" component={LogoutView}/>
+              <Route path="/signup" component={SignupView}/>
             </div>
 
         </div>

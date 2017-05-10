@@ -20,10 +20,10 @@ class FeedStore {
       loaded: false,
       initialized: false,
     })
-    this.initFirebase()
+    this.init()
   }
 
-  initFirebase(){
+  init(){
     const self = this;
     this.initialized = true
     const fb = firebase
@@ -56,6 +56,7 @@ class FeedStore {
         });
       } else {
         console.log('no user logged')
+        self.updateUser(null)
       }
     })
 
@@ -172,6 +173,7 @@ class FeedStore {
     var promise = new Promise(function (resolve, reject) {
       firebase.auth().signInWithEmailAndPassword(email, password)
       .then(function(e){
+
         console.log('Logged in!')
         resolve('Logged in!')
       })
@@ -190,8 +192,86 @@ class FeedStore {
       });
     })
     return promise
+  }
 
 
+  // Handles the sign up button press.
+  signup(email, password, name, location) {
+    // Sign in with email and pass.
+    const self = this;
+    var promise = new Promise(function (resolve, reject) {
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+      .then(function(e){
+        const id = firebase.auth().currentUser.uid
+        //Send verification email
+        self.sendEmailVerification()
+
+        //create user profile in the database linked to the user
+        self.saveUser(id, name, location)
+        
+        resolve('new user signed up')
+
+      }).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        if (errorCode == 'auth/weak-password') {
+          alert('The password is too weak.');
+        } else {
+          alert(errorMessage);
+        }
+        reject(error);
+      });
+    })
+  }
+
+  saveUser(key,name,location){
+    let u = {
+      _id: key,
+      name: name,
+      location: location
+    }
+    // Create new user
+    const updates = {};
+    updates[`/users/${key}`] = u;
+
+    // add the user to firebase
+    return firebase
+      .database()
+      .ref()
+      .update(updates)
+
+  }
+
+  // Sends an email verification to the user.
+  sendEmailVerification() {
+    firebase.auth().currentUser.sendEmailVerification().then(function() {
+      console.log('Email Verification Sent!');
+    });
+  }
+
+
+  sendPasswordReset(email) {
+    // [START sendpasswordemail]
+    firebase.auth().sendPasswordResetEmail(email).then(function() {
+      // Password Reset Email Sent!
+      // [START_EXCLUDE]
+      alert('Password Reset Email Sent!');
+      // [END_EXCLUDE]
+    }).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // [START_EXCLUDE]
+      if (errorCode == 'auth/invalid-email') {
+        alert(errorMessage);
+      } else if (errorCode == 'auth/user-not-found') {
+        alert(errorMessage);
+      }
+      console.log(error);
+      // [END_EXCLUDE]
+    });
+    // [END sendpasswordemail];
   }
 
   //------------------------
@@ -274,6 +354,7 @@ class FeedStore {
       this.updateFeed(data)
     });
 
+    // upload image
     var promise = new Promise(function (resolve, reject) {
       imgRef.putString(img, 'data_url').then(function(snapshot) {
         console.log('image uploaded!');
