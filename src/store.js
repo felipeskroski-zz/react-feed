@@ -208,7 +208,7 @@ class FeedStore {
 
         //create user profile in the database linked to the user
         self.saveUser(id, name, location)
-        
+
         resolve('new user signed up')
 
       }).catch(function(error) {
@@ -223,6 +223,7 @@ class FeedStore {
         reject(error);
       });
     })
+    return promise
   }
 
   saveUser(key,name,location){
@@ -245,6 +246,7 @@ class FeedStore {
 
   // Sends an email verification to the user.
   sendEmailVerification() {
+    console.log()
     firebase.auth().currentUser.sendEmailVerification().then(function() {
       console.log('Email Verification Sent!');
     });
