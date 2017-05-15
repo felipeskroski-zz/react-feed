@@ -10,26 +10,81 @@ class FeedStore {
   constructor() {
     // these are the observable properties when they change it will change all the observers
     extendObservable(this, {
-      feed: {},
-      user: {},
-      // to hold comments of all posts
-      comments: {},
-      ordered: [],
+      feed: null,
+      user: null,
+      current_user: null,
+      // to hold comments of all posts returned in the feed
+      comments: null,
+      ordered: null,
+      // to flag if content was received from firebase
+      loaded: false,
+      initialized: false,
     })
-  }
-  isFeedLoaded(){
-    return Object.keys(this.feed).length
+    this.init()
   }
 
-  updateData(data){
-    this.user = data.users.IWMmk4ecDvMCq23FEGcqtH6AagX2
-    this.updateFeed(data.posts)
+  init(){
+    const self = this;
+
+    const fb = firebase
+      .initializeApp(config)
+      .database()
+      .ref()
+
+    //TODO fix the redundancy with the code below
+    fb.on('value', fbdata => {
+      console.log('grabbing feed')
+      const data = fbdata.val();
+      console.log(data)
+      self.updateFeed(data.posts)
+    })
+    
+    firebase.auth().onAuthStateChanged(function(user) {
+
+      if (user) {
+        // User is signed in.
+        console.log('user authenticated')
+        var emailVerified = user.emailVerified;
+
+        if (!emailVerified) {
+          console.log('users email not verified')
+        }
+        var userId = firebase.auth().currentUser.uid;
+
+        // first get user credentials
+        return firebase.database().ref('/users/' + userId).once('value')
+        .then(function(snapshot) {
+          self.updateUser(snapshot.val())
+          return fb.once('value')
+        // after getting the user load the feed
+        }).then(function(fbdata){
+            const data = fbdata.val();
+            self.updateFeed(data.posts)
+            self.initialized = true
+        });
+      } else {
+        console.log('no user logged')
+        self.updateUser(null)
+        self.initialized = true
+      }
+    })
   }
+
+  isFeedLoaded(){
+    return this.loaded
+  }
+
   updateFeed(data){
     this.ordered = _.orderBy(data, 'time', 'desc')
     this.feed = data
     this.loadComments(data)
   }
+
+  updateUser(user){
+    this.user = user
+  }
+
+  //TODO check for ways to make this more efficient
   loadComments(feed){
     const c = {}
     const self = this
@@ -38,9 +93,14 @@ class FeedStore {
         const comments = result.val()
         c[key] = comments
         return self.comments = c
-
+      }).then(function(){
+        self.loaded = true
       })
     })
+  }
+
+  getUser(){
+    return this.user
   }
 
   getpost(id) {
@@ -48,11 +108,6 @@ class FeedStore {
       return item.id === id;
     })
 	}
-
-  //Gen random string
-  randomId(){
-    return Math.random().toString(36).slice(2)
-  }
 
   addComment(postId, comment){
     const c = {
@@ -102,9 +157,122 @@ class FeedStore {
     this.updatePost(postId, p)
   }
 
+  //------------------------
+  // MODEL - Authentication
+  //------------------------
+
+  logout(){
+    console.log('log out')
+    return firebase.auth().signOut();
+  }
+
+  login(email,password) {
+    // Sign in with email and pass.
+    var promise = new Promise(function (resolve, reject) {
+      firebase.auth().signInWithEmailAndPassword(email, password)
+      .then(function(e){
+        console.log('Logged in!')
+        resolve('Logged in!')
+      })
+      .catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // [START_EXCLUDE]
+        if (errorCode === 'auth/wrong-password') {
+          console.log('Wrong password.');
+        } else {
+          console.log(errorMessage);
+        }
+        reject(error);
+        // [END_EXCLUDE]
+      });
+    })
+    return promise
+  }
+
+
+  // Handles the sign up button press.
+  signup(email, password, name, location) {
+    // Sign in with email and pass.
+    const self = this;
+    var promise = new Promise(function (resolve, reject) {
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+      .then(function(e){
+        const id = firebase.auth().currentUser.uid
+        //Send verification email
+        self.sendEmailVerification()
+
+        //create user profile in the database linked to the user
+        self.saveUser(id, name, location)
+        resolve('new user signed up')
+      }).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        if (errorCode == 'auth/weak-password') {
+          alert('The password is too weak.');
+        } else {
+          alert(errorMessage);
+        }
+        reject(error);
+      });
+    })
+    return promise
+  }
+
+  saveUser(key,name,location){
+    let u = {
+      _id: key,
+      name: name,
+      location: location
+    }
+    // Create new user
+    const updates = {};
+    updates[`/users/${key}`] = u;
+
+    // add the user to firebase
+    return firebase
+      .database()
+      .ref()
+      .update(updates)
+
+  }
+
+  // Sends an email verification to the user.
+  sendEmailVerification() {
+    console.log()
+    firebase.auth().currentUser.sendEmailVerification().then(function() {
+      console.log('Email Verification Sent!');
+    });
+  }
+
+
+  sendPasswordReset(email) {
+    // [START sendpasswordemail]
+    firebase.auth().sendPasswordResetEmail(email).then(function() {
+      // Password Reset Email Sent!
+      // [START_EXCLUDE]
+      alert('Password Reset Email Sent!');
+      // [END_EXCLUDE]
+    }).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // [START_EXCLUDE]
+      if (errorCode == 'auth/invalid-email') {
+        alert(errorMessage);
+      } else if (errorCode == 'auth/user-not-found') {
+        alert(errorMessage);
+      }
+      console.log(error);
+      // [END_EXCLUDE]
+    });
+    // [END sendpasswordemail];
+  }
 
   //------------------------
-  // MODEL - All firebase transactions
+  // MODEL - Feed transactions
   //------------------------
 
   updatePost(key, post){
@@ -183,6 +351,7 @@ class FeedStore {
       this.updateFeed(data)
     });
 
+    // upload image
     var promise = new Promise(function (resolve, reject) {
       imgRef.putString(img, 'data_url').then(function(snapshot) {
         console.log('image uploaded!');
@@ -212,14 +381,3 @@ class FeedStore {
 
 const feedStore = new FeedStore();
 export default feedStore;
-
-const fb = firebase
-  .initializeApp(config)
-  .database()
-  .ref();
-
-// when the data loads update store: feed and users
-fb.on('value', fbdata => {
-  const data = fbdata.val();
-  feedStore.updateData(data)
-});

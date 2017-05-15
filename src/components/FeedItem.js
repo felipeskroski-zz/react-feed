@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom'
 import {observer} from 'mobx-react';
-import {toJS} from 'mobx';
+//import {toJS} from 'mobx';
 import _ from 'lodash';
 import moment from 'moment';
 import styled from 'styled-components';
@@ -29,8 +29,8 @@ const Comments = styled.section`
 const Likes = styled.p`
   margin-top: 0;
 `
-
-moment.locale('en', {
+// format time to be displayed on each post
+moment.updateLocale('en', {
   relativeTime: {
     future: 'in %s',
     past: '%s ago',

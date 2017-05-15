@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom'
-import {observer} from 'mobx-react';
 import {toJS} from 'mobx';
 import feedStore from  '../store.js'
 
 
-const Login = observer(class Login extends Component {
+class Signup extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -16,6 +15,8 @@ const Login = observer(class Login extends Component {
       redirect: false,
       email: '',
       password: '',
+      name: '',
+      location: '',
     };
   }
 
@@ -23,11 +24,12 @@ const Login = observer(class Login extends Component {
     event.preventDefault();
     this.setState({loading:true})
     const self = this
+    const name = this.state.name
+    const location = this.state.location
     const email = this.state.email
     const password = this.state.password
 
     console.log('A name was submitted: ' + email + password);
-
 
     if (email.length < 4) {
       alert('Please enter an email address.');
@@ -38,8 +40,8 @@ const Login = observer(class Login extends Component {
       return;
     }
     // login returns a promise so we can work out the ui changes
-    feedStore.login(email, password).then(function(success){
-      console.log('user logged in')
+    feedStore.signup(email, password, name, location).then(function(success){
+      console.log('user signed')
       self.setState({loading:false, redirect: true})
     }).catch(function(error){
       console.log(error)
@@ -56,10 +58,8 @@ const Login = observer(class Login extends Component {
       [name]: value
     });
   }
+  sendEmailVerification(){
 
-
-  handleLogout(){
-    feedStore.logout()
   }
 
   renderForm() {
@@ -67,35 +67,23 @@ const Login = observer(class Login extends Component {
       <div>
         <section className='auth-form'>
           <form onSubmit={this.handleSubmit}>
-            <p>Login to see the posts</p>
-            <input name="email" placeholder="email" type="email" value={this.state.email} onChange={this.handleChange}/>
-            <input name="password" placeholder="password" type="password" value={this.state.password} onChange={this.handleChange}/>
-            <input type="submit" value={this.state.loading ? 'Logging in...' : 'Login'}/>
+            <h3>Signup</h3>
+            <input name="name" placeholder="Name" type="text" value={this.state.name} onChange={this.handleChange}/>
+            <input name="location" placeholder="Location" type="text" value={this.state.location} onChange={this.handleChange}/>
+            <input name="email" placeholder="Email" type="email" value={this.state.email} onChange={this.handleChange}/>
+            <input name="password" placeholder="Password" type="password" value={this.state.password} onChange={this.handleChange}/>
+            <input name="password_confirm" placeholder="Confirm Password" type="password" value={this.state.password_confirm} onChange={this.handleChange}/>
+            <input type="submit" value={this.state.loading ? 'Signing up...' : 'Signup'}/>
             {this.state.error && <p>{this.state.error.message}</p>}
           </form>
         </section>
         <section className='auth-form'>
-            <p>Don't have a login? <a href="/signup">Signup</a></p>
+            <p>Already have an account? <a href="/login">Login</a></p>
+            <a href="#" onClick={feedStore.sendEmailVerification}>Send confirmation email</a>
+
         </section>
       </div>
     );
-  }
-  renderLogout() {
-    return (
-      <div>
-        <section className='auth-form'>
-          <form onSubmit={this.handleLogout}>
-            <p>Hello {this.props.current_user.name}</p>
-            <input type="submit" value="Logout"/>
-          </form>
-        </section>
-      </div>
-    );
-  }
-  renderLoading(){
-    return(
-      <h2>Loading...</h2>
-    )
   }
   render() {
     if(this.state.redirect){
@@ -103,23 +91,11 @@ const Login = observer(class Login extends Component {
         <Redirect to="/"/>
       )
     }
-    if(this.props.current_user){
-      return(
-        <Redirect to="/"/>
-      )
-    }else{
-      if(feedStore.initialized){
-        return(
-          this.renderForm()
-        )
-      }else{
-        return(
-          this.renderLoading()
-        )
-      }
-    }
+    return(
+      this.renderForm()
+    )
   }
-})
+}
 
 
-export default Login;
+export default Signup;

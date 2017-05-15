@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link, Redirect} from 'react-router-dom'
 import styled from 'styled-components';
+import {observer} from 'mobx-react';
+//import {toJS} from 'mobx';
 import Feed from './components/Feed';
 import FeedItem from './components/FeedItem';
 import FeedItemNew from './components/FeedItemNew';
 import Login from './components/Login';
+import Logout from './components/Logout';
+import Signup from './components/Signup';
+import Loading from './components/Loading';
 import feedStore from  './store.js'
 import './App.css';
 
@@ -17,7 +22,7 @@ const NavLink = styled(Link)`
 
 // page routes
 
-const Home = function(){
+const FeedView = function(){
   return(
     <Feed store={feedStore}/>
   )
@@ -25,13 +30,19 @@ const Home = function(){
 
 
 const Post = ({match}) => {
+  console.log('post item')
+
   const id = match.params.postId
-  const item = feedStore.feed.find(function(item, i){
-    return item.id === Number(id);
-  })
+  const item = feedStore.feed[id]
+  const u = feedStore.user
+
+
   if(item){
     return(
-      <FeedItem obj={item} user={feedStore.user}/>
+      <FeedItem
+        obj={item} id={item._id}
+        key={item._id} user={u}
+        comments={feedStore.comments[item._id]}/>
     )
   }else{
     // TODO display some error message saying this post doesn't exist
@@ -45,14 +56,48 @@ const Post = ({match}) => {
 const NewPost = () => (
   <FeedItemNew store={feedStore}/>
 )
-const LoginPage = () => (
-  <Login/>
+const LoginView = () => (
+  <Login current_user={feedStore.user}/>
+)
+const LogoutView = () => (
+  <Logout />
+)
+const SignupView = () => (
+  <Signup />
+)
+const LoadingView = () => (
+  <Loading />
 )
 
 
-
 // App main shell
-class App extends Component {
+const App = observer(class App extends Component {
+  renderNav(){
+    if(feedStore.user){
+      return(
+        <nav>
+          <NavLink to="/logout">
+            Logout
+          </NavLink>
+          <NavLink to="/newpost">
+            Newpost
+          </NavLink>
+        </nav>
+      )
+    }else{
+      return(
+        <nav>
+          <NavLink to="/login">
+            Login
+          </NavLink>
+          <NavLink to="/signup">
+            Signup
+          </NavLink>
+        </nav>
+      )
+    }
+  }
+
   render() {
     return (
       <Router>
@@ -61,28 +106,23 @@ class App extends Component {
             <NavLink to="/">
               React Feed
             </NavLink>
-            <nav>
-              <NavLink to="/login">
-                Login
-              </NavLink>
-              <NavLink to="/newpost">
-                Newpost
-              </NavLink>
-            </nav>
 
+            {this.renderNav()}
           </div>
 
-            <div className="newsfeed">
-              <Route exact path="/" component={Home}/>
-              <Route path="/post/:postId" component={Post}/>
-              <Route path="/newpost" component={NewPost}/>
-              <Route path="/login" component={LoginPage}/>
-            </div>
-
+          <div className="newsfeed">
+            <Route exact path="/" component={FeedView}/>
+            <Route path="/newpost" component={NewPost}/>
+            <Route path="/post/:postId" component={Post}/>
+            <Route path="/login" component={LoginView}/>
+            <Route path="/logout" component={LogoutView}/>
+            <Route path="/signup" component={SignupView}/>
+          </div>
         </div>
       </Router>
     );
   }
-}
+  renderLoading
+})
 
 export default App;

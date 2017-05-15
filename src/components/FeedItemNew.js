@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {toJS} from 'mobx';
+//import {toJS} from 'mobx';
 import {Redirect} from 'react-router-dom'
 import {observer} from 'mobx-react';
 import styled from 'styled-components';
@@ -182,7 +182,7 @@ const FeedItemNew = observer(class FeedItemNew extends Component {
     );
   }
   render(){
-    if(this.state.loading){
+    if(!feedStore.isFeedLoaded()){
       return(
         this.renderLoading()
       )

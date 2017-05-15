@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {observer} from 'mobx-react';
+import {Redirect} from 'react-router-dom'
 import _ from 'lodash';
 import {toJS} from 'mobx';
 import FeedItem from './FeedItem';
@@ -23,14 +24,20 @@ const Feed = observer(class Feed extends Component {
             <FeedItem
               obj={item} id={item._id}
               key={item._id} user={u}
-              comments={feedStore.comments[item._id]}/>
+              comments={toJS(feedStore.comments[item._id])}
+            />
           )
         })}
       </div>
     )
   }
   render(){
-    if(this.props.store.isFeedLoaded()){
+    if(!this.props.store.user && feedStore.initialized){
+      return(
+        <Redirect to="/login"/>
+      )
+    }
+    if(feedStore.isFeedLoaded()){
       return(
         this.renderFeed()
       )
