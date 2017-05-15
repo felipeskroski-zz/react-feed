@@ -126,10 +126,12 @@ class FeedStore {
   }
 
   isLiked(postId){
-    if(!this.feed[postId].likes){
+    // if no likes
+    if(!toJS(this.feed[postId].likes)){
       return false
     }
-    if(this.feed[postId].likes[this.user._id]){
+    // if liked by the current user
+    if(toJS(this.feed[postId].likes[this.user._id])){
       return true
     }
     return false
