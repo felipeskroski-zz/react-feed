@@ -16,7 +16,7 @@ const Logout = observer(class Logout extends Component {
 
   render() {
     return(
-      <p>Logged out</p>
+      <Redirect to="/login"/>
     )
   }
 })
