@@ -47,11 +47,7 @@ class FeedStore {
             console.log('load feed data')
           }
           console.log('load data for feed with right permissions')
-          fb.on('value', fbdata => {
-            const data = fbdata.val();
-            self.updateData(data)
-          })
-
+          self.loadData(fb)
           self.updateUser(snapshot.val())
         });
       } else {
@@ -63,10 +59,23 @@ class FeedStore {
   }
 
   isFeedLoaded(){
-    return this.user
+    return this.loaded
+  }
+
+  loadData(fb){
+    const self = this;
+
+    fb.on('value', fbdata => {
+      console.log('grabbing feed')
+      const data = fbdata.val();
+      console.log(data)
+      self.updateData(data)
+
+    })
   }
 
   updateData(data){
+
     this.updateFeed(data.posts)
   }
 
@@ -78,20 +87,23 @@ class FeedStore {
 
   updateUser(user){
     this.user = user
-    this.loaded = true
   }
 
   loadComments(feed){
     const c = {}
     const self = this
+
     _.map(feed, function(value, key) {
       self.getCommentsFromPost(key).then(function(result){
         const comments = result.val()
         c[key] = comments
         return self.comments = c
-
+      }).then(function(){
+        self.loaded = true
       })
     })
+
+
   }
 
   getUser(){

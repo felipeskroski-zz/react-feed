@@ -98,11 +98,9 @@ const Login = observer(class Login extends Component {
         <Redirect to="/"/>
       )
     }
-    console.log('check if user is logged')
-    console.log(this.props.current_user)
     if(this.props.current_user){
       return(
-        this.renderLogout()
+        <Redirect to="/"/>
       )
     }else{
       return(
