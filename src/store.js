@@ -35,25 +35,20 @@ class FeedStore {
         // User is signed in.
         console.log('user authenticated')
         var emailVerified = user.emailVerified;
+        
         if (!emailVerified) {
           console.log('users email not verified')
         }
         var userId = firebase.auth().currentUser.uid;
-        //first get user credentials
+
+        // first get user credentials
         return firebase.database().ref('/users/' + userId).once('value')
         .then(function(snapshot) {
-          console.log('grab users info')
-          console.log(snapshot.val())
-          if(!self.feed){
-            console.log('load feed data')
-          }
           self.updateUser(snapshot.val())
           return fb.once('value')
-        //
+        // after getting the user load the feed
         }).then(function(fbdata){
-            console.log('grabbing feed')
             const data = fbdata.val();
-            console.log(data)
             self.updateFeed(data.posts)
         });
       } else {
