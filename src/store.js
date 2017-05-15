@@ -30,6 +30,12 @@ class FeedStore {
       .initializeApp(config)
       .database()
       .ref()
+    fb.on('value', fbdata => {
+      console.log('grabbing feed')
+      const data = fbdata.val();
+      console.log(data)
+      self.updateFeed(data.posts)
+    })
     firebase.auth().onAuthStateChanged(function(user) {
 
       if (user) {
