@@ -30,7 +30,6 @@ class FeedStore {
       .initializeApp(config)
       .database()
       .ref()
-
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         // User is signed in.
@@ -40,43 +39,32 @@ class FeedStore {
           console.log('users email not verified')
         }
         var userId = firebase.auth().currentUser.uid;
-        return firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
+        //first get user credentials
+        return firebase.database().ref('/users/' + userId).once('value')
+        .then(function(snapshot) {
           console.log('grab users info')
           console.log(snapshot.val())
           if(!self.feed){
             console.log('load feed data')
           }
-          console.log('load data for feed with right permissions')
-          self.loadData(fb)
           self.updateUser(snapshot.val())
+          return fb.once('value')
+        //
+        }).then(function(fbdata){
+            console.log('grabbing feed')
+            const data = fbdata.val();
+            console.log(data)
+            self.updateFeed(data.posts)
         });
       } else {
         console.log('no user logged')
         self.updateUser(null)
       }
     })
-
   }
 
   isFeedLoaded(){
     return this.loaded
-  }
-
-  loadData(fb){
-    const self = this;
-
-    fb.on('value', fbdata => {
-      console.log('grabbing feed')
-      const data = fbdata.val();
-      console.log(data)
-      self.updateData(data)
-
-    })
-  }
-
-  updateData(data){
-
-    this.updateFeed(data.posts)
   }
 
   updateFeed(data){
@@ -89,10 +77,10 @@ class FeedStore {
     this.user = user
   }
 
+  //TODO check for ways to make this more efficient
   loadComments(feed){
     const c = {}
     const self = this
-
     _.map(feed, function(value, key) {
       self.getCommentsFromPost(key).then(function(result){
         const comments = result.val()
@@ -102,8 +90,6 @@ class FeedStore {
         self.loaded = true
       })
     })
-
-
   }
 
   getUser(){
@@ -115,11 +101,6 @@ class FeedStore {
       return item.id === id;
     })
 	}
-
-  //Gen random string
-  randomId(){
-    return Math.random().toString(36).slice(2)
-  }
 
   addComment(postId, comment){
     const c = {
@@ -175,9 +156,7 @@ class FeedStore {
 
   logout(){
     console.log('log out')
-    // [START signout]
     return firebase.auth().signOut();
-    // [END signout]
   }
 
   login(email,password) {
@@ -185,7 +164,6 @@ class FeedStore {
     var promise = new Promise(function (resolve, reject) {
       firebase.auth().signInWithEmailAndPassword(email, password)
       .then(function(e){
-
         console.log('Logged in!')
         resolve('Logged in!')
       })
@@ -220,9 +198,7 @@ class FeedStore {
 
         //create user profile in the database linked to the user
         self.saveUser(id, name, location)
-
         resolve('new user signed up')
-
       }).catch(function(error) {
         // Handle Errors here.
         var errorCode = error.code;
