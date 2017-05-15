@@ -25,17 +25,18 @@ class FeedStore {
 
   init(){
     const self = this;
-    this.initialized = true
+
     const fb = firebase
       .initializeApp(config)
       .database()
       .ref()
     firebase.auth().onAuthStateChanged(function(user) {
+
       if (user) {
         // User is signed in.
         console.log('user authenticated')
         var emailVerified = user.emailVerified;
-        
+
         if (!emailVerified) {
           console.log('users email not verified')
         }
@@ -50,10 +51,12 @@ class FeedStore {
         }).then(function(fbdata){
             const data = fbdata.val();
             self.updateFeed(data.posts)
+            self.initialized = true
         });
       } else {
         console.log('no user logged')
         self.updateUser(null)
+        self.initialized = true
       }
     })
   }

@@ -92,6 +92,11 @@ const Login = observer(class Login extends Component {
       </div>
     );
   }
+  renderLoading(){
+    return(
+      <h2>Loading...</h2>
+    )
+  }
   render() {
     if(this.state.redirect){
       return(
@@ -103,9 +108,15 @@ const Login = observer(class Login extends Component {
         <Redirect to="/"/>
       )
     }else{
-      return(
-        this.renderForm()
-      )
+      if(feedStore.initialized){
+        return(
+          this.renderForm()
+        )
+      }else{
+        return(
+          this.renderLoading()
+        )
+      }
     }
   }
 })

@@ -32,10 +32,6 @@ const Feed = observer(class Feed extends Component {
     )
   }
   render(){
-    console.log('check if user is logged')
-    console.log(this.props.store.user)
-    console.log('check if feed is loaded')
-    console.log(this.props.store.feed)
     if(!this.props.store.user){
       return(
         <Redirect to="/login"/>

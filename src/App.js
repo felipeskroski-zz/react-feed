@@ -9,6 +9,7 @@ import FeedItemNew from './components/FeedItemNew';
 import Login from './components/Login';
 import Logout from './components/Logout';
 import Signup from './components/Signup';
+import Loading from './components/Loading';
 import feedStore from  './store.js'
 import './App.css';
 
@@ -64,6 +65,9 @@ const LogoutView = () => (
 const SignupView = () => (
   <Signup />
 )
+const LoadingView = () => (
+  <Loading />
+)
 
 
 // App main shell
@@ -93,6 +97,14 @@ const App = observer(class App extends Component {
       )
     }
   }
+  renderLoading(){
+    if(feedStore.isFeedLoaded()){
+      return(
+        <Loading />
+      )
+    }
+  }
+
   render() {
     return (
       <Router>
@@ -104,20 +116,20 @@ const App = observer(class App extends Component {
 
             {this.renderNav()}
           </div>
-
-            <div className="newsfeed">
-              <Route exact path="/" component={Home}/>
-              <Route path="/post/:postId" component={Post}/>
-              <Route path="/newpost" component={NewPost}/>
-              <Route path="/login" component={LoginView}/>
-              <Route path="/logout" component={LogoutView}/>
-              <Route path="/signup" component={SignupView}/>
-            </div>
-
+          {this.renderLoading()}
+          <div className="newsfeed">
+            <Route exact path="/" component={Home}/>
+            <Route path="/post/:postId" component={Post}/>
+            <Route path="/newpost" component={NewPost}/>
+            <Route path="/login" component={LoginView}/>
+            <Route path="/logout" component={LogoutView}/>
+            <Route path="/signup" component={SignupView}/>
+          </div>
         </div>
       </Router>
     );
   }
+  renderLoading
 })
 
 export default App;
