@@ -50,7 +50,7 @@ moment.updateLocale('en', {
 })
 
 const FeedItem = observer(class FeedItem extends Component {
-  renderComments(comments){
+  renderComments(comments, postId){
     /*
     loop through the comments if no commets available
     don't render
@@ -60,7 +60,7 @@ const FeedItem = observer(class FeedItem extends Component {
         _.map(comments, function(value, key) {
           const c = comments[key]
           return(
-            <Comment author={c.author} authorLink={c.author_id} key={key}>
+            <Comment author={c.author} authorLink={c.author_id} key={key} id={key} postId={postId}>
               {c.body}
             </Comment>
           )
@@ -98,7 +98,7 @@ const FeedItem = observer(class FeedItem extends Component {
         </section>
         <Comments>
           {this.renderLikes(i.likes)}
-          {this.renderComments(c)}
+          {this.renderComments(c, i._id)}
         </Comments>
 
         <FeedItemForm id={this.props.id}/>
