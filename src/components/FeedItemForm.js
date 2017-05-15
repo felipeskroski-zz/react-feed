@@ -12,7 +12,7 @@ const Form = styled.form`
   border-top: 1px solid #eee;
 `
 const Field = styled.input`
-  padding: 15px 15px;
+  padding: 20px 15px;
   flex: 1;
   font-size: 16px;
   border: none;
@@ -62,7 +62,7 @@ class FeedItemForm extends Component {
   }
   toggleLike(e){
     e.preventDefault()
-    
+
     if(feedStore.isLiked(this.props.id)){
       feedStore.onLike(this.props.id, false)
     }else{
@@ -83,7 +83,6 @@ class FeedItemForm extends Component {
           {this.renderLike()}
         </a>
         <Field type="text" value={this.state.comment} ref="comment" name="comment" onChange={this.handleChange} placeholder='Add a comment ...'/>
-        <Button>Done</Button>
       </Form>
     );
   }
