@@ -32,13 +32,12 @@ const Feed = observer(class Feed extends Component {
     )
   }
   render(){
-    if(!this.props.store.user){
+    if(!this.props.store.user && feedStore.initialized){
       return(
         <Redirect to="/login"/>
       )
     }
     if(feedStore.isFeedLoaded()){
-
       return(
         this.renderFeed()
       )

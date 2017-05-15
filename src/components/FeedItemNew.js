@@ -182,7 +182,7 @@ const FeedItemNew = observer(class FeedItemNew extends Component {
     );
   }
   render(){
-    if(this.state.loading){
+    if(!feedStore.isFeedLoaded()){
       return(
         this.renderLoading()
       )
