@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Avatar from '../common/Avatar';
+import DeleteLink from '../common/DeleteLink';
 import feedStore from  '../store.js'
 
 const Header = styled.section`
@@ -56,8 +57,9 @@ class FeedItemHeader extends Component {
     // if current user is the author allow it to delete
     if(feedStore.user._id == this.props.author_id && !this.props.new){
       return(
-        <a style={styles.remove} href={`post/${this.props.post_id}/delete`}
-        onClick={this.handleRemove}>✕</a>
+        <DeleteLink
+          href={`post/${this.props.post_id}/delete`}
+          onClick={this.handleRemove}>✕</DeleteLink>
       )
     }
   }

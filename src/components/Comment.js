@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import feedStore from  '../store.js'
+import DeleteLink from '../common/DeleteLink';
 
 const styles = {
   author:{
@@ -30,8 +31,8 @@ class Comment extends Component {
     // if current user is the author allow it to delete
     if(feedStore.user._id == this.props.authorLink){
       return(
-        <a style={styles.remove} href={`comment/${this.props.id}/delete`}
-        onClick={this.handleRemove}>✕</a>
+        <DeleteLink href={`comment/${this.props.id}/delete`}
+        onClick={this.handleRemove}>✕</DeleteLink>
       )
     }
 
