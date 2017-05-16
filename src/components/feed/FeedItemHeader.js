@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Avatar from '../common/Avatar';
 import DeleteLink from '../common/DeleteLink';
-import feedStore from  '../store.js'
+import feedStore from  '../../store.js'
 
 const Header = styled.section`
   flex-direction: row;

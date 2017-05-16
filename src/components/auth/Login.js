@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Redirect,Link} from 'react-router-dom'
 import {observer} from 'mobx-react';
 import {toJS} from 'mobx';
-import feedStore from  '../store.js'
+import feedStore from  '../../store.js'
 
 
 const Login = observer(class Login extends Component {

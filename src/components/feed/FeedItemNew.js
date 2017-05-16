@@ -4,7 +4,7 @@ import {Redirect} from 'react-router-dom'
 import {observer} from 'mobx-react';
 import styled from 'styled-components';
 import Dropzone from 'react-dropzone'
-import feedStore from  '../store.js'
+import feedStore from  '../../store.js'
 import FeedItemHeader from './FeedItemHeader';
 
 // these styles automaticaly create new components based on a dom obj

@@ -3,14 +3,13 @@ import { BrowserRouter as Router, Route, Link, Redirect} from 'react-router-dom'
 import styled from 'styled-components';
 import {observer} from 'mobx-react';
 //import {toJS} from 'mobx';
-import Feed from './components/Feed';
-import Post from './components/Post';
-import FeedItemNew from './components/FeedItemNew';
-import Login from './components/Login';
-import Logout from './components/Logout';
-import Signup from './components/Signup';
-import Loading from './components/Loading';
-import ForgotPassword from './components/ForgotPassword';
+import Feed from './components/feed/Feed';
+import Post from './components/feed/Post';
+import FeedItemNew from './components/feed/FeedItemNew';
+import Login from './components/auth/Login';
+import Logout from './components/auth/Logout';
+import Signup from './components/auth/Signup';
+import ForgotPassword from './components/auth/ForgotPassword';
 import feedStore from  './store.js'
 import './App.css';
 
@@ -49,9 +48,6 @@ const LogoutView = () => (
 )
 const SignupView = () => (
   <Signup />
-)
-const LoadingView = () => (
-  <Loading />
 )
 const ForgotPasswordView = () => (
   <ForgotPassword />

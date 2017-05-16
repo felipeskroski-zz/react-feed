@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {observer} from 'mobx-react';
 import {Redirect} from 'react-router-dom';
-import feedStore from  '../store.js';
+import feedStore from  '../../store.js';
 
 
 // observer makes sure every change made on the store renders the feed

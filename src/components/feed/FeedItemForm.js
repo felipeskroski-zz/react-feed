@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import feedStore from  '../store.js'
+import feedStore from  '../../store.js'
 import Like from 'react-icons/lib/md/favorite-outline';
 import Liked from 'react-icons/lib/md/favorite';
 

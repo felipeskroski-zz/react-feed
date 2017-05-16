@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import feedStore from  '../store.js'
+import feedStore from  '../../store.js'
 import DeleteLink from '../common/DeleteLink';
 
 const styles = {

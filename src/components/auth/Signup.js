@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom'
 import {toJS} from 'mobx';
-import feedStore from  '../store.js'
+import feedStore from  '../../store.js'
 
 
 class Signup extends Component {
