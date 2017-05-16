@@ -49,10 +49,10 @@ class FeedStore {
         if (!emailVerified) {
           console.log('users email not verified')
         }
-        var userId = firebase.auth().currentUser.uid;
+        var user_id = firebase.auth().currentUser.uid;
 
         // first get user credentials
-        return firebase.database().ref('/users/' + userId).once('value')
+        return firebase.database().ref('/users/' + user_id).once('value')
         .then(function(snapshot) {
           self.updateUser(snapshot.val())
           return fb.once('value')
@@ -109,13 +109,13 @@ class FeedStore {
     })
 	}
 
-  addComment(postId, comment){
+  addComment(post_id, comment){
     const c = {
       "author" : this.user.name,
       "author_id" : this.user._id,
       "body" : comment,
       "date" : _.now(),
-      "post_id": postId
+      "post_id": post_id
     }
     this.saveComment(c);
   }
@@ -125,22 +125,22 @@ class FeedStore {
     //console.log(postObj)
   }
 
-  isLiked(postId){
+  isLiked(post_id){
     // if no likes
-    if(!toJS(this.feed[postId].likes)){
+    if(!toJS(this.feed[post_id].likes)){
       return false
     }
     // if liked by the current user
-    if(toJS(this.feed[postId].likes[this.user._id])){
+    if(toJS(this.feed[post_id].likes[this.user._id])){
       return true
     }
     return false
 
   }
 
-  onLike(postId, add=true){
+  onLike(post_id, add=true){
     // gets the post object
-    let p = toJS(this.feed[postId])
+    let p = toJS(this.feed[post_id])
     if(add){
       if(p.likes){
         // add new like to the list
@@ -154,9 +154,9 @@ class FeedStore {
       delete p.likes[this.user._id]
     }
     // update UI so mobx picks up
-    this.feed[postId] = p
+    this.feed[post_id] = p
     // save to firebase
-    this.updatePost(postId, p)
+    this.updatePost(post_id, p)
   }
 
 
@@ -202,17 +202,16 @@ class FeedStore {
       .update(updates)
   }
 
-  deleteComment(postId, authorId, commentId){
+  deleteComment(post_id, author_id, comment_id){
     const fb =   firebase.database().ref()
-    if(this.user._id == authorId){
-      fb.child(`posts/${postId}/comments/${commentId}`).remove();
-      fb.child(`users/${authorId}/comments/${commentId}`).remove();
-      fb.child(`comments/${commentId}`).remove();
+    if(this.user._id == author_id){
+      fb.child(`posts/${post_id}/comments/${comment_id}`).remove();
+      fb.child(`users/${author_id}/comments/${comment_id}`).remove();
+      fb.child(`comments/${comment_id}`).remove();
       console.log('removed comment')
     }else{
       console.log('only the author can remove this comment')
     }
-
   }
 
 
@@ -237,8 +236,9 @@ class FeedStore {
 
     // Get a key for a new Post.
     const postKey = firebase.database().ref().child('posts').push().key;
-    p._id = postKey
-    c.post_id = postKey
+    p._id = postKey;
+    p.img_ref = `images/${m.name}`;
+    c.post_id = postKey;
     p.comments = {[postCommentKey]: true}
     console.log('post:')
     console.log(p)
@@ -269,14 +269,45 @@ class FeedStore {
       })
     })
     return promise
-
   }
 
-  getCommentsFromPost(postId){
+  deletePost(post_id){
+    const fb = firebase.database().ref()
+    const storageRef = firebase.storage().ref()
+    const author_id = this.feed[post_id].author_id
+    const comments = this.feed[post_id].comments
+
+    // Create a reference to the file to delete
+    const imgRef = storageRef.child(`images/${this.feed[post_id].img_ref}`);
+
+    if(this.user._id === author_id){
+      fb.child(`posts/${post_id}`).remove();
+      console.log('removed post')
+      if (comments){
+        const keys = _.keys(comments)
+        keys.map(function(key){
+          fb.child(`comments/${key}`).remove();
+        })
+        console.log('removed post comments')
+      }
+
+      // Delete the file
+      imgRef.delete().then(function() {
+        console.log('removed post image')
+      }).catch(function(error) {
+        console.log('error removing image '+error)
+      });
+
+    }else{
+      console.log('only the author can remove this post')
+    }
+  }
+
+  getCommentsFromPost(post_id){
     // Get all commments from a post from firebase this returns a promise
     // TODO add a limit to the items
     return firebase.database()
-    .ref('comments/').orderByChild("post_id").equalTo(postId)
+    .ref('comments/').orderByChild("post_id").equalTo(post_id)
     .once('value')
   }
 

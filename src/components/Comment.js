@@ -21,14 +21,16 @@ class Comment extends Component {
 
   handleRemove(e){
     e.preventDefault()
-    return feedStore.deleteComment(this.props.postId, this.props.authorLink, this.props.id)
+    if(confirm("Are you sure?")){
+      return feedStore.deleteComment(this.props.postId, this.props.authorLink, this.props.id)
+    }
   }
 
   renderRemove(){
     // if current user is the author allow it to delete
     if(feedStore.user._id == this.props.authorLink){
       return(
-        <a style={styles.remove} href='#'
+        <a style={styles.remove} href={`comment/${this.props.id}/delete`}
         onClick={this.handleRemove}>✕</a>
       )
     }

@@ -153,9 +153,10 @@ const FeedItemNew = observer(class FeedItemNew extends Component {
     return (
       <Feed>
         <FeedItemHeader
-          avatar={u.avatar}
+          author_image={u.avatar}
           author={u.name}
           location={u.location}
+          author_id={u._id}
           time={Date.now}
           new
         />

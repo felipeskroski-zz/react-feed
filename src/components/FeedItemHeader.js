@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Avatar from '../common/Avatar';
+import feedStore from  '../store.js'
 
 const Header = styled.section`
   flex-direction: row;
@@ -23,22 +24,56 @@ const Location = styled.p`
   margin: 0;
   text-align: left;
 `
+const styles = {
+  author:{
+    fontWeight: 'bold',
+    marginRight: 5,
+    textDecoration: 'none',
+    color: 'black',
+  },
+  comment:{
+    marginTop: 0,
+  }
+}
 
 
 class FeedItemHeader extends Component {
+  constructor(props) {
+    super(props);
+    this.handleRemove = this.handleRemove.bind(this);
+  }
+
+  handleRemove(e){
+    e.preventDefault()
+    console.log(`post/${this.props.post._id}/delete`)
+    console.log(this.props)
+    if(confirm("Are you sure?")){
+      return feedStore.deletePost(this.props.post._id)
+    }
+  }
+
+  renderRemove(){
+    // if current user is the author allow it to delete
+    if(feedStore.user._id == this.props.author_id && !this.props.new){
+      return(
+        <a style={styles.remove} href={`post/${this.props.post_id}/delete`}
+        onClick={this.handleRemove}>✕</a>
+      )
+    }
+  }
+
   render() {
     const i = this.props;
-
     return (
       <Header>
         <Author>
-          <Avatar src={i.avatar} alt="Username" />
+          <Avatar src={i.author_image} alt="Username" />
           <div>
             <Name>{i.author}</Name>
             <Location>{i.location}</Location>
           </div>
         </Author>
-        <div>{i.time}</div>
+        <div>{i.time} {this.renderRemove()}</div>
       </Header>
     );
   }
