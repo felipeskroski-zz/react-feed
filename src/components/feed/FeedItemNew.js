@@ -119,6 +119,7 @@ const FeedItemNew = observer(class FeedItemNew extends Component {
 
   }
   renderImage(){
+    // TODO resize image before sending to firebase
     let self = this;
     if(this.state.files.length > 0){
       const f = this.state.files[0]

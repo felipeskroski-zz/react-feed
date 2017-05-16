@@ -5,6 +5,7 @@ import {observer} from 'mobx-react';
 //import {toJS} from 'mobx';
 import Feed from './components/feed/Feed';
 import Post from './components/feed/Post';
+import Profile from './components/user/Profile';
 import FeedItemNew from './components/feed/FeedItemNew';
 import Login from './components/auth/Login';
 import Logout from './components/auth/Logout';
@@ -28,6 +29,7 @@ const FeedView = function(){
   )
 }
 
+// TODO add a loading view so components don't need to deal with waiting for data internally
 
 const PostView = ({match}) => {
   //TODO fix post view so the app can reload from here
@@ -36,7 +38,9 @@ const PostView = ({match}) => {
     <Post id={id} />
   )
 }
-
+const ProfileView = () => (
+  <Profile />
+)
 const NewPost = () => (
   <FeedItemNew store={feedStore}/>
 )
@@ -53,6 +57,7 @@ const ForgotPasswordView = () => (
   <ForgotPassword />
 )
 
+//TODO add an error page
 
 // App main shell
 const App = observer(class App extends Component {
@@ -60,11 +65,11 @@ const App = observer(class App extends Component {
     if(feedStore.user){
       return(
         <nav>
-          <NavLink to="/logout">
-            Logout
-          </NavLink>
           <NavLink to="/newpost">
             Newpost
+          </NavLink>
+          <NavLink to="/profile">
+            Profile
           </NavLink>
         </nav>
       )
@@ -102,6 +107,7 @@ const App = observer(class App extends Component {
             <Route path="/logout" component={LogoutView}/>
             <Route path="/signup" component={SignupView}/>
             <Route path="/forgot-password" component={ForgotPasswordView}/>
+            <Route path="/profile" component={ProfileView}/>
           </div>
         </div>
       </Router>
