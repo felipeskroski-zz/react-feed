@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Redirect} from 'react-router-dom'
+import {Redirect,Link} from 'react-router-dom'
 import {observer} from 'mobx-react';
 import {toJS} from 'mobx';
 import feedStore from  '../store.js'
@@ -70,6 +70,7 @@ const Login = observer(class Login extends Component {
             <p>Login to see the posts</p>
             <input name="email" placeholder="email" type="email" value={this.state.email} onChange={this.handleChange}/>
             <input name="password" placeholder="password" type="password" value={this.state.password} onChange={this.handleChange}/>
+            <Link to="/forgot-password">Forgot?</Link>
             <input type="submit" value={this.state.loading ? 'Logging in...' : 'Login'}/>
             {this.state.error && <p>{this.state.error.message}</p>}
           </form>

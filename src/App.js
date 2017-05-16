@@ -10,6 +10,7 @@ import Login from './components/Login';
 import Logout from './components/Logout';
 import Signup from './components/Signup';
 import Loading from './components/Loading';
+import ForgotPassword from './components/ForgotPassword';
 import feedStore from  './store.js'
 import './App.css';
 
@@ -68,6 +69,9 @@ const SignupView = () => (
 const LoadingView = () => (
   <Loading />
 )
+const ForgotPasswordView = () => (
+  <ForgotPassword />
+)
 
 
 // App main shell
@@ -117,6 +121,7 @@ const App = observer(class App extends Component {
             <Route path="/login" component={LoginView}/>
             <Route path="/logout" component={LogoutView}/>
             <Route path="/signup" component={SignupView}/>
+            <Route path="/forgot-password" component={ForgotPasswordView}/>
           </div>
         </div>
       </Router>

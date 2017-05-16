@@ -407,29 +407,25 @@ class FeedStore {
 
 
   sendPasswordReset(email) {
-    // [START sendpasswordemail]
-    firebase.auth().sendPasswordResetEmail(email).then(function() {
-      // Password Reset Email Sent!
-      // [START_EXCLUDE]
-      alert('Password Reset Email Sent!');
-      // [END_EXCLUDE]
-    }).catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // [START_EXCLUDE]
-      if (errorCode == 'auth/invalid-email') {
-        alert(errorMessage);
-      } else if (errorCode == 'auth/user-not-found') {
-        alert(errorMessage);
-      }
-      console.log(error);
-      // [END_EXCLUDE]
+    var promise = new Promise(function (resolve, reject) {
+      firebase.auth().sendPasswordResetEmail(email).then(function() {
+        console.log('Password Reset Email Sent!');
+        resolve('email sent')
+      }).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        if (errorCode == 'auth/invalid-email') {
+          console.log(errorMessage);
+        } else if (errorCode == 'auth/user-not-found') {
+          console.log(errorMessage);
+        }
+        console.log(error);
+        reject(errorMessage)
+      });
     });
-    // [END sendpasswordemail];
+    return promise
   }
-
-
 }
 
 
