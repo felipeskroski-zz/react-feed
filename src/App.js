@@ -35,11 +35,11 @@ const PostView = ({match}) => {
   //TODO fix post view so the app can reload from here
   const id = match.params.postId
   return(
-    <Post id={id} />
+    <Post id={id} store={feedStore}/>
   )
 }
 const ProfileView = () => (
-  <Profile />
+  <Profile user={feedStore.user} />
 )
 const NewPost = () => (
   <FeedItemNew store={feedStore}/>
@@ -86,8 +86,16 @@ const App = observer(class App extends Component {
       )
     }
   }
-
-  render() {
+  renderLoading(){
+    return(
+      <div className="App">
+        <div className="newsfeed">
+          <h2>Loading App ...</h2>
+        </div>
+      </div>
+    )
+  }
+  renderApp() {
     return (
       <Router>
         <div className="App">
@@ -113,7 +121,17 @@ const App = observer(class App extends Component {
       </Router>
     );
   }
-  renderLoading
+  render(){
+    if(feedStore.initialized){
+      return(
+        this.renderApp()
+      )
+    }else{
+      return(
+        this.renderLoading()
+      )
+    }
+  }
 })
 
 export default App;

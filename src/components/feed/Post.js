@@ -4,39 +4,44 @@ import {Redirect} from 'react-router-dom'
 import _ from 'lodash';
 import {toJS} from 'mobx';
 import FeedItem from './FeedItem';
-import feedStore from  '../../store.js'
 
 
 // observer makes sure every change made on the store renders the feed
 const Post = observer(class Post extends Component {
+  constructor(props){
+    super(props)
+    this.store = this.props.store
+  }
   renderLoading(){
     return(
       <h2>Loading Post ...</h2>
     )
   }
   renderFeed(){
+    const s = this.store
     console.log('load post data')
-    console.log(feedStore.feed)
-    const u = feedStore.user
-    const p = feedStore.feed[this.props.id]
+    console.log(s.feed)
+    const u = s.user
+    const p = s.feed[this.props.id]
 
     return(
       <div>
         <FeedItem
           obj={p} id={p._id}
           key={p._id} user={u}
-          comments={toJS(feedStore.comments[p._id])}
+          comments={toJS(s.comments[p._id])}
         />
       </div>
     )
   }
   render(){
-    if(!feedStore.user && feedStore.initialized){
+    const s = this.store
+    if(!s.user && s.initialized){
       return(
         <Redirect to="/login"/>
       )
     }
-    if(feedStore.isFeedLoaded()){
+    if(s.isFeedLoaded()){
       return(
         this.renderFeed()
       )

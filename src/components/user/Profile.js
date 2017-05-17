@@ -3,7 +3,6 @@ import {Link, Redirect} from 'react-router-dom'
 import {observer} from 'mobx-react';
 import styled from 'styled-components';
 import Avatar from '../common/Avatar';
-import feedStore from  '../../store.js'
 
 const Header = styled.section`
   flex-direction: row;
@@ -47,7 +46,7 @@ const Profile = observer(class Profile extends Component {
     )
   }
   renderProfile() {
-    const i = feedStore.user;
+    const i = this.props.user;
     console.log('loading user profile')
     console.log(i)
     return (
@@ -64,18 +63,13 @@ const Profile = observer(class Profile extends Component {
     );
   }
   render(){
-    if(!feedStore.user && feedStore.initialized){
+    if(!this.props.user){
       return(
         <Redirect to="/login"/>
       )
-    }
-    if(feedStore.isFeedLoaded()){
-      return(
-        this.renderProfile()
-      )
     }else{
       return(
-        this.renderLoading()
+        this.renderProfile()
       )
     }
   }

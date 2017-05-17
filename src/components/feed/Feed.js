@@ -4,7 +4,6 @@ import {Redirect} from 'react-router-dom'
 import _ from 'lodash';
 import {toJS} from 'mobx';
 import FeedItem from './FeedItem';
-import feedStore from  '../../store.js'
 
 
 // observer makes sure every change made on the store renders the feed
@@ -15,8 +14,10 @@ const Feed = observer(class Feed extends Component {
     )
   }
   renderFeed(){
-    const u = this.props.store.user
-    const o = feedStore.ordered
+    const store = this.props.store
+    const u = store.user
+    const o = store.ordered
+
     return(
       <div>
         {o.map(function(item){
@@ -24,7 +25,7 @@ const Feed = observer(class Feed extends Component {
             <FeedItem
               obj={item} id={item._id}
               key={item._id} user={u}
-              comments={toJS(feedStore.comments[item._id])}
+              comments={toJS(store.comments[item._id])}
             />
           )
         })}
@@ -32,18 +33,13 @@ const Feed = observer(class Feed extends Component {
     )
   }
   render(){
-    if(!this.props.store.user && feedStore.initialized){
+    if(!this.props.store.user){
       return(
         <Redirect to="/login"/>
       )
-    }
-    if(feedStore.isFeedLoaded()){
-      return(
-        this.renderFeed()
-      )
     }else{
       return(
-        this.renderLoading()
+        this.renderFeed()
       )
     }
   }
