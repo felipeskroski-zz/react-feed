@@ -33,15 +33,11 @@ const Feed = observer(class Feed extends Component {
     )
   }
   render(){
-    if(!this.props.store.user){
-      return(
-        <Redirect to="/login"/>
-      )
-    }else{
+
       return(
         this.renderFeed()
       )
-    }
+    
   }
 })
 
