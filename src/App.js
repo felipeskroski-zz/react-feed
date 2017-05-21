@@ -11,7 +11,9 @@ import Login from './components/auth/Login';
 import Logout from './components/auth/Logout';
 import Signup from './components/auth/Signup';
 import ForgotPassword from './components/auth/ForgotPassword';
+import Avatar from './components/common/Avatar';
 import feedStore from  './store.js'
+
 import './App.css';
 
 
@@ -19,6 +21,11 @@ const NavLink = styled(Link)`
   color: white;
   text-decoration: none;
   margin: 0 10px;
+`
+const Navigation = styled.nav`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `
 
 // page routes
@@ -63,26 +70,27 @@ const ForgotPasswordView = () => (
 const App = observer(class App extends Component {
   renderNav(){
     if(feedStore.user){
+      console.log(feedStore.user)
       return(
-        <nav>
+        <Navigation>
           <NavLink to="/newpost">
             Newpost
           </NavLink>
           <NavLink to="/profile">
-            Profile
+            <Avatar src={feedStore.user.avatar} alt="Username" />
           </NavLink>
-        </nav>
+        </Navigation>
       )
     }else{
       return(
-        <nav>
+        <Navigation>
           <NavLink to="/login">
             Login
           </NavLink>
           <NavLink to="/signup">
             Signup
           </NavLink>
-        </nav>
+        </Navigation>
       )
     }
   }

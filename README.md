@@ -1,9 +1,10 @@
 # React Feed
-React feed is a realtime newsfeed similar to instagram. This project uses the power of firebase to make the single page application responsive, lightweight, blazing fast and easy to maintain
+React feed is a realtime newsfeed similar to instagram (but a lot simpler). This project uses the power of firebase to make the single page application responsive, lightweight, blazing fast and easy to maintain.
+
 
 ## Features
 ### User authentication
-The authentication relies on Firebase authentication so it's very easy to add Facebook, Google, Github and Twitter oauth
+The authentication relies on Firebase authentication so it's very easy to add Facebook, Google, Github and Twitter oAuth
 - Login
 - Signup
 - Logout
