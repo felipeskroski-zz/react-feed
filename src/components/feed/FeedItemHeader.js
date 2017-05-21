@@ -55,6 +55,9 @@ class FeedItemHeader extends Component {
 
   renderRemove(){
     // if current user is the author allow it to delete
+    if(!feedStore.user){
+      return false
+    }
     if(feedStore.user._id == this.props.author_id && !this.props.new){
       return(
         <DeleteLink

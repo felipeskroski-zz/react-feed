@@ -29,18 +29,17 @@ class FeedStore {
     const fb = firebase
       .initializeApp(config)
       .database()
-      .ref()
+      .ref('/posts')
 
     //TODO fix the redundancy with the code below
     fb.on('value', fbdata => {
       console.log('grabbing feed')
       const data = fbdata.val();
       console.log(data)
-      self.updateFeed(data.posts)
+      self.updateFeed(data)
     })
 
     firebase.auth().onAuthStateChanged(function(user) {
-
       if (user) {
         // User is signed in.
         console.log('user authenticated')
@@ -52,21 +51,22 @@ class FeedStore {
         var user_id = firebase.auth().currentUser.uid;
 
         // first get user credentials
-        return firebase.database().ref('/users/' + user_id).once('value')
+        firebase.database().ref('/users/' + user_id).once('value')
         .then(function(snapshot) {
           self.updateUser(snapshot.val())
-          return fb.once('value')
+
         // after getting the user load the feed
-        }).then(function(fbdata){
-            const data = fbdata.val();
-            self.updateFeed(data.posts)
-            self.initialized = true
         });
       } else {
         console.log('no user logged')
         self.updateUser(null)
-        self.initialized = true
       }
+      return fb.once('value').then(function(fbdata){
+          console.log('grabbing feed after user data')
+          const data = fbdata.val();
+          self.updateFeed(data)
+          self.initialized = true
+      })
     })
   }
 
@@ -126,6 +126,10 @@ class FeedStore {
   }
 
   isLiked(post_id){
+    // if no user
+    if(!this.user){
+      return false
+    }
     // if no likes
     if(!toJS(this.feed[post_id].likes)){
       return false
