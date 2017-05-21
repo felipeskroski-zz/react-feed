@@ -36,11 +36,6 @@ const Post = observer(class Post extends Component {
   }
   render(){
     const s = this.store
-    if(!s.user && s.initialized){
-      return(
-        <Redirect to="/login"/>
-      )
-    }
     if(s.isFeedLoaded()){
       return(
         this.renderFeed()
