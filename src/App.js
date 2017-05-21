@@ -12,6 +12,7 @@ import Logout from './components/auth/Logout';
 import Signup from './components/auth/Signup';
 import ForgotPassword from './components/auth/ForgotPassword';
 import Avatar from './components/common/Avatar';
+import Button from './components/common/Button';
 import feedStore from  './store.js'
 
 import './App.css';
@@ -74,7 +75,7 @@ const App = observer(class App extends Component {
       return(
         <Navigation>
           <NavLink to="/newpost">
-            Newpost
+            <Button>Newpost</Button>
           </NavLink>
           <NavLink to="/profile">
             <Avatar src={feedStore.user.avatar} alt="Username" />
