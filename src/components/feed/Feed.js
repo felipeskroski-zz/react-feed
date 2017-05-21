@@ -17,7 +17,6 @@ const Feed = observer(class Feed extends Component {
     const store = this.props.store
     const u = store.user
     const o = store.ordered
-
     return(
       <div>
         {o.map(function(item){
@@ -25,7 +24,8 @@ const Feed = observer(class Feed extends Component {
             <FeedItem
               obj={item} id={item._id}
               key={item._id} user={u}
-              comments={toJS(store.comments[item._id])}
+              // add comments to post if any
+              comments={toJS(store.comments) && toJS(store.comments[item._id])}
             />
           )
         })}
@@ -37,7 +37,7 @@ const Feed = observer(class Feed extends Component {
       return(
         this.renderFeed()
       )
-    
+
   }
 })
 

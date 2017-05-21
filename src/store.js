@@ -29,14 +29,14 @@ class FeedStore {
     const fb = firebase
       .initializeApp(config)
       .database()
-      .ref()
+      .ref('/posts')
 
     //TODO fix the redundancy with the code below
     fb.on('value', fbdata => {
       console.log('grabbing feed')
       const data = fbdata.val();
       console.log(data)
-      self.updateFeed(data.posts)
+      self.updateFeed(data)
     })
 
     firebase.auth().onAuthStateChanged(function(user) {
@@ -64,7 +64,7 @@ class FeedStore {
       return fb.once('value').then(function(fbdata){
           console.log('grabbing feed after user data')
           const data = fbdata.val();
-          self.updateFeed(data.posts)
+          self.updateFeed(data)
           self.initialized = true
       })
     })
