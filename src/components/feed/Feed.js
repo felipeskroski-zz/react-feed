@@ -16,7 +16,7 @@ const Feed = observer(class Feed extends Component {
   renderFeed(){
     const store = this.props.store
     const u = store.user
-    const o = store.ordered
+    const o = store.orderedFeed
     return(
       <div>
         {o.map(function(item){

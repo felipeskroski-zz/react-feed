@@ -15,11 +15,11 @@ class FeedStore {
     // these are the observable properties when they change it will change all the observers
     extendObservable(this, {
       feed: null,
+      orderedFeed: null,
       user: null,
       current_user: null,
       // to hold comments of all posts returned in the feed
       comments: null,
-      ordered: null,
       // to flag if content was received from firebase
       loaded: false,
       initialized: false,
@@ -30,10 +30,11 @@ class FeedStore {
   init(){
     const self = this;
 
+    // gets the latest 20 posts
     const fb = firebase
       .initializeApp(config)
       .database()
-      .ref('/posts')
+      .ref('/posts').orderByChild('time').limitToLast(20)
 
     //TODO fix the redundancy with the code below
     fb.on('value', fbdata => {
@@ -79,7 +80,7 @@ class FeedStore {
   }
 
   updateFeed(data){
-    this.ordered = _.orderBy(data, 'time', 'desc')
+    this.orderedFeed = _.orderBy(data, 'time', 'desc')
     this.feed = data
     this.loadComments(data)
   }
@@ -102,16 +103,6 @@ class FeedStore {
       })
     })
   }
-
-  getUser(){
-    return this.user
-  }
-
-  getpost(id) {
-    this.feed.find(function(item, i){
-      return item.id === id;
-    })
-	}
 
   addComment(post_id, comment){
     const c = {
@@ -208,6 +199,9 @@ class FeedStore {
       .database()
       .ref()
       .update(updates)
+      .then(() => {
+        console.log('comment added')
+      })
   }
 
   deleteComment(post_id, author_id, comment_id){
