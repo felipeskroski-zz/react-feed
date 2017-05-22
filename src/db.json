@@ -9,21 +9,21 @@
     },
     "c1":{
       "author" : "Silverio",
-      "author_id" : "1",
+      "author_id" : "u1",
       "body" : "super nice",
       "date" : 1493859055,
       "post_id": "p0"
     },
     "c2": {
       "author" : "Susan",
-      "author_id" : "2",
+      "author_id" : "u2",
       "body" : "super cool",
       "date" : 1493858774,
       "post_id": "p1"
     },
     "c3":{
       "author" : "Joe",
-      "author_id" : "3",
+      "author_id" : "u3",
       "body" : "wow",
       "date" : 1493859055,
       "post_id": "p1"
@@ -31,7 +31,7 @@
   },
   "posts" : {
     "p0": {
-      "_id" : "0",
+      "_id" : "p0",
       "author" : "Silverio",
       "author_id" : "u1",
       "author_image" : "https://cdn0.iconfinder.com/data/icons/user-pictures/100/male-512.png",
@@ -48,7 +48,7 @@
       }
     },
     "p1": {
-      "_id" : "1",
+      "_id" : "p1",
       "author" : "Susan",
       "author_id" : "u2",
       "author_image" : "https://cdn0.iconfinder.com/data/icons/user-pictures/100/female-512.png",
@@ -73,34 +73,34 @@
       "location " : "Wellington",
       "name" : "Amy",
       "comments":{
-        "0": true
+        "c0": true
       }
     },
     "u1":{
-      "_id" : "1",
+      "_id" : "u1",
       "avatar" : "https://cdn0.iconfinder.com/data/icons/user-pictures/100/male-512.png",
       "location " : "Bay of plenty",
       "name" : "Silverio",
       "comments":{
-        "1": true
+        "c1": true
       }
     },
     "u2":{
-      "_id" : "2",
+      "_id" : "u2",
       "avatar" : "https://cdn0.iconfinder.com/data/icons/user-pictures/100/female-512.png",
       "location " : "Dunedin",
       "name" : "Susan",
       "comments":{
-        "2": true
+        "c2": true
       }
     },
     "u3":{
-      "_id" : "3",
+      "_id" : "u3",
       "avatar" : "https://cdn0.iconfinder.com/data/icons/user-pictures/100/male-512.png",
       "location " : "Auckland",
       "name" : "Joe",
       "comments":{
-        "3": true
+        "c3": true
       }
     }
   }

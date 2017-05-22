@@ -1,24 +1,55 @@
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom'
 import {toJS} from 'mobx';
+import Dropzone from 'react-dropzone'
+import styled from 'styled-components';
 import feedStore from  '../../store.js'
 
+const dropZoneStyle = {
+  height:'100%',
+  width: '100%',
+  position:'absolute',
+  zIndex: 10,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  flexDirection: 'column'
+}
+
+const DropArea = styled.section`
+  max-width: 100%;
+  border: 2px dashed black;
+  background: #ccc;
+  height: 120px;
+  width: 120px;
+  border-radius: 50%;
+  position: relative;
+  align-self: center;
+`
+const Preview = styled.img`
+  border-radius: 50%;
+`
 
 class Signup extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.onDrop = this.onDrop.bind(this);
     this.state = {
       loading: false,
       error: false,
       redirect: false,
       email: '',
       password: '',
+      password_confirm: '',
       name: '',
       location: '',
+      imgdata: {},
+      files: [],
     };
   }
+
 
   handleSubmit(event) {
     event.preventDefault();
@@ -28,6 +59,8 @@ class Signup extends Component {
     const location = this.state.location
     const email = this.state.email
     const password = this.state.password
+    const avatar = this.state.files[0]
+    const imgdata = this.state.imgdata
 
     console.log('A name was submitted: ' + email + password);
 
@@ -40,7 +73,7 @@ class Signup extends Component {
       return;
     }
     // login returns a promise so we can work out the ui changes
-    feedStore.signup(email, password, name, location).then(function(success){
+    feedStore.signup(email, password, name, location, avatar, imgdata).then(function(success){
       console.log('user signed')
       self.setState({loading:false, redirect: true})
     }).catch(function(error){
@@ -62,12 +95,55 @@ class Signup extends Component {
 
   }
 
+  onDrop(files) {
+    this.setState({
+      files: files,
+    });
+  }
+
+  renderImage(){
+    // TODO resize image before sending to firebase
+    let self = this;
+    if(this.state.files.length > 0){
+      const f = this.state.files[0]
+      let reader = new FileReader();
+      reader.readAsDataURL(f);
+      reader.onload = function(e) {
+        // browser completed reading file send data to firebase
+        console.log('img loaded');
+        self.state.imgdata = e.target.result
+
+      };
+
+      // render image preview
+      return(
+        <Preview src={f.preview} alt="media" width="100%"/>
+      )
+    }
+  }
+
   renderForm() {
     return (
       <div>
         <section className='auth-form'>
           <form onSubmit={this.handleSubmit}>
             <h3>Signup</h3>
+            <DropArea>
+
+              <Dropzone onDrop={this.onDrop}  style={dropZoneStyle} multiple={false}>
+
+                {
+                  this.state.files.map((f, i) => (
+                      <p key={i}>
+                        {f.size > 1000000 ? <b>Too large, max 1mb</b> : ''}
+                      </p>
+                  ))
+                }
+              </Dropzone>
+              {this.renderImage()}
+
+            </DropArea>
+            <p>Your profile picture</p>
             <input name="name" placeholder="Name" type="text" value={this.state.name} onChange={this.handleChange}/>
             <input name="location" placeholder="Location" type="text" value={this.state.location} onChange={this.handleChange}/>
             <input name="email" placeholder="Email" type="email" value={this.state.email} onChange={this.handleChange}/>
@@ -79,6 +155,7 @@ class Signup extends Component {
         </section>
         <section className='auth-form'>
             <p>Already have an account? <a href="/login">Login</a></p>
+
             <a href="#" onClick={feedStore.sendEmailVerification}>Send confirmation email</a>
 
         </section>

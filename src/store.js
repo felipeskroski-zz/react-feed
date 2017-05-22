@@ -1,3 +1,8 @@
+//------------------------------------------------------------------------------------
+// This store manages both the state and the model (firebase connection in this case)
+// it would be something similar to a controller in an MVC architecture
+//------------------------------------------------------------------------------------
+
 import {extendObservable, toJS} from 'mobx';
 import * as firebase from 'firebase';
 import _ from 'lodash';
@@ -5,7 +10,6 @@ import config from './config';
 //to use local db
 //import * as db from './db.json'
 
-// the store manages both the state and the model (firebase connection in this case)
 class FeedStore {
   constructor() {
     // these are the observable properties when they change it will change all the observers
@@ -355,19 +359,40 @@ class FeedStore {
 
 
   // Handles the sign up button press.
-  signup(email, password, name, location) {
+  signup(email, password, name, location, avatar, imgdata) {
     // Sign in with email and pass.
+    let id;
     const self = this;
+    // Create a root reference
+    const storageRef = firebase.storage().ref();
+
     var promise = new Promise(function (resolve, reject) {
       firebase.auth().createUserWithEmailAndPassword(email, password)
       .then(function(e){
-        const id = firebase.auth().currentUser.uid
+        id = firebase.auth().currentUser.uid
         //Send verification email
         self.sendEmailVerification()
 
-        //create user profile in the database linked to the user
-        self.saveUser(id, name, location)
-        resolve('new user signed up')
+        firebase
+          .database()
+          .ref().child(`/users/${id}`)
+          .update({_id: id, name: name, location: location})
+
+        // Create a reference to new image on firebase
+        const imgRef = storageRef.child(`images/${id}/${avatar.name}`);
+
+        return imgRef.putString(imgdata, 'data_url')
+      }).then(function(snapshot){
+        console.log('image uploaded!');
+        console.log(snapshot.downloadURL);
+        const image = snapshot.downloadURL;
+
+        return firebase
+          .database()
+          .ref().child(`/users/${id}`)
+          .update({avatar: image})
+      }).then(function(response){
+        resolve('Image profile linked to user')
       }).catch(function(error) {
         // Handle Errors here.
         var errorCode = error.code;
@@ -389,15 +414,10 @@ class FeedStore {
       name: name,
       location: location
     }
-    // Create new user
-    const updates = {};
-    updates[`/users/${key}`] = u;
+
 
     // add the user to firebase
-    return firebase
-      .database()
-      .ref()
-      .update(updates)
+    return
 
   }
 

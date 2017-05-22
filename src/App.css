@@ -44,6 +44,9 @@ a{
 .auth-form p{
   text-align: center;
 }
+.auth-form h3{
+  text-align: center;
+}
 .auth-form input[type='text'],
 .auth-form input[type='password'],
 .auth-form input[type='email']{

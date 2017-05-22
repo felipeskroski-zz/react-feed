@@ -66,6 +66,7 @@ const FeedItemNew = observer(class FeedItemNew extends Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.addPost = this.addPost.bind(this);
+    this.onDrop = this.onDrop.bind(this);
     this.state = {
       comment: '',
       files: [],
@@ -163,7 +164,7 @@ const FeedItemNew = observer(class FeedItemNew extends Component {
         />
         <DropArea>
 
-          <Dropzone onDrop={this.onDrop.bind(this)}  style={dropZoneStyle} multiple={false}>
+          <Dropzone onDrop={this.onDrop}  style={dropZoneStyle} multiple={false}>
             <p>Try dropping some files here, or click to select files to upload.</p>
             {
               this.state.files.map((f, i) => (
