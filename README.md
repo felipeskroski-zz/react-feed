@@ -41,7 +41,7 @@ go to https://console.firebase.google.com/ and create an account and create a pr
 while testing configure your rules for public access
 This does make your database open to anyone, even people not using your app, so be sure to restrict your database again when you set up authentication.
 
-#### Database Rules (optional)
+#### Database Rules
 to keep your data a little more secure you can use these rules:
 (Keep in mind this is not production ready, for that you may need stricter permissions)
 ```
@@ -62,6 +62,31 @@ to keep your data a little more secure you can use these rules:
       "$uid": {
         ".write": "$uid === auth.uid"
       }
+    }
+  }
+}
+```
+
+### Storage rules
+```
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /images {
+      // Anyone can view any image (no auth, publicly readable)
+      match /{allImages=**} {
+        allow read;
+      }
+
+      // Only authenticated users can write to "public" images
+      match /{imageId} {
+        allow write: if request.auth != null;
+      }
+
+      // Only an individual user can write to "their" images
+      match /{userId}/{imageId} {
+        allow write: if request.auth.uid == userId;
+      }
+
     }
   }
 }
