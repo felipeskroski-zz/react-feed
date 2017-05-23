@@ -20,5 +20,3 @@ yarn-debug.log*
 yarn-error.log*
 
 .firebaserc
-
-firebase.json

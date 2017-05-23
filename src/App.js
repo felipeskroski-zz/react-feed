@@ -37,10 +37,7 @@ const FeedView = function(){
   )
 }
 
-// TODO add a loading view so components don't need to deal with waiting for data internally
-
 const PostView = ({match}) => {
-  //TODO fix post view so the app can reload from here
   const id = match.params.postId
   return(
     <Post id={id} store={feedStore}/>
