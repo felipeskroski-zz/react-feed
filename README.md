@@ -24,18 +24,18 @@ Using firebase realtime database the feed is super fast and responsive
 - Image upload to firebase storage
 
 ## Dependencies
-- *Firebase:* to manage the nosql realtime database, user authentication and file storage
-- *Lodash:* makes it simpler to deal with arrays and objects
-- *Mobx:* to manage the state (simpler than Redux)
-- *Moment:* makes easier to deal with dates
-- *react-dropzone:* for drag and drop image uploads
-- *react-icons:* enable support for a variety of icons
-- *react-router:* takes care of all the routing
-- *styled-components:* great to manage styles in a component architecture
+- **Firebase:** to manage the nosql realtime database, user authentication and file storage
+- **Lodash:** makes it simpler to deal with arrays and objects
+- **Mobx:** to manage the state (simpler than Redux)
+- **Moment:** makes easier to deal with dates
+- **react-dropzone:** for drag and drop image uploads
+- **react-icons:** enable support for a variety of icons
+- **react-router:** takes care of all the routing
+- **styled-components:** great to manage styles in a component architecture
 
 
 ## Installation
-### Create a firebase account:
+### Create a firebase account
 go to https://console.firebase.google.com/ and create an account and create a project.
 
 while testing configure your rules for public access
@@ -44,7 +44,8 @@ This does make your database open to anyone, even people not using your app, so 
 #### Database Rules (optional)
 to keep your data a little more secure you can use these rules:
 (Keep in mind this is not production ready, for that you may need stricter permissions)
-`{
+```
+{
   "rules": {
     "comments": {
       ".read": true,
@@ -64,10 +65,10 @@ to keep your data a little more secure you can use these rules:
     }
   }
 }
-`
+```
 
 
-## Config:
+## Firebase Config
 In your firebase project go to:
 - Authentication
 and on the top right click:
@@ -78,13 +79,13 @@ Copy the info and paste in the config-sample.js in your root directory and save 
 ## Add dummy data to your firebase database (optional)
 You can import db.json into you firebase database if you want to startup with some data
 
-## Install the app:
+## Install the app
 `npm install` or `yarn install`
 
-## Running the app:
+## Running the app
 `yarn start`
 
-## Deployment
+## Firebase Deployment
 `yarn build` creates a `build` directory with a production build of your app. Set up your favourite HTTP server so that a visitor to your site is served `index.html`, and requests to static paths like `/static/js/main.<hash>.js` are served with the contents of the `/static/js/main.<hash>.js` file.
 
 Now to use firebase hosting follow these steps:
