@@ -27,7 +27,8 @@ const Comments = styled.section`
   padding: 20px;
 `
 const Likes = styled.p`
-  margin-top: 0;
+  margin: 0;
+  font-weight: bold;
 `
 // format time to be displayed on each post
 moment.updateLocale('en', {

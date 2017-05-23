@@ -10,7 +10,8 @@ const styles = {
     color: 'black',
   },
   comment:{
-    marginTop: 0,
+    marginTop: 10,
+    marginBottom: 0
   }
 }
 

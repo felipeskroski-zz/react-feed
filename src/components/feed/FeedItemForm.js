@@ -77,14 +77,20 @@ class FeedItemForm extends Component {
     }
   }
   render() {
-    return (
-      <Form onSubmit={this.addComment}>
-        <a href="#" onClick={this.toggleLike}>
-          {this.renderLike()}
-        </a>
-        <Field type="text" value={this.state.comment} ref="comment" name="comment" onChange={this.handleChange} placeholder='Add a comment ...'/>
-      </Form>
-    );
+    if(feedStore.user){
+      return (
+        <Form onSubmit={this.addComment}>
+          <a href="#" onClick={this.toggleLike}>
+            {this.renderLike()}
+          </a>
+          <Field type="text" value={this.state.comment} ref="comment" name="comment" onChange={this.handleChange} placeholder='Add a comment ...'/>
+        </Form>
+      );
+    }else{
+      return false
+    }
+
+
   }
 }
 

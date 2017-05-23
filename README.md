@@ -1,6 +1,9 @@
 # React Feed
 React feed is a realtime newsfeed similar to instagram (but a lot simpler). This project uses the power of firebase to make the single page application responsive, lightweight, blazing fast and easy to maintain.
 
+Check demo at: https://react-feed-41126.firebaseapp.com/
+You need to signup to like, comment and create posts
+
 
 ## Features
 ### User authentication
@@ -105,4 +108,4 @@ Now to use firebase hosting follow these steps:
 }`
 5. `firebase serve` - and check if everything is in place. If you're happy it's time to deploy
 6. `firebase deploy`
-7. 🙌 
+7. 🙌
