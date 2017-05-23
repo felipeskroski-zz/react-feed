@@ -18,17 +18,6 @@ const Field = styled.input`
   border: none;
   font-weight: 300;
 `
-const Button = styled.button`
-  flex-direction: column;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px 20px;
-  background: #ebebeb;
-  border: none;
-  font-size: 16px;
-  color: #222;
-`
 const Heart = styled(Like)`
   height: 24px;
   width: auto;
@@ -69,6 +58,7 @@ class FeedItemForm extends Component {
       feedStore.onLike(this.props.id)
     }
   }
+  //TODO use props instead of the feedstore to check for likes
   renderLike(){
     if(feedStore.isLiked(this.props.id)){
       return(<HeartFilled />);

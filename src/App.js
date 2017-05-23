@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link, Redirect} from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link} from 'react-router-dom'
 import styled from 'styled-components';
 import {observer} from 'mobx-react';
 //import {toJS} from 'mobx';
@@ -92,6 +92,7 @@ const App = observer(class App extends Component {
       )
     }
   }
+  // TODO improve loading view
   renderLoading(){
     return(
       <div className="App">

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom'
-import {toJS} from 'mobx';
 import Dropzone from 'react-dropzone'
 import styled from 'styled-components';
 import feedStore from  '../../store.js'

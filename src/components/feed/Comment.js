@@ -33,7 +33,7 @@ class Comment extends Component {
     if(!feedStore.user){
       return false
     }
-    if(feedStore.user._id == this.props.authorLink){
+    if(feedStore.user._id === this.props.authorLink){
       return(
         <DeleteLink href={`comment/${this.props.id}/delete`}
         onClick={this.handleRemove}>✕</DeleteLink>

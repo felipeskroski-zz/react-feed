@@ -25,18 +25,6 @@ const Location = styled.p`
   margin: 0;
   text-align: left;
 `
-const styles = {
-  author:{
-    fontWeight: 'bold',
-    marginRight: 5,
-    textDecoration: 'none',
-    color: 'black',
-  },
-  comment:{
-    marginTop: 0,
-  }
-}
-
 
 class FeedItemHeader extends Component {
   constructor(props) {
@@ -58,7 +46,7 @@ class FeedItemHeader extends Component {
     if(!feedStore.user){
       return false
     }
-    if(feedStore.user._id == this.props.author_id && !this.props.new){
+    if(feedStore.user._id === this.props.author_id && !this.props.new){
       return(
         <DeleteLink
           href={`post/${this.props.post_id}/delete`}

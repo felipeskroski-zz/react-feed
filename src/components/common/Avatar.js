@@ -3,7 +3,6 @@ import avatar from '../../img/avatar.png'
 const styles = {
   img: {
     borderRadius: '50%',
-    borderRadius: '50%',
     marginRight: '10px',
     background: `#ddd`
   }
@@ -14,15 +13,12 @@ const styles = {
 class Avatar extends Component {
   render() {
     return (
-
-        <img {...this.props}
-          src={this.props.src || avatar}
-          style={styles.img}
-          height={this.props.size || 30}
-          width={this.props.size || 30 }
-          alt={this.props.alt}/>
-
-
+      <img {...this.props}
+        src={this.props.src || avatar}
+        style={styles.img}
+        height={this.props.size || 30}
+        width={this.props.size || 30 }
+        alt={this.props.alt}/>
     );
   }
 }

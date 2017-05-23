@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {observer} from 'mobx-react';
-import {Redirect} from 'react-router-dom'
 import _ from 'lodash';
 import {toJS} from 'mobx';
 import FeedItem from './FeedItem';
@@ -13,7 +12,7 @@ const Feed = observer(class Feed extends Component {
       <h2>Loading feed ...</h2>
     )
   }
-  renderFeed(){
+  render(){
     const store = this.props.store
     const u = store.user
     const o = store.orderedFeed
@@ -31,13 +30,6 @@ const Feed = observer(class Feed extends Component {
         })}
       </div>
     )
-  }
-  render(){
-
-      return(
-        this.renderFeed()
-      )
-
   }
 })
 

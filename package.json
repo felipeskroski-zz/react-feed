@@ -11,7 +11,7 @@
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-dropzone": "^3.13.1",
-    "react-icons": "^2.2.3",
+    "react-icons": "^2.2.5",
     "react-router-dom": "^4.1.1",
     "styled-components": "^1.4.5"
   },

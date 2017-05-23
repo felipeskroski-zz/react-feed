@@ -26,17 +26,6 @@ const Location = styled.p`
   margin: 0;
   text-align: left;
 `
-const styles = {
-  author:{
-    fontWeight: 'bold',
-    marginRight: 5,
-    textDecoration: 'none',
-    color: 'black',
-  },
-  comment:{
-    marginTop: 0,
-  }
-}
 
 
 const Profile = observer(class Profile extends Component {

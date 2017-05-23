@@ -206,7 +206,7 @@ class FeedStore {
 
   deleteComment(post_id, author_id, comment_id){
     const fb =   firebase.database().ref()
-    if(this.user._id == author_id){
+    if(this.user._id === author_id){
       fb.child(`posts/${post_id}/comments/${comment_id}`).remove();
       fb.child(`users/${author_id}/comments/${comment_id}`).remove();
       fb.child(`comments/${comment_id}`).remove();
@@ -288,7 +288,7 @@ class FeedStore {
       if (comments){
         const keys = _.keys(comments)
         keys.map(function(key){
-          fb.child(`comments/${key}`).remove();
+          return fb.child(`comments/${key}`).remove();
         })
         console.log('removed post comments')
       }
@@ -312,10 +312,6 @@ class FeedStore {
     .ref('comments/').orderByChild("post_id").equalTo(post_id)
     .once('value')
   }
-
-
-
-
 
   //------------------------
   // MODEL - Authentication
@@ -391,7 +387,7 @@ class FeedStore {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
-        if (errorCode == 'auth/weak-password') {
+        if (errorCode === 'auth/weak-password') {
           alert('The password is too weak.');
         } else {
           alert(errorMessage);
@@ -400,19 +396,6 @@ class FeedStore {
       });
     })
     return promise
-  }
-
-  saveUser(key,name,location){
-    let u = {
-      _id: key,
-      name: name,
-      location: location
-    }
-
-
-    // add the user to firebase
-    return
-
   }
 
   // Sends an email verification to the user.
@@ -433,9 +416,9 @@ class FeedStore {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
-        if (errorCode == 'auth/invalid-email') {
+        if (errorCode === 'auth/invalid-email') {
           console.log(errorMessage);
-        } else if (errorCode == 'auth/user-not-found') {
+        } else if (errorCode === 'auth/user-not-found') {
           console.log(errorMessage);
         }
         console.log(error);
