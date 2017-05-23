@@ -89,6 +89,14 @@ class FeedStore {
     this.user = user
   }
 
+  isUserVerified(){
+    if(firebase.auth().currentUser.emailVerified){
+      return true
+    }else{
+      return false
+    }
+  }
+
   //TODO check for ways to make this more efficient
   loadComments(feed){
     const c = {}

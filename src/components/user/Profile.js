@@ -3,6 +3,7 @@ import {Link, Redirect} from 'react-router-dom'
 import {observer} from 'mobx-react';
 import styled from 'styled-components';
 import Avatar from '../common/Avatar';
+import feedStore from  '../../store.js'
 
 const Header = styled.section`
   flex-direction: row;
@@ -47,20 +48,33 @@ const Profile = observer(class Profile extends Component {
             <Location>{i.location}</Location>
           </div>
         </Author>
-        <Link to="/logout">Logout</Link>
+        <div>
+          <Link to="/logout">Logout</Link>
+          {feedStore.isUserVerified() &&
+            <p><a href="#" onClick={feedStore.sendEmailVerification}>Send confirmation email</a></p>
+          }
+        </div>
       </Header>
     );
   }
+  //TODO when the user reloads the page in profile it goes to feed
   render(){
-    if(!this.props.user){
-      return(
-        <Redirect to="/login"/>
-      )
+    if(feedStore.initialized){
+      if(!this.props.user){
+        return(
+          <Redirect to="/login"/>
+        )
+      }else{
+        return(
+          this.renderProfile()
+        )
+      }
     }else{
       return(
-        this.renderProfile()
+        this.renderLoading()
       )
     }
+
   }
 })
 

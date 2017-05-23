@@ -154,9 +154,6 @@ class Signup extends Component {
         </section>
         <section className='auth-form'>
             <p>Already have an account? <a href="/login">Login</a></p>
-
-            <a href="#" onClick={feedStore.sendEmailVerification}>Send confirmation email</a>
-
         </section>
       </div>
     );
