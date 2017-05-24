@@ -52,10 +52,7 @@ moment.updateLocale('en', {
 
 const FeedItem = observer(class FeedItem extends Component {
   renderComments(comments, postId){
-    /*
-    loop through the comments if no commets available
-    don't render
-    */
+    // loop through the comments if no commets available don't render
     if(comments){
       return(
         _.map(comments, function(value, key) {

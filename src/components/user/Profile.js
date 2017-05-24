@@ -57,10 +57,11 @@ const Profile = observer(class Profile extends Component {
       </Header>
     );
   }
-  //TODO when the user reloads the page in profile it goes to feed
+  //TODO create helper for logged only views
   render(){
-    if(feedStore.initialized){
+    if(feedStore.isFeedLoaded()){
       if(!this.props.user){
+        console.log('redirecting to login')
         return(
           <Redirect to="/login"/>
         )
@@ -74,6 +75,7 @@ const Profile = observer(class Profile extends Component {
         this.renderLoading()
       )
     }
+
 
   }
 })
