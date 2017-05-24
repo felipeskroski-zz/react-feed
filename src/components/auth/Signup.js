@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Redirect} from 'react-router-dom'
+import {Redirect, Link} from 'react-router-dom'
 import Dropzone from 'react-dropzone'
 import styled from 'styled-components';
 import feedStore from  '../../store.js'
@@ -153,7 +153,7 @@ class Signup extends Component {
           </form>
         </section>
         <section className='auth-form'>
-            <p>Already have an account? <a href="/login">Login</a></p>
+            <p>Already have an account? <Link to="/login">Login</Link></p>
         </section>
       </div>
     );

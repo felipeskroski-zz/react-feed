@@ -18,8 +18,6 @@ const Post = observer(class Post extends Component {
   }
   renderFeed(){
     const s = this.store
-    console.log('load post data')
-    console.log(s.feed)
     const u = s.user
     const p = s.feed[this.props.id]
 

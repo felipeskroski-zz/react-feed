@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Redirect,Link} from 'react-router-dom'
+import {Redirect, Link} from 'react-router-dom'
 import {observer} from 'mobx-react';
 import feedStore from  '../../store.js'
 
@@ -75,7 +75,7 @@ const Login = observer(class Login extends Component {
           </form>
         </section>
         <section className='auth-form'>
-            <p>Don't have a login? <a href="/signup">Signup</a></p>
+            <p>Don't have a login? <Link to="/signup">Signup</Link></p>
         </section>
       </div>
     );

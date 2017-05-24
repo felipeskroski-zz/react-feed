@@ -12,6 +12,7 @@ import config from './config';
 
 class FeedStore {
   constructor() {
+    const self = this;
     // these are the observable properties when they change it will change all the observers
     extendObservable(this, {
       feed: null,
@@ -24,25 +25,26 @@ class FeedStore {
       loaded: false,
       initialized: false,
     })
+    // gets the latest 20 posts
+    this.fb = firebase
+      .initializeApp(config)
+      .database()
+      .ref('/posts').orderByChild('time').limitToLast(20)
+
+    this.fb.on('value', fbdata => {
+      console.log('grabbing feed')
+      const data = fbdata.val();
+      console.log(data)
+      self.updateFeed(data)
+    })
+
     this.init()
   }
 
   init(){
     const self = this;
 
-    // gets the latest 20 posts
-    const fb = firebase
-      .initializeApp(config)
-      .database()
-      .ref('/posts').orderByChild('time').limitToLast(20)
 
-    //TODO fix the redundancy with the code below
-    fb.on('value', fbdata => {
-      console.log('grabbing feed')
-      const data = fbdata.val();
-      console.log(data)
-      self.updateFeed(data)
-    })
 
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
@@ -66,7 +68,7 @@ class FeedStore {
         console.log('no user logged')
         self.updateUser(null)
       }
-      return fb.once('value').then(function(fbdata){
+      return self.fb.once('value').then(function(fbdata){
           console.log('grabbing feed after user data')
           const data = fbdata.val();
           self.updateFeed(data)
@@ -184,6 +186,7 @@ class FeedStore {
   }
 
   saveComment(comment){
+    const self = this
     let c = comment
     // Get a key for a new comment.
     const newCommentKey = firebase.database().ref().child('comments').push().key;
@@ -195,29 +198,27 @@ class FeedStore {
     updates[`/users/${c.author_id}/comments/${newCommentKey}`] = true;
     updates[`/comments/${c._id}`] = c;
 
-    // listen for comment updates, when the comment is added refreshes the ui
-    const commentsRef = firebase.database().ref('posts/');
-    commentsRef.on('child_changed', fbdata => {
-      const data = fbdata.val();
-      this.updateFeed(data)
-    });
-
     // add the comment to firebase
-    return firebase
+    firebase
       .database()
       .ref()
       .update(updates)
       .then(() => {
+        self.init()
         console.log('comment added')
+
       })
   }
 
   deleteComment(post_id, author_id, comment_id){
-    const fb =   firebase.database().ref()
+    console.log(`posts_id: ${post_id} / comments_id: ${comment_id} / author_id: ${author_id}`)
     if(this.user._id === author_id){
-      fb.child(`posts/${post_id}/comments/${comment_id}`).remove();
-      fb.child(`users/${author_id}/comments/${comment_id}`).remove();
+      const fb = firebase.database().ref()
       fb.child(`comments/${comment_id}`).remove();
+      fb.child(`users/${author_id}/comments/${comment_id}`).remove();
+      fb.child(`posts/${post_id}/comments/${comment_id}`).remove();
+      this.init()
+      console.log('comment added')
       console.log('removed comment')
     }else{
       console.log('only the author can remove this comment')

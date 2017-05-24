@@ -18,7 +18,7 @@ const Feed = observer(class Feed extends Component {
     const o = store.orderedFeed
     return(
       <div>
-        {o.map(function(item){
+        {o.map(function(item, i){
           return (
             <FeedItem
               obj={item} id={item._id}
