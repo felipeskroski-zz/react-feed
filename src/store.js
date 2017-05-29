@@ -32,9 +32,8 @@ class FeedStore {
       .ref('/posts').orderByChild('time').limitToLast(20)
 
     this.fb.on('value', fbdata => {
-      console.log('grabbing feed')
+      console.log('Loading feed @ '+ Date.now())
       const data = fbdata.val();
-      console.log(data)
       self.updateFeed(data)
     })
 
@@ -69,7 +68,7 @@ class FeedStore {
         self.updateUser(null)
       }
       return self.fb.once('value').then(function(fbdata){
-          console.log('grabbing feed after user data')
+
           const data = fbdata.val();
           self.updateFeed(data)
           self.initialized = true
@@ -99,18 +98,21 @@ class FeedStore {
     }
   }
 
-  //TODO check for ways to make this more efficient
   loadComments(feed){
+    console.log('Loading comments @ '+ Date.now())
     const c = {}
     const self = this
+    const promises = []
     _.map(feed, function(value, key) {
-      self.getCommentsFromPost(key).then(function(result){
+      promises.push(self.getCommentsFromPost(key).then(function(result){
         const comments = result.val()
         c[key] = comments
         return self.comments = c
-      }).then(function(){
-        self.loaded = true
-      })
+      }))
+    })
+    Promise.all(promises).then(function(comments){
+      console.log('Comments loaded @ '+ Date.now())
+      self.loaded = true
     })
   }
 
