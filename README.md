@@ -114,6 +114,7 @@ You can import db.json into you firebase database if you want to startup with so
 `yarn build` creates a `build` directory with a production build of your app. Set up your favourite HTTP server so that a visitor to your site is served `index.html`, and requests to static paths like `/static/js/main.<hash>.js` are served with the contents of the `/static/js/main.<hash>.js` file.
 
 Now to use firebase hosting follow these steps:
+
 1. `npm install -g firebase-tools`
 2. `firebase login`
 3. `firebase init`
@@ -132,6 +133,7 @@ Now to use firebase hosting follow these steps:
     ]
   }
 }`
-5. `firebase serve` - and check if everything is in place. If you're happy it's time to deploy
-6. `firebase deploy`
-7. 🙌
+5. `yarn build`
+6. `firebase serve` - and check if everything is in place. If you're happy it's time to deploy
+7. `firebase deploy`
+8. 🙌
