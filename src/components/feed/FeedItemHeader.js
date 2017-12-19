@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
-import Avatar from '../common/Avatar';
-import DeleteLink from '../common/DeleteLink';
+import React, { Component } from 'react'
+import styled from 'styled-components'
+import Avatar from '../common/Avatar'
+import DeleteLink from '../common/DeleteLink'
 import feedStore from  '../../store.js'
 
 const Header = styled.section`
@@ -56,7 +56,7 @@ class FeedItemHeader extends Component {
   }
 
   render() {
-    const i = this.props;
+    const i = this.props
     return (
       <Header>
         <Author>
@@ -68,8 +68,8 @@ class FeedItemHeader extends Component {
         </Author>
         <div>{i.time} {this.renderRemove()}</div>
       </Header>
-    );
+    )
   }
 }
 
-export default FeedItemHeader;
+export default FeedItemHeader

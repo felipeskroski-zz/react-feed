@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import feedStore from  '../../store.js'
-import DeleteLink from '../common/DeleteLink';
+import DeleteLink from '../common/DeleteLink'
 
 const styles = {
   author:{
@@ -17,8 +17,8 @@ const styles = {
 
 class Comment extends Component {
   constructor(props) {
-    super(props);
-    this.handleRemove = this.handleRemove.bind(this);
+    super(props)
+    this.handleRemove = this.handleRemove.bind(this)
   }
 
   handleRemove(e){
@@ -53,4 +53,4 @@ class Comment extends Component {
 }
 
 
-export default Comment;
+export default Comment

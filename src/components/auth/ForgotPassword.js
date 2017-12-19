@@ -1,31 +1,31 @@
-import React, { Component } from 'react';
-import {observer} from 'mobx-react';
+import React, { Component } from 'react'
+import {observer} from 'mobx-react'
 import feedStore from  '../../store.js'
 
 
 const ForgotPassword = observer(class ForgotPassword extends Component {
   constructor(props) {
-    super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    super(props)
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleChange = this.handleChange.bind(this)
     this.state = {
       loading: false,
       error: false,
       sent: false,
       email: '',
-    };
+    }
   }
 
   handleSubmit(event) {
-    event.preventDefault();
+    event.preventDefault()
     this.setState({loading:true})
     const self = this
     const email = this.state.email
 
-    console.log('Sending password reset to: ' + email);
+    console.log('Sending password reset to: ' + email)
     if (email.length < 4) {
-      alert('Please enter an email address.');
-      return;
+      alert('Please enter an email address.')
+      return
     }
     // login returns a promise so we can work out the ui changes
     feedStore.sendPasswordReset(email).then(function(success){
@@ -38,13 +38,13 @@ const ForgotPassword = observer(class ForgotPassword extends Component {
   }
 
   handleChange(event) {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
+    const target = event.target
+    const value = target.type === 'checkbox' ? target.checked : target.value
+    const name = target.name
 
     this.setState({
       [name]: value
-    });
+    })
   }
   render() {
     return (
@@ -59,9 +59,9 @@ const ForgotPassword = observer(class ForgotPassword extends Component {
           </form>
         </section>
       </div>
-    );  }
+    )  }
 
 })
 
 
-export default ForgotPassword;
+export default ForgotPassword

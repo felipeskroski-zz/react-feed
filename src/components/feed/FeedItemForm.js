@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
+import React, { Component } from 'react'
+import styled from 'styled-components'
 import feedStore from  '../../store.js'
-import Like from 'react-icons/lib/md/favorite-outline';
-import Liked from 'react-icons/lib/md/favorite';
+import Like from 'react-icons/lib/md/favorite-outline'
+import Liked from 'react-icons/lib/md/favorite'
 
 
 const Form = styled.form`
@@ -33,21 +33,21 @@ const HeartFilled = styled(Liked)`
 
 class FeedItemForm extends Component {
   constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
-    this.addComment = this.addComment.bind(this);
-    this.toggleLike = this.toggleLike.bind(this);
+    super(props)
+    this.handleChange = this.handleChange.bind(this)
+    this.addComment = this.addComment.bind(this)
+    this.toggleLike = this.toggleLike.bind(this)
     this.state = {
       comment: '',
-    };
+    }
   }
   handleChange(event) {
-    this.setState({comment: event.target.value});
+    this.setState({comment: event.target.value})
   }
   addComment(e){
     e.preventDefault()
     feedStore.addComment(this.props.id, this.state.comment)
-    this.setState({comment: ''});
+    this.setState({comment: ''})
   }
   toggleLike(e){
     e.preventDefault()
@@ -61,9 +61,9 @@ class FeedItemForm extends Component {
   //TODO use props instead of the feedstore to check for likes
   renderLike(){
     if(feedStore.isLiked(this.props.id)){
-      return(<HeartFilled />);
+      return(<HeartFilled />)
     }else{
-      return(<Heart />);
+      return(<Heart />)
     }
   }
   render() {
@@ -75,7 +75,7 @@ class FeedItemForm extends Component {
           </a>
           <Field type="text" value={this.state.comment} ref="comment" name="comment" onChange={this.handleChange} placeholder='Add a comment ...'/>
         </Form>
-      );
+      )
     }else{
       return false
     }
@@ -84,4 +84,4 @@ class FeedItemForm extends Component {
   }
 }
 
-export default FeedItemForm;
+export default FeedItemForm

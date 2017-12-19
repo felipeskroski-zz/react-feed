@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-//import {toJS} from 'mobx';
+import React, { Component } from 'react'
+//import {toJS} from 'mobx'
 import {Redirect} from 'react-router-dom'
-import {observer} from 'mobx-react';
-import styled from 'styled-components';
+import {observer} from 'mobx-react'
+import styled from 'styled-components'
 import Dropzone from 'react-dropzone'
 import feedStore from  '../../store.js'
-import FeedItemHeader from './FeedItemHeader';
+import FeedItemHeader from './FeedItemHeader'
 
 // these styles automaticaly create new components based on a dom obj
 const Feed = styled.article`
@@ -63,33 +63,33 @@ const dropZoneStyle = {
 
 const FeedItemNew = observer(class FeedItemNew extends Component {
   constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
-    this.addPost = this.addPost.bind(this);
-    this.onDrop = this.onDrop.bind(this);
+    super(props)
+    this.handleChange = this.handleChange.bind(this)
+    this.addPost = this.addPost.bind(this)
+    this.onDrop = this.onDrop.bind(this)
     this.state = {
       comment: '',
       files: [],
       redirect: false,
       imgdata: {},
       loading: false,
-    };
+    }
   }
 
   handleChange(event) {
-    this.setState({comment: event.target.value});
+    this.setState({comment: event.target.value})
   }
 
   onDrop(files) {
     this.setState({
       files: files,
-    });
+    })
   }
 
   addPost(e){
     e.preventDefault()
     this.setState({loading:true})
-    let self = this;
+    let self = this
     const u = this.props.store.user
 
 
@@ -114,24 +114,24 @@ const FeedItemNew = observer(class FeedItemNew extends Component {
     feedStore.savePost(post, comment).then(function(e){
       // redirect after that
       console.log('Post updated !')
-      self.setState({comment: '', redirect: true, loading: false});
+      self.setState({comment: '', redirect: true, loading: false})
     })
 
 
   }
   renderImage(){
     // TODO resize image before sending to firebase
-    let self = this;
+    let self = this
     if(this.state.files.length > 0){
       const f = this.state.files[0]
-      let reader = new FileReader();
-      reader.readAsDataURL(f);
+      let reader = new FileReader()
+      reader.readAsDataURL(f)
       reader.onload = function(e) {
         // browser completed reading file send data to firebase
-        console.log('img loaded');
+        console.log('img loaded')
         self.state.imgdata = e.target.result
 
-      };
+      }
 
       // render image preview
       return(
@@ -145,7 +145,7 @@ const FeedItemNew = observer(class FeedItemNew extends Component {
     )
   }
   renderForm() {
-    const u = this.props.store.user;
+    const u = this.props.store.user
     // goes to home after saving a post
     if(this.state.redirect){
       return(
@@ -182,7 +182,7 @@ const FeedItemNew = observer(class FeedItemNew extends Component {
           <Button>Submit</Button>
         </Form>
       </Feed>
-    );
+    )
   }
   render(){
     if(!feedStore.isFeedLoaded()){
@@ -197,4 +197,4 @@ const FeedItemNew = observer(class FeedItemNew extends Component {
   }
 })
 
-export default FeedItemNew;
+export default FeedItemNew

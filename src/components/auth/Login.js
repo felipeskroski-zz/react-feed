@@ -1,40 +1,40 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {Redirect, Link} from 'react-router-dom'
-import {observer} from 'mobx-react';
+import {observer} from 'mobx-react'
 import feedStore from  '../../store.js'
 
 
 const Login = observer(class Login extends Component {
   constructor(props) {
-    super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    super(props)
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleChange = this.handleChange.bind(this)
     this.state = {
       loading: false,
       error: false,
       redirect: false,
       email: '',
       password: '',
-    };
+    }
   }
 
   handleSubmit(event) {
-    event.preventDefault();
+    event.preventDefault()
     this.setState({loading:true})
     const self = this
     const email = this.state.email
     const password = this.state.password
 
-    console.log('A name was submitted: ' + email + password);
+    console.log('A name was submitted: ' + email + password)
 
 
     if (email.length < 4) {
-      alert('Please enter an email address.');
-      return;
+      alert('Please enter an email address.')
+      return
     }
     if (password.length < 4) {
-      alert('Please enter a password.');
-      return;
+      alert('Please enter a password.')
+      return
     }
     // login returns a promise so we can work out the ui changes
     feedStore.login(email, password).then(function(success){
@@ -47,13 +47,13 @@ const Login = observer(class Login extends Component {
   }
 
   handleChange(event) {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
+    const target = event.target
+    const value = target.type === 'checkbox' ? target.checked : target.value
+    const name = target.name
 
     this.setState({
       [name]: value
-    });
+    })
   }
 
 
@@ -78,7 +78,7 @@ const Login = observer(class Login extends Component {
             <p>Don't have a login? <Link to="/signup">Signup</Link></p>
         </section>
       </div>
-    );
+    )
   }
   renderLogout() {
     return (
@@ -90,7 +90,7 @@ const Login = observer(class Login extends Component {
           </form>
         </section>
       </div>
-    );
+    )
   }
   renderLoading(){
     return(
@@ -122,4 +122,4 @@ const Login = observer(class Login extends Component {
 })
 
 
-export default Login;
+export default Login

@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {Redirect, Link} from 'react-router-dom'
 import Dropzone from 'react-dropzone'
-import styled from 'styled-components';
+import styled from 'styled-components'
 import feedStore from  '../../store.js'
 
 const dropZoneStyle = {
@@ -31,10 +31,10 @@ const Preview = styled.img`
 
 class Signup extends Component {
   constructor(props) {
-    super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.onDrop = this.onDrop.bind(this);
+    super(props)
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.onDrop = this.onDrop.bind(this)
     this.state = {
       loading: false,
       error: false,
@@ -46,12 +46,12 @@ class Signup extends Component {
       location: '',
       imgdata: {},
       files: [],
-    };
+    }
   }
 
 
   handleSubmit(event) {
-    event.preventDefault();
+    event.preventDefault()
     this.setState({loading:true})
     const self = this
     const name = this.state.name
@@ -61,15 +61,15 @@ class Signup extends Component {
     const avatar = this.state.files[0]
     const imgdata = this.state.imgdata
 
-    console.log('A name was submitted: ' + email + password);
+    console.log('A name was submitted: ' + email + password)
 
     if (email.length < 4) {
-      alert('Please enter an email address.');
-      return;
+      alert('Please enter an email address.')
+      return
     }
     if (password.length < 4) {
-      alert('Please enter a password.');
-      return;
+      alert('Please enter a password.')
+      return
     }
     // login returns a promise so we can work out the ui changes
     feedStore.signup(email, password, name, location, avatar, imgdata).then(function(success){
@@ -82,13 +82,13 @@ class Signup extends Component {
   }
 
   handleChange(event) {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
+    const target = event.target
+    const value = target.type === 'checkbox' ? target.checked : target.value
+    const name = target.name
 
     this.setState({
       [name]: value
-    });
+    })
   }
   sendEmailVerification(){
 
@@ -97,22 +97,22 @@ class Signup extends Component {
   onDrop(files) {
     this.setState({
       files: files,
-    });
+    })
   }
 
   renderImage(){
     // TODO resize image before sending to firebase
-    let self = this;
+    let self = this
     if(this.state.files.length > 0){
       const f = this.state.files[0]
-      let reader = new FileReader();
-      reader.readAsDataURL(f);
+      let reader = new FileReader()
+      reader.readAsDataURL(f)
       reader.onload = function(e) {
         // browser completed reading file send data to firebase
-        console.log('img loaded');
+        console.log('img loaded')
         self.state.imgdata = e.target.result
 
-      };
+      }
 
       // render image preview
       return(
@@ -156,7 +156,7 @@ class Signup extends Component {
             <p>Already have an account? <Link to="/login">Login</Link></p>
         </section>
       </div>
-    );
+    )
   }
   render() {
     if(this.state.redirect){
@@ -171,4 +171,4 @@ class Signup extends Component {
 }
 
 
-export default Signup;
+export default Signup

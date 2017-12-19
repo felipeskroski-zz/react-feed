@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import {observer} from 'mobx-react';
-import _ from 'lodash';
-import {toJS} from 'mobx';
-import FeedItem from './FeedItem';
+import React, { Component } from 'react'
+import {observer} from 'mobx-react'
+import _ from 'lodash'
+import {toJS} from 'mobx'
+import FeedItem from './FeedItem'
 
 
 // observer makes sure every change made on the store renders the feed
@@ -45,4 +45,4 @@ const Post = observer(class Post extends Component {
   }
 })
 
-export default Post;
+export default Post

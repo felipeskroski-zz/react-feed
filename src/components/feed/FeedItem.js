@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {Link} from 'react-router-dom'
-import {observer} from 'mobx-react';
+import {observer} from 'mobx-react'
 //import {toJS} from 'mobx';
-import _ from 'lodash';
-import moment from 'moment';
-import styled from 'styled-components';
-import FeedItemHeader from './FeedItemHeader';
-import FeedItemForm from './FeedItemForm';
-import Comment from './Comment';
+import _ from 'lodash'
+import moment from 'moment'
+import styled from 'styled-components'
+import FeedItemHeader from './FeedItemHeader'
+import FeedItemForm from './FeedItemForm'
+import Comment from './Comment'
 
 // these styles automaticaly create new components based on a dom obj
 // for more info check styled-components documentation
@@ -79,7 +79,7 @@ const FeedItem = observer(class FeedItem extends Component {
   }
 
   render() {
-    const i = this.props.obj;
+    const i = this.props.obj
     const c = this.props.comments
     return (
       <Feed>
@@ -103,8 +103,8 @@ const FeedItem = observer(class FeedItem extends Component {
 
         <FeedItemForm id={this.props.id}/>
       </Feed>
-    );
+    )
   }
 })
 
-export default FeedItem;
+export default FeedItem

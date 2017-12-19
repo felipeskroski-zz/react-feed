@@ -3,16 +3,16 @@
 // it would be something similar to a controller in an MVC architecture
 //------------------------------------------------------------------------------------
 
-import {extendObservable, toJS} from 'mobx';
-import * as firebase from 'firebase';
-import _ from 'lodash';
-import config from './config';
+import {extendObservable, toJS} from 'mobx'
+import * as firebase from 'firebase'
+import _ from 'lodash'
+import config from './config'
 //to use local db
 //import * as db from './db.json'
 
 class FeedStore {
   constructor() {
-    const self = this;
+    const self = this
     // these are the observable properties when they change it will change all the observers
     extendObservable(this, {
       feed: null,
@@ -33,7 +33,7 @@ class FeedStore {
 
     this.fb.on('value', fbdata => {
       console.log('Loading feed @ '+ Date.now())
-      const data = fbdata.val();
+      const data = fbdata.val()
       self.updateFeed(data)
     })
 
@@ -41,7 +41,7 @@ class FeedStore {
   }
 
   init(){
-    const self = this;
+    const self = this
 
 
 
@@ -49,12 +49,12 @@ class FeedStore {
       if (user) {
         // User is signed in.
         console.log('user authenticated')
-        var emailVerified = user.emailVerified;
+        var emailVerified = user.emailVerified
 
         if (!emailVerified) {
           console.log('users email not verified')
         }
-        var user_id = firebase.auth().currentUser.uid;
+        var user_id = firebase.auth().currentUser.uid
 
         // first get user credentials
         firebase.database().ref('/users/' + user_id).once('value')
@@ -62,14 +62,14 @@ class FeedStore {
           self.updateUser(snapshot.val())
 
         // after getting the user load the feed
-        });
+        })
       } else {
         console.log('no user logged')
         self.updateUser(null)
       }
       return self.fb.once('value').then(function(fbdata){
 
-          const data = fbdata.val();
+          const data = fbdata.val()
           self.updateFeed(data)
           self.initialized = true
       })
@@ -124,7 +124,7 @@ class FeedStore {
       "date" : _.now(),
       "post_id": post_id
     }
-    this.saveComment(c);
+    this.saveComment(c)
   }
 
   addPost(post, comment){
@@ -179,10 +179,10 @@ class FeedStore {
     // save post to firebase
     firebase.database().ref(`posts/${key}`).set(post, function(error){
       if(error){
-        console.log(error);
+        console.log(error)
       }
       else{
-        console.log("Post saved successfully");
+        console.log("Post saved successfully")
       }
     })
   }
@@ -191,14 +191,14 @@ class FeedStore {
     const self = this
     let c = comment
     // Get a key for a new comment.
-    const newCommentKey = firebase.database().ref().child('comments').push().key;
+    const newCommentKey = firebase.database().ref().child('comments').push().key
     c._id = newCommentKey
 
     // Write the new comments's data simultaneously in the posts, comments list and users comments
-    const updates = {};
-    updates[`/posts/${c.post_id}/comments/${newCommentKey}`] = true;
-    updates[`/users/${c.author_id}/comments/${newCommentKey}`] = true;
-    updates[`/comments/${c._id}`] = c;
+    const updates = {}
+    updates[`/posts/${c.post_id}/comments/${newCommentKey}`] = true
+    updates[`/users/${c.author_id}/comments/${newCommentKey}`] = true
+    updates[`/comments/${c._id}`] = c
 
     // add the comment to firebase
     firebase
@@ -216,9 +216,9 @@ class FeedStore {
     console.log(`posts_id: ${post_id} / comments_id: ${comment_id} / author_id: ${author_id}`)
     if(this.user._id === author_id){
       const fb = firebase.database().ref()
-      fb.child(`comments/${comment_id}`).remove();
-      fb.child(`users/${author_id}/comments/${comment_id}`).remove();
-      fb.child(`posts/${post_id}/comments/${comment_id}`).remove();
+      fb.child(`comments/${comment_id}`).remove()
+      fb.child(`users/${author_id}/comments/${comment_id}`).remove()
+      fb.child(`posts/${post_id}/comments/${comment_id}`).remove()
       this.init()
       console.log('comment added')
       console.log('removed comment')
@@ -233,25 +233,25 @@ class FeedStore {
     let p = post
     let m = p.media
     let img = p.imgdata
-    const updates = {};
+    const updates = {}
 
     // Create a root reference
-    const storageRef = firebase.storage().ref();
+    const storageRef = firebase.storage().ref()
 
     // Create a reference to new image on firebase
-    const imgRef = storageRef.child(`images/${m.name}`);
+    const imgRef = storageRef.child(`images/${m.name}`)
 
     // Get a key for post comment.
-    const postCommentKey = firebase.database().ref().child('comments').push().key;
+    const postCommentKey = firebase.database().ref().child('comments').push().key
     c._id = postCommentKey
     console.log('comment:')
     console.log(c)
 
     // Get a key for a new Post.
-    const postKey = firebase.database().ref().child('posts').push().key;
-    p._id = postKey;
-    p.img_ref = `images/${m.name}`;
-    c.post_id = postKey;
+    const postKey = firebase.database().ref().child('posts').push().key
+    p._id = postKey
+    p.img_ref = `images/${m.name}`
+    c.post_id = postKey
     p.comments = {[postCommentKey]: true}
     console.log('post:')
     console.log(p)
@@ -259,25 +259,25 @@ class FeedStore {
 
 
     // listen for post updates, when the post is added refreshes the ui
-    const postsRef = firebase.database().ref('posts/');
+    const postsRef = firebase.database().ref('posts/')
 
     //TODO check how this call is been used
     postsRef.on('child_added', fbdata => {
-      const data = fbdata.val();
+      const data = fbdata.val()
       this.updateFeed(data)
-    });
+    })
 
     // upload image
     var promise = new Promise(function (resolve, reject) {
       imgRef.putString(img, 'data_url').then(function(snapshot) {
-        console.log('image uploaded!');
-        console.log(snapshot.downloadURL);
-        p.media = snapshot.downloadURL;
+        console.log('image uploaded!')
+        console.log(snapshot.downloadURL)
+        p.media = snapshot.downloadURL
         console.log(p)
 
-        updates[`/posts/${postKey}`] = p;
-        updates[`/users/${c.author_id}/comments/${postCommentKey}`] = true;
-        updates[`/comments/${postCommentKey}`] = c;
+        updates[`/posts/${postKey}`] = p
+        updates[`/users/${c.author_id}/comments/${postCommentKey}`] = true
+        updates[`/comments/${postCommentKey}`] = c
         resolve(firebase.database().ref().update(updates))
       })
     })
@@ -291,15 +291,15 @@ class FeedStore {
     const comments = this.feed[post_id].comments
 
     // Create a reference to the file to delete
-    const imgRef = storageRef.child(`images/${this.feed[post_id].img_ref}`);
+    const imgRef = storageRef.child(`images/${this.feed[post_id].img_ref}`)
 
     if(this.user._id === author_id){
-      fb.child(`posts/${post_id}`).remove();
+      fb.child(`posts/${post_id}`).remove()
       console.log('removed post')
       if (comments){
         const keys = _.keys(comments)
         keys.map(function(key){
-          return fb.child(`comments/${key}`).remove();
+          return fb.child(`comments/${key}`).remove()
         })
         console.log('removed post comments')
       }
@@ -309,7 +309,7 @@ class FeedStore {
         console.log('removed post image')
       }).catch(function(error) {
         console.log('error removing image '+error)
-      });
+      })
 
     }else{
       console.log('only the author can remove this post')
@@ -330,7 +330,7 @@ class FeedStore {
 
   logout(){
     console.log('log out')
-    return firebase.auth().signOut();
+    return firebase.auth().signOut()
   }
 
   login(email,password) {
@@ -343,17 +343,17 @@ class FeedStore {
       })
       .catch(function(error) {
         // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
+        var errorCode = error.code
+        var errorMessage = error.message
         // [START_EXCLUDE]
         if (errorCode === 'auth/wrong-password') {
-          console.log('Wrong password.');
+          console.log('Wrong password.')
         } else {
-          console.log(errorMessage);
+          console.log(errorMessage)
         }
-        reject(error);
+        reject(error)
         // [END_EXCLUDE]
-      });
+      })
     })
     return promise
   }
@@ -362,10 +362,10 @@ class FeedStore {
   // Handles the sign up button press.
   signup(email, password, name, location, avatar, imgdata) {
     // Sign in with email and pass.
-    let id;
-    const self = this;
+    let id
+    const self = this
     // Create a root reference
-    const storageRef = firebase.storage().ref();
+    const storageRef = firebase.storage().ref()
 
     var promise = new Promise(function (resolve, reject) {
       firebase.auth().createUserWithEmailAndPassword(email, password)
@@ -380,13 +380,13 @@ class FeedStore {
           .update({_id: id, name: name, location: location})
 
         // Create a reference to new image on firebase
-        const imgRef = storageRef.child(`images/${id}/${avatar.name}`);
+        const imgRef = storageRef.child(`images/${id}/${avatar.name}`)
 
         return imgRef.putString(imgdata, 'data_url')
       }).then(function(snapshot){
-        console.log('image uploaded!');
-        console.log(snapshot.downloadURL);
-        const image = snapshot.downloadURL;
+        console.log('image uploaded!')
+        console.log(snapshot.downloadURL)
+        const image = snapshot.downloadURL
 
         return firebase
           .database()
@@ -396,15 +396,15 @@ class FeedStore {
         resolve('Image profile linked to user')
       }).catch(function(error) {
         // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
+        var errorCode = error.code
+        var errorMessage = error.message
         if (errorCode === 'auth/weak-password') {
-          alert('The password is too weak.');
+          alert('The password is too weak.')
         } else {
-          alert(errorMessage);
+          alert(errorMessage)
         }
-        reject(error);
-      });
+        reject(error)
+      })
     })
     return promise
   }
@@ -413,33 +413,33 @@ class FeedStore {
   sendEmailVerification() {
     console.log()
     firebase.auth().currentUser.sendEmailVerification().then(function() {
-      console.log('Email Verification Sent!');
-    });
+      console.log('Email Verification Sent!')
+    })
   }
 
 
   sendPasswordReset(email) {
     var promise = new Promise(function (resolve, reject) {
       firebase.auth().sendPasswordResetEmail(email).then(function() {
-        console.log('Password Reset Email Sent!');
+        console.log('Password Reset Email Sent!')
         resolve('email sent')
       }).catch(function(error) {
         // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
+        var errorCode = error.code
+        var errorMessage = error.message
         if (errorCode === 'auth/invalid-email') {
-          console.log(errorMessage);
+          console.log(errorMessage)
         } else if (errorCode === 'auth/user-not-found') {
-          console.log(errorMessage);
+          console.log(errorMessage)
         }
-        console.log(error);
+        console.log(error)
         reject(errorMessage)
-      });
-    });
+      })
+    })
     return promise
   }
 }
 
 
-const feedStore = new FeedStore();
-export default feedStore;
+const feedStore = new FeedStore()
+export default feedStore

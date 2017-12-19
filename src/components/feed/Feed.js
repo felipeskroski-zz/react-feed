@@ -18,19 +18,18 @@ const Feed = observer(class Feed extends Component {
     const o = store.orderedFeed
     return(
       <div>
-        {o.map(function(item, i){
-          return (
+        {o.map((item, i) => (
             <FeedItem
               obj={item} id={item._id}
-              key={item._id} user={u}
+              key={i} user={u}
               // add comments to post if any
               comments={toJS(store.comments) && toJS(store.comments[item._id])}
             />
           )
-        })}
+        )}
       </div>
     )
   }
 })
 
-export default Feed;
+export default Feed

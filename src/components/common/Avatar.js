@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import avatar from '../../img/avatar.png'
 const styles = {
   img: {
@@ -8,7 +8,7 @@ const styles = {
   }
 
 
-};
+}
 
 class Avatar extends Component {
   render() {
@@ -19,10 +19,10 @@ class Avatar extends Component {
         height={this.props.size || 30}
         width={this.props.size || 30 }
         alt={this.props.alt}/>
-    );
+    )
   }
 }
 
 
 
-export default Avatar;
+export default Avatar

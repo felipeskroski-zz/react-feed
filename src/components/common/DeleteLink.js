@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
+import React, { Component } from 'react'
+import styled from 'styled-components'
 
 const Link = styled.a`
   text-decoration: none;
@@ -8,16 +8,16 @@ const Link = styled.a`
   &:hover {
     color: red;
   }
-`;
+`
 
 class DeleteLink extends Component {
   render() {
     return (
       <Link {...this.props}>✕</Link>
-    );
+    )
   }
 }
 
 
 
-export default DeleteLink;
+export default DeleteLink
