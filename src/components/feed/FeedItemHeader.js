@@ -28,16 +28,16 @@ const Location = styled.p`
 
 class FeedItemHeader extends Component {
   constructor(props) {
-    super(props);
-    this.handleRemove = this.handleRemove.bind(this);
+    super(props)
+    this.handleRemove = this.handleRemove.bind(this)
   }
 
   handleRemove(e){
     e.preventDefault()
-    console.log(`post/${this.props.post._id}/delete`)
+
     console.log(this.props)
     if(confirm("Are you sure?")){
-      return feedStore.deletePost(this.props.post._id)
+      return feedStore.deletePost(this.props.post_id)
     }
   }
 

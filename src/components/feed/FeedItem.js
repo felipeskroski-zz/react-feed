@@ -87,7 +87,7 @@ const FeedItem = observer(class FeedItem extends Component {
           author_image={i.author_image}
           author={i.author}
           author_id={i.author_id}
-          post_id={i.post_id}
+          post_id={i._id}
           location={i.author_location}
           time={moment(i.time).fromNow(true)}
         />

@@ -100,7 +100,7 @@ const FeedItemNew = observer(class FeedItemNew extends Component {
       author_id: u._id,
       time: Date.now(),
       media: this.state.files[0],
-      likes: false,
+      likes: null,
       imgdata: this.state.imgdata,
     }
     const comment = {
@@ -148,8 +148,11 @@ const FeedItemNew = observer(class FeedItemNew extends Component {
     const u = this.props.store.user
     // goes to home after saving a post
     if(this.state.redirect){
+      //window.location.reload()
+
       return(
-        <Redirect to="/"/>
+        //<Redirect to="/"/>
+        window.location.href = '/'
       )
     }
     return (

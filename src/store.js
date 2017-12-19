@@ -133,12 +133,15 @@ class FeedStore {
   }
 
   isLiked(post_id){
+    if(post_id == undefined){
+      return false
+    }
     // if no user
     if(!this.user){
       return false
     }
     // if no likes
-    if(!toJS(this.feed[post_id].likes)){
+    if(toJS(this.feed[post_id].likes == null)){
       return false
     }
     // if liked by the current user
@@ -291,7 +294,7 @@ class FeedStore {
     const comments = this.feed[post_id].comments
 
     // Create a reference to the file to delete
-    const imgRef = storageRef.child(`images/${this.feed[post_id].img_ref}`)
+    const imgRef = storageRef.child(`${this.feed[post_id].img_ref}`)
 
     if(this.user._id === author_id){
       fb.child(`posts/${post_id}`).remove()
