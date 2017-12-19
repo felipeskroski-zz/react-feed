@@ -133,7 +133,7 @@ class FeedStore {
   }
 
   isLiked(post_id){
-    if(post_id == undefined){
+    if(post_id === undefined){
       return false
     }
     // if no user
@@ -141,7 +141,7 @@ class FeedStore {
       return false
     }
     // if no likes
-    if(toJS(this.feed[post_id].likes == null)){
+    if(!toJS(this.feed[post_id].likes)){
       return false
     }
     // if liked by the current user
